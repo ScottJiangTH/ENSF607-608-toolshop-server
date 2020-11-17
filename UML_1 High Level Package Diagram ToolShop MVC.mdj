@@ -5215,7 +5215,7 @@
 											"top": 527,
 											"width": 119,
 											"height": 13,
-											"text": "ServerManager"
+											"text": "ServerConnector"
 										},
 										{
 											"_type": "LabelView",
@@ -7663,7 +7663,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "ServerManager"
+					"name": "ServerConnector"
 				},
 				{
 					"_type": "UMLClass",

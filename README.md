@@ -11,7 +11,8 @@ ENSF607 and ENSF608 Joint Project, ToolShop Project
 
 ### Package and Class Design
 ##### UML Package Class Diagram (The high-level Diagram)
-UML Package Class Diagram ToolShop MVC.mdj
+UML_1 High Level Package Diagram ToolShop MVC.mdj
 ##### UML Class Diagram, Model Package
+UML_2 Low Level Class Diagram Toolshop Model.mdj
 ##### UML Class Diagram, View Package
 ##### UML Class Diagram, Controller Package
