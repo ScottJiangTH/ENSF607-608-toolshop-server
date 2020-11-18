@@ -4197,6 +4197,19 @@
 							"propertyLabel": {
 								"$ref": "AAAAAAF12in+mt59rYQ="
 							}
+						},
+						{
+							"_type": "UMLNoteView",
+							"_id": "AAAAAAF13GJf+htilPc=",
+							"_parent": {
+								"$ref": "AAAAAAFF+qBtyKM79qY="
+							},
+							"font": "Arial;13;0",
+							"left": 200,
+							"top": 816,
+							"width": 297,
+							"height": 79,
+							"text": "Design note and Assumptions:\n1. JSON is used in communication between ClientController and ServerController."
 						}
 					]
 				},
