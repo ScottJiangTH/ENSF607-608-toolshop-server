@@ -52,10 +52,11 @@ public class DBController {
 			while(rs.next())
 			{
 				String ID = rs.getString(1);
-				String name = rs.getString(2);
-				String quantity = rs.getString(3);
-				String price = rs.getString(4);
-				String supplierID = rs.getString(5);
+				String type = rs.getString(2);
+				String name = rs.getString(3);
+				String quantity = rs.getString(6);
+				String price = rs.getString(5);
+				String supplierID = rs.getString(7);
 				Supplier theSupplier = findSupplier(Integer.parseInt(supplierID));
 
 				Item myItem = new Item(Integer.parseInt(ID), name, Integer.parseInt(quantity), Double.parseDouble(price), theSupplier);
@@ -89,9 +90,10 @@ public class DBController {
 			while(rs.next())
 			{
 				String supplierID = rs.getString(1);
-				String companyName = rs.getString(2);
-				String address = rs.getString(3);
-				String salesContact = rs.getString(4);
+				String supplierType = rs.getString(2);
+				String companyName = rs.getString(3);
+				String address = rs.getString(4);
+				String salesContact = rs.getString(5);
 				suppliers.add(new Supplier(Integer.parseInt(supplierID), companyName, address, salesContact));
 			}
 		}
@@ -104,6 +106,6 @@ public class DBController {
 	}
 
 }
-	
+
 
 
