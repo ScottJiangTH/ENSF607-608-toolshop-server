@@ -1,4 +1,4 @@
-package Server;
+package server.Controller;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -10,7 +10,7 @@ import java.util.Scanner;
  * @since October 10 2020
  *
  */
-public class FileManager {
+public class DBController {
 	private ArrayList<Supplier> supList = new ArrayList<Supplier>();
 	private SupplierList supplierList = new SupplierList(supList);
 	private ArrayList<Item> toolList = new ArrayList<Item>();
@@ -21,7 +21,7 @@ public class FileManager {
 	 * @param file2: Supplier file
 	 * @throws Exception
 	 */
-	public FileManager(String file1, String file2)throws Exception {
+	public DBController(String file1, String file2)throws Exception {
 		
 		
 		File itemFile = new File(file1);

@@ -1,3 +1,4 @@
+package server.Model;
 
 /**
  * stores information of a supplier

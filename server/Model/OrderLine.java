@@ -1,4 +1,5 @@
-package Server;
+package server.Model;
+
 /**
  * Stores information of an orderline.
  * @author Yunying Zhang

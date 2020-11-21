@@ -1,4 +1,4 @@
-package Server;
+package server.Model;
 /**
  * Stores information of each tool
  * @author Yunying Zhang

@@ -1,3 +1,4 @@
+package server.Model;
 import java.util.ArrayList;
 /**
  * stores information of a shop

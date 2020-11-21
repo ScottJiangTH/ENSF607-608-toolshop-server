@@ -1,17 +1,19 @@
-package Server;
+package server.Controller;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import server.Model.Model;
 
-public class Server {
+
+public class ServerController {
 	
 	private ServerSocket serverSocket;
 	private ExecutorService pool;
 
-	public Server(int port) {
+	public ServerController(int port) {
 		try {
 			serverSocket = new ServerSocket(port);
 			pool = Executors.newCachedThreadPool();
