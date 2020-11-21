@@ -1,0 +1,42 @@
+id,itype,iname,idescription,quantity,price,sid
+1000,electrical,Knock Bits,,88,12.67,8015
+1001,electrical,Widgets,,10,35.5,8004
+1002,electrical,Grommets,,20,23.45,8001
+1003,electrical,Wedges,,15,10.15,8020
+1004,electrical,Wing Bats,,11,11.25,8003
+1005,electrical,Twinkies,,75,15.75,8012
+1006,electrical,Wiggles,,30,12.34,8020
+1007,electrical,Bing Bobs,,25,2.39,8005
+1008,electrical,Wog Wits,,300,19.99,8004
+1009,electrical,Barney Bits,,21,23.59,8006
+1010,electrical,Willie Widgits,,89,12.99,8003
+1011,electrical,Barge Bogs,,35,2.99,8011
+1012,electrical,Poggy Pogs,,99,1.1,8002
+1013,electrical,Pardle Pins,,400,0.69,8013
+1014,electrical,Piddley Wicks,,54,5.19,8013
+1015,electrical,Iggy Orks,,22,49.95,8010
+1016,electrical,Crank Cribs,,888,0.29,8005
+1017,electrical,Thingies,,67,45.98,8008
+1018,electrical,Orf Dappers,,32,19.98,8018
+1019,electrical,Piff Knocks,,82,4.95,8002
+1020,electrical,Knit Piks,,66,6.75,8015
+1021,non-electrical,Piddley Pins,,370,0.25,8020
+1022,non-electrical,Tic Tocs,,87,1.36,8014
+1023,non-electrical,Tin Wits,,23,5.67,8014
+1024,non-electrical,Thinga-ma-bobs,,40,10.98,8012
+1025,non-electrical,Fling Flobs,,254,2.33,8009
+1026,non-electrical,Barn Bins,,45,88.67,8006
+1027,non-electrical,Flap Wrappers,,89,44.88,8009
+1028,non-electrical,Pong Pangs,,2345,0.1,8002
+1029,non-electrical,Oof Tongs,,345,8.49,8011
+1030,non-electrical,Nic Nacs,,238,2.99,8015
+1031,non-electrical,Tork Tins,,376,0.95,8012
+1032,non-electrical,Lilly Larks,,56,12.99,8007
+1033,non-electrical,Minnie Morks,,800,1.95,8007
+1034,non-electrical,Cork Handles,,654,2.66,8016
+1035,non-electrical,Ding Darns,,1208,0.15,8019
+1036,non-electrical,Erk Orks,,498,3.99,8017
+1037,non-electrical,Foo Figs,,234,5.89,8018
+1038,non-electrical,Googly Eyes,,756,6.99,8001
+1039,non-electrical,Handy Pandies,,321,4.35,8017
+1040,non-electrical,Inny Outies,,219,3.45,8010

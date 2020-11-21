@@ -1,0 +1,31 @@
+id,stype,company_name,address,sales_contact
+8001,domestic,Grommet Builders,"788 30th St., SE, Calgary",Fred
+8002,domestic,Pong Works,"749 Dufferin Blvd., SE, Calgary",Bart
+8003,domestic,Wiley Inc.,"26 40th St., SE, Calgary",BillyBob
+8004,domestic,Winork Manufacturing Inc.,"156 51st Ave., SE, Calgary",Marty
+8005,domestic,Grab Bag Inc.,"138 42nd Ave., NE, Calgary",Monty
+8006,domestic,Paddy's Manufacturing,"311 McCall Way, NE, Calgary",Barney
+8007,domestic,Smickles Industries,"966 Smed Lane, SE, Calgary",Lisa
+8008,domestic,Thangs Inc.,"879 37th Ave., NE, Calgary",Thelma
+8009,domestic,Flip Works Inc.,"472 Ogden Dale Rd., SE, Calgary",Rory
+8010,domestic,Irkle Industries,"754 Sunridge Way, NE, Calgary",Irma
+8011,domestic,Biff Builders,"690 19th St., NE, Calgary",Borjn
+8012,domestic,Twinkles Inc.,"318 29th St.,NE, Calgary",Barkley
+8013,domestic,Piddles Industries,"238 112th Ave., NE, Calgary",Parnell
+8014,domestic,Tic Tac Manufacturing,"598 Palmer Rd., NE, Calgary",Teisha
+8015,domestic,Knock Knock Inc.,"363 42nd Ave., NE, Calgary",Ned
+8016,domestic,Corky Things Inc.,"35 McCall Way, NE, Calgary",Corrine
+8017,domestic,E & O Industries,"883 44th St., SE, Calgary",Stan
+8018,domestic,Fiddleys Makes Stuff Inc.,"350 27th St., NE, Calgary",Fredda
+8019,domestic,Horks and Stuff Manufacturing,"997 42nd Ave., NE, Calgary",Harold
+8020,domestic,Wings Works,"754 48th St., SE, Calgary",Wing
+9001,international,New Zealand Health Manufacturing,"7 Pavilion Drive, Mangere, Auckland 2022, New Zealand",Wendy
+9002,international,MSD New Zealand,"30 Saint Benedicts Street, Eden Terrace, Auckland 1010, New Zealand",Clare
+9003,international,Universal NZ,"14 Southampton Road, Miramar, Wellington 6022, New Zealand",Karen
+9004,international,ILF NewZealand,"Level 27/188 Quay Street, Auckland CBD, Auckland 1010, New Zealand",Scott
+9005,international,Docuworx,"B6/210 Dairy Flat Highway, Albany, Auckland 0632, New Zealand",Stan
+9006,international,TNA,"34 Domain Road, Lichfield 3482, New Zealand",Bob
+9007,international,Aritizia Inc,"229 Te Matai Road, Te Puke 3183, New Zealand",Jenny
+9008,international,Wilfred Inc,"108 Mount Eden Road, Mount Eden, Auckland 1024, New Zealand",Adam
+9009,international,Wiley Inc.,"32 Dalgety Drive, Wiri, Auckland 2104, New Zealand",Ivan
+9010,international,,"184 Ballance Street, Whataupoko, Gisborne 4010, New Zealand",Iris
