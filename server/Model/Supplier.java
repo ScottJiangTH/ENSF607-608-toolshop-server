@@ -1,58 +1,78 @@
 package server.Model;
 
-/**
- * stores information of a supplier
- * @author Yunying Zhang
- * @Since October 10 2020
- *
- */
+import java.util.ArrayList;
 
 public class Supplier {
-	private int supID;
-	private String companyName;
-	private String address;
-	private String saleRep;
 	
-	public Supplier() {}
-	public Supplier(int supID,String companyName,String address,String saleRep) {
-		this.supID = supID;
-		this.companyName = companyName;
-		this.address = address;
-		this.saleRep = saleRep;
+	private int supId;
+	private String supName;
+	private String supAddress;
+	private String supContactName;
+	private ArrayList <Item> itemList;
+	
+	
+	public Supplier (int id, String name, String address, String contactName) {
+		
+		supId = id;
+		supName = name;
+		supAddress = address;
+		supContactName = contactName;
+		itemList = new ArrayList <Item>();
+	}
+
+
+	public int getSupId() {
+		return supId;
+	}
+
+
+	public void setSupId(int supId) {
+		this.supId = supId;
+	}
+
+
+	public String getSupName() {
+		return supName;
+	}
+
+
+	public void setSupName(String supName) {
+		this.supName = supName;
+	}
+
+
+	public String getSupAddress() {
+		return supAddress;
+	}
+
+
+	public void setSupAddress(String supAddress) {
+		this.supAddress = supAddress;
+	}
+
+
+	public String getSupContactName() {
+		return supContactName;
+	}
+
+
+	public void setSupContactName(String supContactName) {
+		this.supContactName = supContactName;
+	}
+	public String toString () {
+		return supName + " Supplier ID: " + supId+ "\n";
+		
+	}
+
+
+	public ArrayList <Item> getItemList() {
+		return itemList;
+	}
+
+
+	public void setItemList(ArrayList <Item> itemList) {
+		this.itemList = itemList;
 	}
 	
-//getters and setters
-	public int getSupID() {
-		return supID;
-	}
 
-	public void setSupID(int supID) {
-		this.supID = supID;
-	}
-
-	public String getCompanyName() {
-		return companyName;
-	}
-
-	public void setCompanyName(String companyName) {
-		this.companyName = companyName;
-	}
-
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
-	public String getSaleRep() {
-		return saleRep;
-	}
-
-	public void setSaleRep(String saleRep) {
-		this.saleRep = saleRep;
-	}
-
-	
 }

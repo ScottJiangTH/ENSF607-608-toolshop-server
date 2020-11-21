@@ -1,121 +1,82 @@
 package server.Model;
 import java.util.ArrayList;
-/**
- * stores information of a shop
- * @author Yunying Zhang
- *@since October 10 2020
- */
-
-
 public class Shop {
-
-	private Inventory inventory;
-	private SupplierList supplierList;
-	private ArrayList <OrderLine> orderLineList = new ArrayList <OrderLine>();
+	
+	private Inventory theInventory;
+	private SupplierList theSuppliers;
 
 	
-	public Shop (Inventory inventory, SupplierList supplierList) {
+	public Shop (Inventory inventory, SupplierList suppliers) {
 		
-		this.inventory = inventory;
-		this.supplierList =supplierList;
+		theInventory = inventory;
+		theSuppliers = suppliers;
 		
 	}
 	
-	//getters and setters for inventory
-	public Inventory getInventory () {
-		return inventory;
+	public Inventory getTheInventory () {
+		return theInventory;
 	}
-	public void setInventory (Inventory inventory) {
-		this.inventory = inventory;
+	public void setTheInventory (Inventory inventory) {
+		theInventory = inventory;
 	}
 	
-	/**
-	 * reduces item quantity
-	 * @param toolName: the tool that we want to reduce quantity
-	 * @param Qty: number of quantity to reduce
-	 */
-	public void reduceQty(String toolName,int Qty) {
+	
 
-		inventory.reduceQty(toolName,Qty);
-
-		//add to order line if the quantity is less than 40
-		if (inventory.checkQty(toolName)<40&&inventory.checkQty(toolName)>0) {
-			addOrderLine();
-			System.out.println("Successfully reduced quantity of "+toolName+" to "
-					+inventory.searchByName(toolName).getToolQty());
-		}
-		
-		else if(inventory.checkQty(toolName)>=40) {
-			System.out.println("Successfully reduced quantity of "+toolName+" to "
-					+inventory.searchByName(toolName).getToolQty());
-		}
-		
-		else if(inventory.checkQty(toolName)<0) {
-			System.out.println("Not enough in stock! Please enter a smaller number!");
-		}
-		
-		
-	}
-	/**
-	 * adds the item to orderline
-	 */
-	private void addOrderLine() {
-		OrderLine currentOrderLine;
-		
-		currentOrderLine = new OrderLine(inventory.getItemToPurchase(),
-				inventory.getPurchaseQty(),
-				supplierList.getSupplier(inventory.getItemToPurchase().getSupID()).getCompanyName());
-		orderLineList.add(currentOrderLine);
-		System.out.println("Order line added!");
-		
-}
-/**
- * lists all suppliers
- */
-	public void listAllSuppliers() {
-	 supplierList.showSupplierList();
-	}
-	
-	/**
-	 * lists all items
-	 */
 	public void listAllItems() {
-		System.out.println(inventory);
+		System.out.println(theInventory);
+		
+	}
+	public String decreaseItem (String name) {
+		if (theInventory.manageItem(name) == null)
+			return "Couldn't not decrease item quantity!\n";
+		else
+			return "Item quantity was decreased!\n";
+	}
+
+	public void listAllSuppliers() {
+		theSuppliers.listAllSuppliers();
+	}
+
+	public String getItem(String name) {
+		// TODO Auto-generated method stub
+		Item theItem = theInventory.searchForItem(name);
+		if (theItem == null)
+		     return "Item " + name + " could not be found!";
+		else
+			 return outputItem (theItem);
+			
+	}
+
+	public String getItem(int id) {
+		// TODO Auto-generated method stub
+		Item theItem = theInventory.searchForItem(id);
+		if (theItem == null)
+		     return "Item number " + id + " could not be found!";
+		else
+			return outputItem (theItem);
+			 
 		
 	}
 	
-	/**
-	 * checks quantity of an item
-	 * @param toolName: tool that we want to check quantity
-	 * @return quantity of the tool
-	 */
-	public int checkQty(String toolName) {
-		
-		if (inventory.checkQty(toolName)<40) {
-			addOrderLine();
-		}
-		return inventory.checkQty(toolName);
+	private String outputItem (Item theItem){
+		return "The item information is as follows: \n" + theItem;
 	}
-	
+
+	public String getItemQuantity(String name) {
+		// TODO Auto-generated method stub
+		int quantity = theInventory.getItemQuantity(name);
+		if (quantity < 0)
+		    return "Item " + name + " could not be found!";
+		else
+			return "The quantity of Item " + name + " is: " + quantity + "\n";
+	}
+
 	public String printOrder() {
 		// TODO Auto-generated method stub
 		
-		return inventory.printOrder();
+		return theInventory.printOrder();
 	}
 
-/**
- * generates the order
- * @throws Exception
- */
-	public void sendOrder() throws Exception {
-		Order order = new Order();
-		if (orderLineList.size()!=0) {
-			order.generateOrder(orderLineList);
-		}
-		else {
-			System.out.println("There's no order to be generated.");
-		}
-	}
 	
-}
 
+}

@@ -8,8 +8,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import server.Model.Model.Item;
-import server.Model.Model.Shop;
+
 
 public class Model implements Runnable{
 	private BufferedReader socketIn;
@@ -138,7 +137,7 @@ public class Model implements Runnable{
 			switch(selection){
 			case 1:
 				//calls toString function in inventory
-				System.out.println(shop.getInventory().toString());
+				//System.out.println(shop.getInventory().toString());
 				break;
 			case 2:
 				searchByName();

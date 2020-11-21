@@ -5,76 +5,95 @@ package server.Model;
  * @Since October 10 2020
  *
  */
-
-
 public class Item {
 	
+	private int itemId;
+	private String itemName;
+	private int itemQuantity;
+	private double itemPrice;
+	private boolean alreadyOrdered;
+	private Supplier theSupplier;
+	private static final int ORDERQUANTITY = 40;
+	private static final int MINIMUMUMBER = 20; 	
 	
-	 private int toolID;
-	 private String toolName;
-	 private int toolQty;
-	 private double toolPrice;
-	 private int supID;
-
-	public Item(int toolID,String toolName,int toolQty,double toolPrice,
-			int supID) {
-		 this.toolID = toolID;
-		 this.toolName = toolName;
-		 this.toolQty = toolQty;
-		 this.toolPrice = toolPrice;
-		 this.supID = supID;
-	 }
-	@Override
-	public String toString() {
-		return "Tool name: "+ toolName+"\n"+"Quantity: "+ toolQty+"\n"+"Tool ID:"+ toolID
-				+"\n"+"Tool Price:"+ toolPrice +"\n\n";
-	}	
-	 
-	/**
-	 * decreases the item quantity by one
-	 * @return true if number of item is greater than 0
-	 */
+	
+	public Item (int id, String name, int quanitiy, double price, Supplier sup) {
+		
+		itemId = id;
+		itemName = name;
+		itemQuantity = quanitiy;
+		itemPrice = price;
+		sup = theSupplier; 
+		setAlreadyOrdered(false);
+	}
+	
 	public boolean decreaseItemQuantity () {
-		if (toolQty > 0) {
-			toolQty--;
+		if (itemQuantity > 0) {
+			itemQuantity--;
 		    return true;	
 		}
 		else
 			return false;	
 	}
-	
-	
+	public OrderLine generateOrderLine (){
+		OrderLine ol;
+		if (getItemQuantity() < MINIMUMUMBER && alreadyOrdered == false){
+			ol = new OrderLine (this, ORDERQUANTITY);
+			alreadyOrdered = true;
+			return ol;
+		}
+	    return null;
+	}
 
-//getters and setters
-	public int getToolQty() {
-		return toolQty;
+	public int getItemId() {
+		return itemId;
 	}
-	public void setToolQty(int toolQty) {
-		this.toolQty = toolQty;
+
+	public void setItemId(int itemId) {
+		this.itemId = itemId;
 	}
-	public int getToolID() {
-		return toolID;
+
+	public String getItemName() {
+		return itemName;
 	}
-	public void setToolID(int toolID) {
-		this.toolID = toolID;
+
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
 	}
-	public String getToolName() {
-		return toolName;
+
+	public int getItemQuantity() {
+		return itemQuantity;
 	}
-	public void setToolName(String toolName) {
-		this.toolName = toolName;
+
+	public void setItemQuantity(int itemQuantity) {
+		this.itemQuantity = itemQuantity;
 	}
-	public double getToolPrice() {
-		return toolPrice;
+
+	public double getItemPrice() {
+		return itemPrice;
 	}
-	public void setToolPrice(double toolPrice) {
-		this.toolPrice = toolPrice;
+
+	public void setItemPrice(double itemPrice) {
+		this.itemPrice = itemPrice;
 	}
-	public int getSupID() {
-		return supID;
+	public void setTheSupplier (Supplier sup) {
+		theSupplier = sup;
 	}
-	public void setSupID(int supID) {
-		this.supID = supID;
+	public Supplier getTheSupplier () {
+		return theSupplier;
+	}
+	
+	public String toString () {
+		return "Item ID: " + itemId + ", Item Name: " + itemName + ", Item Quantity: " + 
+	           itemQuantity + "\n";
+	}
+
+	public boolean isAlreadyOrdered() {
+		return alreadyOrdered;
+	}
+
+	public void setAlreadyOrdered(boolean alreadyOrdered) {
+		this.alreadyOrdered = alreadyOrdered;
 	}
 
 }

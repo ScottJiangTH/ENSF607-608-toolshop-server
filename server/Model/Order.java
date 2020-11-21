@@ -18,9 +18,16 @@ import java.util.Random;
 public class Order {
 	
 	private int orderID;
+	private ArrayList <OrderLine> orderLines;
 	private Date orderDate = new Date();
 	private PrintWriter writer;
 	LocalDate localDate = orderDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+	
+	public Order () {
+		orderLines = new ArrayList <OrderLine> ();
+	}
+	
+	
 	
 /**
  * generates the order and creates a txt file
@@ -55,5 +62,9 @@ public class Order {
 	
 	public int getOrderID() {
 		return orderID;
+	}
+
+	public void addOrderLine (OrderLine ol) {
+		orderLines.add(ol);
 	}
 }
