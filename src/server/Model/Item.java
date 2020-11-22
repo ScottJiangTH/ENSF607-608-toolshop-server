@@ -105,6 +105,10 @@ public class Item {
 		return itemType;
 	}
 
+	public void addItemDescription(String description) {
+		this.itemDescription = description;
+	}
+	
 	public String getItemDescription() {
 		// TODO Auto-generated method stub
 		return itemDescription;
