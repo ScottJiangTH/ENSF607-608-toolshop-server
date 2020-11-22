@@ -10,23 +10,25 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
 
+import server.Model.Item;
+
 // Pre-Project Exercise 
 
 // This program allows you to create and manage a store inventory database.
-// It creates a database and datatable, then populates that table with tools from
+// It creates a database and datatable, then populates that table with Items from
 // items.txt.
 public class InventoryManager {
 	
 	public Connection jdbc_connection;
 	public Statement statement;
-	public String databaseName = "InventoryDB", tableName = "ToolTable", dataFile = "items.txt";
+	public String databaseName = "InventoryDB", tableName = "ItemTable", dataFile = "items.txt";
 	
 	// Students should configure these variables for their own MySQL environment
 	// If you have not created your first database in mySQL yet, you can leave the 
 	// "[DATABASE NAME]" blank to get a connection and create one with the createDB() method.
-	public String connectionInfo = "jdbc:mysql://localhost:[PORT NUMBER]/[DATABASE NAME]",  
-				  login          = "",
-				  password       = "";
+	public String connectionInfo = "jdbc:mysql://localhost:3306/toolshop",  
+				  login          = "root",
+				  password       = "xxxxxx";
 
 	public InventoryManager()
 	{
@@ -60,12 +62,12 @@ public class InventoryManager {
 		}
 	}
 
-	// Create a data table inside of the database to hold tools
+	// Create a data table inside of the database to hold Items
 	public void createTable()
 	{
 		String sql = "CREATE TABLE " + tableName + "(" +
 				     "ID INT(4) NOT NULL, " +
-				     "TOOLNAME VARCHAR(20) NOT NULL, " + 
+				     "ItemNAME VARCHAR(20) NOT NULL, " + 
 				     "QUANTITY INT(4) NOT NULL, " + 
 				     "PRICE DOUBLE(5,2) NOT NULL, " + 
 				     "SUPPLIERID INT(4) NOT NULL, " + 
@@ -96,19 +98,19 @@ public class InventoryManager {
 		}
 	}
 
-	// Fills the data table with all the tools from the text file 'items.txt' if found
+	// Fills the data table with all the Items from the text file 'items.txt' if found
 	public void fillTable()
 	{
 		try{
 			Scanner sc = new Scanner(new FileReader(dataFile));
 			while(sc.hasNext())
 			{
-				String toolInfo[] = sc.nextLine().split(";");
-				addItem( new Tool( Integer.parseInt(toolInfo[0]),
-						                            toolInfo[1],
-						           Integer.parseInt(toolInfo[2]),
-						         Double.parseDouble(toolInfo[3]),
-						           Integer.parseInt(toolInfo[4])) );
+				String ItemInfo[] = sc.nextLine().split(";");
+				addItem( new Item( Integer.parseInt(ItemInfo[0]),
+						                            ItemInfo[1],
+						           Integer.parseInt(ItemInfo[2]),
+						         Double.parseDouble(ItemInfo[3]),
+						           Integer.parseInt(ItemInfo[4])) );
 			}
 			sc.close();
 		}
@@ -122,15 +124,15 @@ public class InventoryManager {
 		}
 	}
 
-	// Add a tool to the database table
-	public void addItem(Tool tool)
+	// Add a Item to the database table
+	public void addItem(Item Item)
 	{
 		String sql = "INSERT INTO " + tableName +
-				" VALUES ( " + tool.getID() + ", '" + 
-				tool.getName() + "', " + 
-				tool.getQuantity() + ", " + 
-				tool.getPrice() + ", " + 
-				tool.getSupplierID() + ");";
+				" VALUES ( " + Item.getItemId() + ", '" + 
+				Item.getItemName() + "', " + 
+				Item.getItemQuantity() + ", " + 
+				Item.getItemPrice() + ", " + 
+				Item.getSupplierID() + ");";
 		try{
 			statement = jdbc_connection.createStatement();
 			statement.executeUpdate(sql);
@@ -141,22 +143,22 @@ public class InventoryManager {
 		}
 	}
 
-	// This method should search the database table for a tool matching the toolID parameter and return that tool.
-	// It should return null if no tools matching that ID are found.
-	public Tool searchTool(int toolID)
+	// This method should search the database table for a Item matching the ItemID parameter and return that Item.
+	// It should return null if no Items matching that ID are found.
+	public Item searchItem(int ItemID)
 	{
-		String sql = "SELECT * FROM " + tableName + " WHERE ID=" + toolID;
-		ResultSet tool;
+		String sql = "SELECT * FROM " + tableName + " WHERE ID=" + ItemID;
+		ResultSet Item;
 		try {
 			statement = jdbc_connection.createStatement();
-			tool = statement.executeQuery(sql);
-			if(tool.next())
+			Item = statement.executeQuery(sql);
+			if(Item.next())
 			{
-				return new Tool(tool.getInt("ID"),
-								tool.getString("TOOLNAME"), 
-								tool.getInt("QUANTITY"), 
-								tool.getDouble("PRICE"), 
-								tool.getInt("SUPPLIERID"));
+				return new Item(Item.getInt("ID"),
+								Item.getString("ItemNAME"), 
+								Item.getInt("QUANTITY"), 
+								Item.getDouble("PRICE"), 
+								Item.getInt("SUPPLIERID"));
 			}
 		
 		} catch (SQLException e) { e.printStackTrace(); }
@@ -170,17 +172,17 @@ public class InventoryManager {
 		try {
 			String sql = "SELECT * FROM " + tableName;
 			statement = jdbc_connection.createStatement();
-			ResultSet tools = statement.executeQuery(sql);
-			System.out.println("Tools:");
-			while(tools.next())
+			ResultSet Items = statement.executeQuery(sql);
+			System.out.println("Items:");
+			while(Items.next())
 			{
-				System.out.println(tools.getInt("ID") + " " + 
-								   tools.getString("TOOLNAME") + " " + 
-								   tools.getInt("QUANTITY") + " " + 
-								   tools.getDouble("PRICE") + " " + 
-								   tools.getInt("SUPPLIERID"));
+				System.out.println(Items.getInt("ID") + " " + 
+								   Items.getString("ItemNAME") + " " + 
+								   Items.getInt("QUANTITY") + " " + 
+								   Items.getDouble("PRICE") + " " + 
+								   Items.getInt("SUPPLIERID"));
 			}
-			tools.close();
+			Items.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -195,25 +197,25 @@ public class InventoryManager {
 
 		inventory.createTable();
 		
-		System.out.println("\nFilling the table with tools");
+		System.out.println("\nFilling the table with Items");
 		inventory.fillTable();
 
-		System.out.println("Reading all tools from the table:");
+		System.out.println("Reading all Items from the table:");
 		inventory.printTable();
 
-		System.out.println("\nSearching table for tool 1002: should return 'Grommets'");
-		int toolID = 1002;
-		Tool searchResult = inventory.searchTool(toolID);
+		System.out.println("\nSearching table for Item 1002: should return 'Grommets'");
+		int ItemID = 1002;
+		Item searchResult = inventory.searchItem(ItemID);
 		if(searchResult == null)
-			System.out.println("Search Failed to find a tool matching ID: " + toolID);
+			System.out.println("Search Failed to find a Item matching ID: " + ItemID);
 		else
 			System.out.println("Search Result: " + searchResult.toString());
 
-		System.out.println("\nSearching table for tool 9000: should fail to find a tool");
-		toolID = 9000;
-		searchResult = inventory.searchTool(toolID);
+		System.out.println("\nSearching table for Item 9000: should fail to find a Item");
+		ItemID = 9000;
+		searchResult = inventory.searchItem(ItemID);
 		if(searchResult == null)
-			System.out.println("Search Failed to find a tool matching ID: " + toolID);
+			System.out.println("Search Failed to find a Item matching ID: " + ItemID);
 		else
 			System.out.println("Search Result: " + searchResult.toString());
 		

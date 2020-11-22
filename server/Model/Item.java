@@ -8,6 +8,7 @@ package server.Model;
 public class Item {
 	
 	private int itemId;
+	private int supplierId;
 	private String itemName;
 	private int itemQuantity;
 	private double itemPrice;
@@ -27,6 +28,17 @@ public class Item {
 		setAlreadyOrdered(false);
 	}
 	
+	public Item(int id, String name, int quanitiy, double price, int supId) {
+		// TODO Auto-generated constructor stub
+		itemId = id;
+		itemName = name;
+		itemQuantity = quanitiy;
+		itemPrice = price;
+		supplierId = supId; 
+		
+		
+	}
+
 	public boolean decreaseItemQuantity () {
 		if (itemQuantity > 0) {
 			itemQuantity--;
@@ -94,6 +106,11 @@ public class Item {
 
 	public void setAlreadyOrdered(boolean alreadyOrdered) {
 		this.alreadyOrdered = alreadyOrdered;
+	}
+
+	public int getSupplierID() {
+		// TODO Auto-generated method stub
+		return supplierId;
 	}
 
 }
