@@ -1,4 +1,4 @@
-package server.Controller;
+package exercise;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -17,6 +17,7 @@ import server.Model.Item;
 // This program allows you to create and manage a store inventory database.
 // It creates a database and datatable, then populates that table with Items from
 // items.txt.
+
 public class InventoryManager {
 	
 	public Connection jdbc_connection;
@@ -26,15 +27,21 @@ public class InventoryManager {
 	// Students should configure these variables for their own MySQL environment
 	// If you have not created your first database in mySQL yet, you can leave the 
 	// "[DATABASE NAME]" blank to get a connection and create one with the createDB() method.
+<<<<<<< HEAD:server/Controller/InventoryManager.java
 	public String connectionInfo = "jdbc:mysql://localhost:3306/toolshop",  
 				  login          = "root",
 				  password       = "xxxxxx";
+=======
+	public String connectionInfo = "jdbc:mysql://localhost:3306/InventoryDB",  
+				  login          = "root",
+				  password       = "85984172Jls!";
+>>>>>>> 4f0e1206e45c62f8795684ac84ecf25d885546fa:src/exercise/InventoryManager.java
 
 	public InventoryManager()
 	{
 		try{
 			// If this throws an error, make sure you have added the mySQL connector JAR to the project
-			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName("com.mysql.cj.jdbc.Driver");
 			
 			// If this fails make sure your connectionInfo and login/password are correct
 			jdbc_connection = DriverManager.getConnection(connectionInfo, login, password);
@@ -193,7 +200,7 @@ public class InventoryManager {
 		InventoryManager inventory = new InventoryManager();
 		
 		// You should comment this line out once the first database is created (either here or in MySQL workbench)
-		inventory.createDB();
+		//inventory.createDB();
 
 		inventory.createTable();
 		

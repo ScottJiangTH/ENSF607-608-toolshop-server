@@ -6,8 +6,8 @@ DROP TABLE IF EXISTS supplier;
 CREATE TABLE supplier (
   id			char(9) not null,
   stype			varchar(15) not null,
-  company_name	varchar(30) not null, 
-  address		varchar(50),
+  company_name	varchar(50) not null, 
+  address		varchar(100),
   sales_contact	varchar(50),
   primary key (id)
 );
@@ -24,7 +24,7 @@ DROP TABLE IF EXISTS item;
 CREATE TABLE item (
   id			char(9) not null, 
   itype	    	varchar(15) not null,
-  iname    		varchar(15),
+  iname    		varchar(30),
   idescription	varchar(30),
   price			float not null,
   quantity		integer not null,
@@ -67,7 +67,7 @@ CREATE TABLE customer (
   id			char(9) not null, 
   fname	    	varchar(15) not null,
   lname    		varchar(15) not null,
-  address		varchar(30),
+  address		varchar(100),
   postal		char(7),
   phone			char(12),
   ctype			char(1) not null,
