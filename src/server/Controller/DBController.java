@@ -8,103 +8,149 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import server.Model.Item;
-import server.Model.Supplier;
-
-
+import server.Model.*;
 
 public class DBController {
-	private ArrayList<Item> items;
-	private ArrayList<Supplier> suppliers;
-//
-//	private String conString = "jdbc:mysql://localhost:3306/company";
-//	private String username = "root";
-//	private String password = "xxxxx";
-
-
-	private Supplier findSupplier(int supplierId) {
-		Supplier theSupplier = null;
-		for (Supplier s : suppliers) {
-			if (s.getSupId() == supplierId) {
-				theSupplier = s;
-				break;
-			}
+	public Connection jdbc_connection;
+	public Statement statement;
+	public String localhost = "3306", databaseName = "tooshop";
+	public String connectionInfo = "jdbc:mysql://localhost:" + localhost + "/" + databaseName,  
+			  login          = "root",
+			  password       = "85984172Jls!";
+	
+	public DBController() {
+		try{
+			// If this throws an error, make sure you have added the mySQL connector JAR to the project
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			
+			// If this fails make sure your connectionInfo and login/password are correct
+			jdbc_connection = DriverManager.getConnection(connectionInfo, login, password);
+			System.out.println("Connected to: " + connectionInfo + "\n");
 		}
-		return theSupplier;
+		catch(SQLException e) { e.printStackTrace(); }
+		catch(Exception e) { e.printStackTrace(); }
 	}
-
-	public ArrayList<Item> readItemsFromDatabase()
-	{
-		this.items = new ArrayList<Item>();
-
-
-
-		String sql = "SELECT * FROM items";
+	
+	public ResultSet readFromTable(String sql) {
+		ResultSet rs = null;
 		try
 		{
-			String conString = "jdbc:mysql://localhost:3306/toolshop";
-			String username = "root";
-			String password = "xxxxx";
-			Connection con = DriverManager.getConnection(conString,  username,  password);
-			Statement s = con.prepareStatement(sql);
-			ResultSet rs = s.executeQuery(sql);
-
-			while(rs.next())
-			{
-				String ID = rs.getString(1);
-				String type = rs.getString(2);
-				String name = rs.getString(3);
-				String quantity = rs.getString(6);
-				String price = rs.getString(5);
-				String supplierID = rs.getString(7);
-				Supplier theSupplier = findSupplier(Integer.parseInt(supplierID));
-
-				Item myItem = new Item(Integer.parseInt(ID), name, Integer.parseInt(quantity), Double.parseDouble(price), theSupplier);
-				items.add(myItem);
-				theSupplier.getItemList().add(myItem);
-			}
+			statement = jdbc_connection.prepareStatement(sql);
+			rs = statement.executeQuery(sql);
 		}
-		catch(SQLException ex)
-		{
-			ex.printStackTrace();
-		}
-
-		return items;
+		catch(SQLException e) { e.printStackTrace(); }
+		catch(Exception e) { e.printStackTrace(); }
+		return rs;
 	}
-
-
-	public ArrayList<Supplier> readSuppliersFromDatabase()
-	{
-		this.suppliers = new ArrayList<Supplier>();
-
-		String sql = "SELECT * FROM suppliers";
-		try
-		{
-			String conString = "jdbc:mysql://localhost:3306/toolshop";
-			String username = "root";
-			String password = "xxxxx";
-			Connection con = DriverManager.getConnection(conString,  username,  password);
-			Statement s = con.prepareStatement(sql);
-			ResultSet rs = s.executeQuery(sql);
-
-			while(rs.next())
-			{
-				String supplierID = rs.getString(1);
-				String supplierType = rs.getString(2);
-				String companyName = rs.getString(3);
-				String address = rs.getString(4);
-				String salesContact = rs.getString(5);
-				suppliers.add(new Supplier(Integer.parseInt(supplierID), companyName, address, salesContact));
-			}
+	
+	public void insertToTable(String sql) {
+		try{
+			statement = jdbc_connection.createStatement();
+			statement.executeUpdate(sql);
 		}
-		catch(SQLException ex)
-		{
-			ex.printStackTrace();
-		}
-
-		return suppliers;
+		catch(SQLException e)
+		{e.printStackTrace();}
 	}
-
+	
+	public ResultSet readWholeTable(String tableName) {
+		// able to send result set to model controller to construct all types of objects
+		String sql = "SELECT * FROM " + tableName;
+		return readFromTable(sql);
+	}
+	
+	public ResultSet searchFromTable(String tableName, String attributeName, String searchString) {
+		// able to send result set to model controller to construct all types of objects
+		String sql = "SELECT * FROM " + tableName + " WHERE " + attributeName + "=" + searchString;		
+		return readFromTable(sql);
+	}
+	
+	private void addItem(Item item) { 
+		// never need to be called from other class since item is the super class
+		// insert to item table on DB
+		String sql = "INSERT INTO item " + " VALUES ( "
+				+ item.getItemId() + ", '" + 
+				item.getItemType() + "', " + 
+				item.getItemName() + "', " + 
+				item.getItemDescription() + "', " + 
+				item.getItemPrice() + ", " + 
+				item.getItemQuantity() + ", " + 
+				item.getTheSupplier().getSupId() + ");";
+		insertToTable(sql);
+	}
+	
+	public void addElectricalItem(ElectricalItem eItem) {
+		addItem(eItem);
+		// insert to electrical item table on DB
+		String sql = "INSERT INTO electrical_item " + " VALUES ( "
+				+ eItem.getItemId() + ", '" + 
+				eItem.getPowerType() + ");";
+		insertToTable(sql);
+	}
+	
+	public void addNonElectricalItem(NonElectricalItem neItem) {
+		// a wrapper method for non-electrical item to insert to table item on DB
+		addItem(neItem);
+	}
+	
+	private void addSupplier(Supplier supplier) {
+		// insert to supplier table on DB
+		String sql = "INSERT INTO supplier " + " VALUES ( "
+				+ supplier.getSupId() + ", '" + 
+				supplier.getSupType() + "', " + 
+				supplier.getSupName() + ", " + 
+				supplier.getSupAddress() + ", " + 
+				supplier.getSupContactName() + ");";
+		insertToTable(sql);
+	}
+	
+	public void addInternationalSupplier(InternationalSupplier iSupplier) {
+		addSupplier(iSupplier);
+		// insert to international_supplier table on DB
+		String sql = "INSERT INTO international_supplier " + " VALUES ( "
+				+ iSupplier.getSupId() + ", '" + 
+				iSupplier.getImportTax() + ");";
+		insertToTable(sql);
+	}
+	
+	public void addOrder(Order dailyOrder) {
+		// insert to daily_order table on DB
+		String sql = "INSERT INTO daily_order " + " VALUES ( "
+				+ dailyOrder.getOrderId() + ", '" + 
+				dailyOrder.getLocalDate() + ");";
+		insertToTable(sql);
+		// insert to order_line table line by line
+		ArrayList<OrderLine> olList = dailyOrder.getOrderLines();
+		for (OrderLine ol : olList) {
+			String olSql = "INSERT INTO order_line " + " VALUES ( "
+					+ dailyOrder.getOrderId() + ", '" + 
+					ol.getTheItem().getItemId() + ", '" + 
+					ol.getOrderQuantity() + ", '" + 
+					ol.getTheItem().getTheSupplier().getSupId() + ");";
+			insertToTable(olSql);
+		}
+	}
+	
+	public void addCustomer(Customer customer) {
+		// insert to customer table on DB
+		String sql = "INSERT INTO customer " + " VALUES ( "
+				+ customer.getCustomerId() + ", '" + 
+				customer.getFirstName() + ", " + 
+				customer.getLastName() + ", " + 
+				customer.getAddress() + ", " + 
+				customer.getPostalCode() + ", " + 
+				customer.getPhone() + ", " + 
+				customer.getType() + ");";
+		insertToTable(sql);
+	}
+	
+	public void addPurchaseHistory(Customer customer, Item item, int purchaseQuantity) {
+		// insert to purchase history table on DB
+		String sql = "INSERT INTO purchase_history " + " VALUES ( "
+				+ customer.getCustomerId() + ", '" + 
+				item.getItemId() + ", " + 
+				purchaseQuantity + ");";
+		insertToTable(sql);
+	}
 }
 
 
