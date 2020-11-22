@@ -8,7 +8,12 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+<<<<<<< Updated upstream
 
+=======
+import server.Model.Item;
+import server.Model.Shop;
+>>>>>>> Stashed changes
 
 public class Model implements Runnable{
 	private BufferedReader socketIn;
