@@ -24,7 +24,7 @@ DROP TABLE IF EXISTS item;
 CREATE TABLE item (
   id			char(9) not null, 
   itype	    	varchar(15) not null,
-  iname    		varchar(15),
+  iname    		varchar(30),
   idescription	varchar(30),
   price			float not null,
   quantity		integer not null,
