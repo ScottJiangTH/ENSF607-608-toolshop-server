@@ -28,7 +28,7 @@ public class InventoryManager {
 	// If you have not created your first database in mySQL yet, you can leave the 
 	// "[DATABASE NAME]" blank to get a connection and create one with the createDB() method.
 
-	public String connectionInfo = "jdbc:mysql://localhost:3306/toolshop",  
+	public String connectionInfo = "jdbc:mysql://localhost:3306/toolshop?serverTimezone=UTC",  
 				  login          = "root",
 				  password       = "xxxx";
 

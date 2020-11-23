@@ -14,7 +14,7 @@ public class DBController {
 	public Connection jdbc_connection;
 	public Statement statement;
 	public String localhost = "3306", databaseName = "toolshop";
-	public String connectionInfo = "jdbc:mysql://localhost:" + localhost + "/" + databaseName,  
+	public String connectionInfo = "jdbc:mysql://localhost:" + localhost + "/" + databaseName+"?serverTimezone=UTC",  
 			  login          = "root",
 			  password       = "xxxx";
 	
