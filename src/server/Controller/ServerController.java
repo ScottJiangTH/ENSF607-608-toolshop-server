@@ -30,10 +30,10 @@ public class ServerController {
 		try{
 			while(true) {
 				// server socket accept connections
-				Socket s = serverSocket.accept();
+				socket = serverSocket.accept();
 				clientCount++;
 				System.out.print(String.format("Client %d connected.", clientCount));
-				System.out.println("Connection from: " + s.getInetAddress());
+				System.out.println("Connection from: " + socket.getInetAddress());
 				// create socketIn and socketOut
 				socketIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 				socketOut = new PrintWriter(socket.getOutputStream(), true);

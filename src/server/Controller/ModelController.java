@@ -25,6 +25,12 @@ public class ModelController implements Runnable {
 		this.socketOut = socketOut;
 	}
 
+	// TODO: add methods to import from DB and construct specialized item, supplier, customer objects
+	// TODO: add method to import from DB existing orders
+	// TODO: add method to update DB at any time of the day
+	// TODO: add method to update DB at the end the day, including daily_order
+	// TODO: add method to print out daily_order at any time of the day
+	
 	// a signal sent from GUI that serves as signal that can be parsed and then call different functions
 	private void listenSignal() throws IOException {
 		while (true) { // loop run 1 time for every received singal
