@@ -8,15 +8,12 @@ package server.Model;
 public class Item {
 	
 	private int itemId;
-
-	private int supplierId;
-
 	private String itemType;
-
 	private String itemName;
 	private String itemDescription; 
 	private double itemPrice;
 	private int itemQuantity;
+
 	private Supplier theSupplier;
 	private boolean alreadyOrdered;
 	private static final int ORDERQUANTITY = 40;
@@ -24,26 +21,15 @@ public class Item {
 	
 	
 	
-	public Item (int id, String type, String name, int quanitiy, double price, Supplier sup) {
+	public Item (int id, String type, String name, int quantity, double price, Supplier sup) {
 		
 		itemId = id;
 		itemType = type;
 		itemName = name;
-		itemQuantity = quanitiy;
+		itemQuantity = quantity;
 		itemPrice = price;
 		sup = theSupplier; 
 		setAlreadyOrdered(false);
-	}
-	
-	public Item(int id, String name, int quanitiy, double price, int supId) {
-		// TODO Auto-generated constructor stub
-		itemId = id;
-		itemName = name;
-		itemQuantity = quanitiy;
-		itemPrice = price;
-		supplierId = supId; 
-		
-		
 	}
 
 	public boolean decreaseItemQuantity () {
@@ -107,32 +93,24 @@ public class Item {
 	           itemQuantity + "\n";
 	}
 
-	public boolean isAlreadyOrdered() {
-		return alreadyOrdered;
-	}
+	public boolean isAlreadyOrdered() {return alreadyOrdered;}
 
 	public void setAlreadyOrdered(boolean alreadyOrdered) {
 		this.alreadyOrdered = alreadyOrdered;
 	}
 
+	public int getSupplierID() {return theSupplier.getSupId();}
 
-	public int getSupplierID() {
-		// TODO Auto-generated method stub
-		return supplierId;}
-
-	public String getItemType() {
-		// TODO Auto-generated method stub
-		return itemType;
-	}
+	public String getItemType() {return itemType;}
 
 	public void addItemDescription(String description) {
 		this.itemDescription = description;
 	}
 	
-	public String getItemDescription() {
-		// TODO Auto-generated method stub
-		return itemDescription;
+	public String getItemDescription() {return itemDescription;}
 
+	public void updateItemQuantity(int diff) {
+		itemQuantity = itemQuantity + diff;
 	}
 
 }

@@ -23,4 +23,18 @@ public class SupplierList {
 		
 	}
 
+	public Supplier findSupplierById(int supplierId) {
+		for (Supplier s : supplierList) {
+			if (s.getSupId() == supplierId)
+				return s;
+		}
+		return null;
+	}
+	public Supplier findSupplierByName(String supplierName) {
+		for (Supplier s : supplierList) {
+			if (s.getSupName().equals(supplierName))
+				return s;
+		}
+		return null;
+	}
 }

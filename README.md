@@ -15,5 +15,12 @@ ENSF607 and ENSF608 Joint Project, ToolShop Project
 UML_1 High Level Package Diagram ToolShop MVC.mdj
 ##### UML Class Diagram, Model Package
 UML_2 Low Level Class Diagram Toolshop Model.mdj
-##### UML Class Diagram, View Package
-##### UML Class Diagram, Controller Package
+
+
+### Implementation
+##### Change Note  
+1. Let ModelController class implement runnable. Reason: when ServerController started running multiple thread, multiple sets of ModelController+DBController+Model has to be constructed. 
+2. Deleted Shop class, Model class aggregates Inventory, SupplierList, and CustomerList classes. Reason: Model act as the class who directly interacts with ModelController has to have all methods related to all operations in Item, Supplier, Customer class. This will render Shop class serving no purpose but as a shell class that allows all calls passing through it.
+
+##### Design Note
+1. To minimize interaction with DB, in Model constructor, it reads all supplier, item and client lists from DB and store info in local. This is under the assumption that database size is small. If database size increases dramatically, this has to be changed into a query-on-demand manner.

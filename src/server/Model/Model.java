@@ -1,266 +1,103 @@
 package server.Model;
 
-//Model of the Server
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Scanner;
 
-public class Model implements Runnable {
-	private BufferedReader socketIn;
-	private PrintWriter socketOut;
-	private Socket socket;
+public class Model {
 
-	
-	private Shop theShop;
+	private Inventory theInventory;
+	private SupplierList theSupplierList;
+	private CustomerList theCustomerList;
 
-
-	private Shop shop;
-
-	private Scanner scan;
-	private Scanner scan1;
-	private ArrayList<Supplier> suppliers;
-
-
-	public Model(Socket socket) {
-		
-			suppliers = new ArrayList<Supplier>();
-		    //need to get suppliers and inventory from database
-			scan = new Scanner(System.in);
-			this.socket = socket;
-			
-			try {
-				socketOut = new PrintWriter(socket.getOutputStream(), true);
-				socketIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			} catch (IOException e) {
-				System.err.println("Error creating stream");
-			}
-		}
-	
-	public void writeToClient(String s){
-		socketOut.print(s);
-	}
-	
-	private void decreaseItem(String name) {
-		socketOut.print(theShop.decreaseItem(name));
-
-	}
-	private void checkItemQuantity(String name) {
-		socketOut.print(theShop.getItemQuantity(name));
-	}
-	private String getItemName() {
-		String name = "";
-		try {
-			name = socketIn.readLine();
-		} catch (IOException e) {
-			System.err.println("Unable to get name from " + socket.getInetAddress());
-		}
-		return name;
-
-	}
-	
-	private int getItemID() {
-		int id = 0;
-		try {
-			id = Integer.parseInt(socketIn.readLine());
-		} catch (IOException e) {
-			System.err.println("Unable to get id from " + socket.getInetAddress());
-		}
-		
-		return id;
-	}
-	
-	private void searchForItemById(int id) {
-		writeToClient(theShop.getItem(id));
+	public Model(Inventory theInventory, SupplierList theSupplierList, CustomerList theCustomerList) {
+		this.theInventory = theInventory;
+		this.theSupplierList = theSupplierList;
+		this.theCustomerList = theCustomerList;
 	}
 
-	private void searchForItemByName(String name) {
-		writeToClient(theShop.getItem(name));
+//	public Inventory getTheInventory() {
+//		return theInventory;
+//	}
+//
+//	public void setTheInventory(Inventory inventory) {
+//		theInventory = inventory;
+//	}
+//
+//	public void listAllItems() {
+//		System.out.println(theInventory);
+//	}
+//
+//	public String decreaseItem(String name) {
+//		if (theInventory.manageItem(name) == null)
+//			return "Couldn't not decrease item quantity!\n";
+//		else
+//			return "Item quantity was decreased!\n";
+//	}
+//
+//	public void listAllSuppliers() {
+//		theSupplierList.listAllSuppliers();
+//	}
+
+//
+//	public String printOrder() {
+//		// TODO Auto-generated method stub
+//
+//		return theInventory.printOrder();
+//	}
+
+	public Item findItemId(int itemId) {
+		Item theItem = theInventory.findItemById(itemId);
+		return theItem;
 	}
-	
-	private void listAllItems(){
-		//writeToClient(theShop.listAllItems());
+
+	public Item findItemName(String itemName) {
+		Item theItem = theInventory.findItemByName(itemName);
+		return theItem;
 	}
 
-	public Model() {
+	public int checkItemQuantity(int itemId) {
+		return theInventory.checkItemQuantity(itemId);
+	}
 
-		suppliers = new ArrayList<Supplier>();
-		// need to get suppliers and inventory from database
-		scan = new Scanner(System.in);
-		this.socket = socket;
+	public int checkItemQuantity(String itemName) {
+		return theInventory.checkItemQuantity(itemName);
+	}
 
-		try {
-			socketOut = new PrintWriter(socket.getOutputStream(), true);
-			socketIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-		} catch (IOException e) {
-			System.err.println("Error creating stream");
+	public void updateItemQuantity(String itemName, int diff) {
+		theInventory.updateItemQuantity(itemName, diff);
+
+	}
+
+	public void addNewItem(int id, String type, String name, int quantity, double price, int supplierId) {
+		// TODO: add some return signal to GUI if supplier not found. e.g. prompt user
+		// check input or create new supplier
+		Supplier s = findSupplierById(supplierId);
+		if (s != null) {
+			theInventory.addNewItem(id, type, name, quantity, price, s);
 		}
 	}
 
-//	private void searchByName() {
-//
-//		socketOut.println("Please enter the tool name you'd like to search.");
-//		String toolName = scan1.nextLine();
-//		Item searchToolName;
-//		try {
-//			searchToolName = shop.getInventory().searchByName(toolName);
-//			socketOut.println(searchToolName.toString());
-//		} catch (IndexOutOfBoundsException e) {
-//			socketOut.println("It's not in inventory! Please check your spelling.");
-//		}
-//
-//	}
-//
-//	/**
-//	 * searches tool by id
-//	 */
-//	private void searchByID() {
-//		socketOut.println("Please enter the tool ID you'd like to search.");
-//		int toolID = scan.nextInt();
-//		Item searchToolID;
-//		try {
-//			searchToolID = shop.getInventory().searchByID(toolID);
-//			// toString function should print all necessary functions
-//			socketOut.println(searchToolID.toString());
-//		} catch (IndexOutOfBoundsException e) {
-//			socketOut.println("It's not in inventory!");
-//		}
-//
-//	}
-//
-//	/**
-//	 * checks quantity of a tool
-//	 */
-//	private void checkQty() {
-//		socketOut.println("Please enter the tool name you'd like to check.");
-//		String checkTool = scan1.nextLine();
-//		try {
-//			int remainingTool = shop.checkQty(checkTool);
-//			System.out.println("The item has " + remainingTool + " left.");
-//		} catch (IndexOutOfBoundsException e) {
-//			System.out.println("The tool is not in inventory! Please check your spelling.");
-//		}
-//
-//	}
-//
-//	/**
-//	 * decrease quantity of a tool
-//	 */
-//	private void decreaseQty() {
-//		socketOut.println("Please enter the tool name you'd like to reduce.");
-//		String saleTool = scan1.nextLine();
-//		try {
-//			System.out.println(
-//					"This item has " + shop.checkQty(saleTool) + " left. Please enter amount you'd like to reduce:");
-//			int saleQty = scan.nextInt();
-//			shop.reduceQty(saleTool, saleQty);
-//		} catch (IndexOutOfBoundsException e) {
-//			socketOut.println("The tool is not in inventory! Please check your spelling.");
-//		}
-//	}
-//
-//	/**
-//	 * sends the tool order
-//	 * 
-//	 * @throws Exception
-//	 */
-//	private void sendOrder() throws Exception {
-//		shop.sendOrder();
-//	}
-
-
-	
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		while (true) {
-			int selection = 0;
-
-			try {
-				selection = Integer.parseInt(socketIn.readLine());
-			} catch (NumberFormatException e) {
-				System.err.println("Invalid option by user!");
-			} catch (IOException e) {
-				System.err.println(socket.getInetAddress() + " disconnected!");
-				try {
-					socket.close();
-					return;
-				} catch (IOException e1) {
-					System.err.println("Unable to close socket for " + socket.getInetAddress());
-				}
-			}
-
-			System.out.println(socket.getInetAddress() + " entered: " + selection);
-
-		
-//			switch(selection){
-//			case 1:
-//				//calls toString function in inventory
-//				//System.out.println(shop.getInventory().toString());
-//				break;
-//			case 2:
-//				searchByName();
-//				break;
-//			case 3:
-//				searchByID();
-//				break;
-//			case 4:
-//				checkQty();
-//				break;
-//			case 5:
-//				decreaseQty();
-//				break;
-//			case 6:
-//				try {
-//					sendOrder();
-//				} catch (Exception e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-//				break;
-//			case 7:
-//				System.out.println("Exit program.");
-//				return;
-//			}
-		
-	}
-		
-
-
-//			switch (selection) {
-//			case 1:
-//				// calls toString function in inventory
-//				// System.out.println(shop.getInventory().toString());
-//				break;
-//			case 2:
-//				searchByName();
-//				break;
-//			case 3:
-//				searchByID();
-//				break;
-//			case 4:
-//				checkQty();
-//				break;
-//			case 5:
-//				decreaseQty();
-//				break;
-//			case 6:
-//				try {
-//					sendOrder();
-//				} catch (Exception e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-//				break;
-//			case 7:
-//				System.out.println("Exit program.");
-//				return;
-//			}
-//
-		}
-
+	public void deleteItem(String itemName) {
+		theInventory.deleteItem(itemName);
 	}
 
+	public Supplier findSupplierById(int supplierId) {
+		return theSupplierList.findSupplierById(supplierId);
+	}
+
+	public Supplier findSupplierByName(String supplierName) {
+		return theSupplierList.findSupplierByName(supplierName);
+	}
+
+	public Customer findCustomerById(int customerId) {
+		return theCustomerList.findCustomerById(customerId);
+	}
+
+	public ArrayList<Customer> findCustomerbyLastName(String lastname) {
+		return theCustomerList.findCustomerById(lastname);
+	}
+
+	public ArrayList<Customer> findCustomerbyType(String type) {
+		return theCustomerList.findCustomerByType(type);
+	}
+
+}

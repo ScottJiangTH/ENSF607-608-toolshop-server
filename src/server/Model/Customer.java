@@ -2,7 +2,7 @@ package server.Model;
 
 public class Customer {
 
-	private String customerId;
+	private int customerId;
 	private String firstName;
 	private String lastName;
 	private String address;
@@ -10,7 +10,7 @@ public class Customer {
 	private String phone;
 	private String type;
 
-	public Customer(String customerId, String firstName, String lastName, String address, String postalCode, String phone, String type) {
+	public Customer(int customerId, String firstName, String lastName, String address, String postalCode, String phone, String type) {
 		this.customerId = customerId;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -20,7 +20,7 @@ public class Customer {
 		this.type = type;
 	}
 	
-	public String getCustomerId() {
+	public int getCustomerId() {
 		// TODO Auto-generated method stub
 		return customerId;
 	}

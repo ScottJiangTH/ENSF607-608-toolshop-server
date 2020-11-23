@@ -32,7 +32,7 @@ public class InventoryManager {
 				  login          = "root",
 				  password       = "xxxx";
 
-//	public String connectionInfo = "jdbc:mysql://localhost:3306/InventoryDB",  
+//	public String connectionInfo = "jdbc:mysql://localhost:3306/InventoryDB?serverTimezone=UTC",  
 //				  login          = "root",
 //				  password       = "85984172Jls!";
 //
