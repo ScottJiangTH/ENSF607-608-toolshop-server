@@ -24,8 +24,8 @@ public class Shop {
 
 	public void listAllItems() {
 		System.out.println(theInventory);
-		
 	}
+	
 	public String decreaseItem (String name) {
 		if (theInventory.manageItem(name) == null)
 			return "Couldn't not decrease item quantity!\n";
