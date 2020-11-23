@@ -27,15 +27,15 @@ public class InventoryManager {
 	// Students should configure these variables for their own MySQL environment
 	// If you have not created your first database in mySQL yet, you can leave the 
 	// "[DATABASE NAME]" blank to get a connection and create one with the createDB() method.
-<<<<<<< HEAD:server/Controller/InventoryManager.java
+
 	public String connectionInfo = "jdbc:mysql://localhost:3306/toolshop",  
 				  login          = "root",
-				  password       = "xxxxxx";
-=======
-	public String connectionInfo = "jdbc:mysql://localhost:3306/InventoryDB",  
-				  login          = "root",
-				  password       = "85984172Jls!";
->>>>>>> 4f0e1206e45c62f8795684ac84ecf25d885546fa:src/exercise/InventoryManager.java
+				  password       = "xxxx";
+
+//	public String connectionInfo = "jdbc:mysql://localhost:3306/InventoryDB",  
+//				  login          = "root",
+//				  password       = "85984172Jls!";
+//
 
 	public InventoryManager()
 	{

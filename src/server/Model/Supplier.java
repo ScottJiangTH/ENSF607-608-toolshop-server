@@ -5,15 +5,17 @@ import java.util.ArrayList;
 public class Supplier {
 	
 	private int supId;
+	private String supType;
 	private String supName;
 	private String supAddress;
 	private String supContactName;
 	private ArrayList <Item> itemList;
 	
 	
-	public Supplier (int id, String name, String address, String contactName) {
+	public Supplier (int id, String type, String name, String address, String contactName) {
 		
 		supId = id;
+		supType = type;
 		supName = name;
 		supAddress = address;
 		supContactName = contactName;
@@ -61,7 +63,6 @@ public class Supplier {
 	}
 	public String toString () {
 		return supName + " Supplier ID: " + supId+ "\n";
-		
 	}
 
 
@@ -72,6 +73,11 @@ public class Supplier {
 
 	public void setItemList(ArrayList <Item> itemList) {
 		this.itemList = itemList;
+	}
+
+
+	public String getSupType() {
+		return supType;
 	}
 	
 

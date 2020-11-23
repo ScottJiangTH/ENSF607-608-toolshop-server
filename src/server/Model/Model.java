@@ -13,18 +13,18 @@ public class Model implements Runnable {
 	private BufferedReader socketIn;
 	private PrintWriter socketOut;
 	private Socket socket;
-<<<<<<< HEAD
+
 	
 	private Shop theShop;
-=======
+
 
 	private Shop shop;
->>>>>>> 621563286aab0135a9162b3c439a38b7adeb3b74
+
 	private Scanner scan;
 	private Scanner scan1;
 	private ArrayList<Supplier> suppliers;
 
-<<<<<<< HEAD
+
 	public Model(Socket socket) {
 		
 			suppliers = new ArrayList<Supplier>();
@@ -84,7 +84,7 @@ public class Model implements Runnable {
 	private void listAllItems(){
 		//writeToClient(theShop.listAllItems());
 	}
-=======
+
 	public Model() {
 
 		suppliers = new ArrayList<Supplier>();
@@ -100,77 +100,77 @@ public class Model implements Runnable {
 		}
 	}
 
-	private void searchByName() {
+//	private void searchByName() {
+//
+//		socketOut.println("Please enter the tool name you'd like to search.");
+//		String toolName = scan1.nextLine();
+//		Item searchToolName;
+//		try {
+//			searchToolName = shop.getInventory().searchByName(toolName);
+//			socketOut.println(searchToolName.toString());
+//		} catch (IndexOutOfBoundsException e) {
+//			socketOut.println("It's not in inventory! Please check your spelling.");
+//		}
+//
+//	}
+//
+//	/**
+//	 * searches tool by id
+//	 */
+//	private void searchByID() {
+//		socketOut.println("Please enter the tool ID you'd like to search.");
+//		int toolID = scan.nextInt();
+//		Item searchToolID;
+//		try {
+//			searchToolID = shop.getInventory().searchByID(toolID);
+//			// toString function should print all necessary functions
+//			socketOut.println(searchToolID.toString());
+//		} catch (IndexOutOfBoundsException e) {
+//			socketOut.println("It's not in inventory!");
+//		}
+//
+//	}
+//
+//	/**
+//	 * checks quantity of a tool
+//	 */
+//	private void checkQty() {
+//		socketOut.println("Please enter the tool name you'd like to check.");
+//		String checkTool = scan1.nextLine();
+//		try {
+//			int remainingTool = shop.checkQty(checkTool);
+//			System.out.println("The item has " + remainingTool + " left.");
+//		} catch (IndexOutOfBoundsException e) {
+//			System.out.println("The tool is not in inventory! Please check your spelling.");
+//		}
+//
+//	}
+//
+//	/**
+//	 * decrease quantity of a tool
+//	 */
+//	private void decreaseQty() {
+//		socketOut.println("Please enter the tool name you'd like to reduce.");
+//		String saleTool = scan1.nextLine();
+//		try {
+//			System.out.println(
+//					"This item has " + shop.checkQty(saleTool) + " left. Please enter amount you'd like to reduce:");
+//			int saleQty = scan.nextInt();
+//			shop.reduceQty(saleTool, saleQty);
+//		} catch (IndexOutOfBoundsException e) {
+//			socketOut.println("The tool is not in inventory! Please check your spelling.");
+//		}
+//	}
+//
+//	/**
+//	 * sends the tool order
+//	 * 
+//	 * @throws Exception
+//	 */
+//	private void sendOrder() throws Exception {
+//		shop.sendOrder();
+//	}
 
-		socketOut.println("Please enter the tool name you'd like to search.");
-		String toolName = scan1.nextLine();
-		Item searchToolName;
-		try {
-			searchToolName = shop.getInventory().searchByName(toolName);
-			socketOut.println(searchToolName.toString());
-		} catch (IndexOutOfBoundsException e) {
-			socketOut.println("It's not in inventory! Please check your spelling.");
-		}
-
-	}
-
-	/**
-	 * searches tool by id
-	 */
-	private void searchByID() {
-		socketOut.println("Please enter the tool ID you'd like to search.");
-		int toolID = scan.nextInt();
-		Item searchToolID;
-		try {
-			searchToolID = shop.getInventory().searchByID(toolID);
-			// toString function should print all necessary functions
-			socketOut.println(searchToolID.toString());
-		} catch (IndexOutOfBoundsException e) {
-			socketOut.println("It's not in inventory!");
-		}
-
-	}
-
-	/**
-	 * checks quantity of a tool
-	 */
-	private void checkQty() {
-		socketOut.println("Please enter the tool name you'd like to check.");
-		String checkTool = scan1.nextLine();
-		try {
-			int remainingTool = shop.checkQty(checkTool);
-			System.out.println("The item has " + remainingTool + " left.");
-		} catch (IndexOutOfBoundsException e) {
-			System.out.println("The tool is not in inventory! Please check your spelling.");
-		}
-
-	}
-
-	/**
-	 * decrease quantity of a tool
-	 */
-	private void decreaseQty() {
-		socketOut.println("Please enter the tool name you'd like to reduce.");
-		String saleTool = scan1.nextLine();
-		try {
-			System.out.println(
-					"This item has " + shop.checkQty(saleTool) + " left. Please enter amount you'd like to reduce:");
-			int saleQty = scan.nextInt();
-			shop.reduceQty(saleTool, saleQty);
-		} catch (IndexOutOfBoundsException e) {
-			socketOut.println("The tool is not in inventory! Please check your spelling.");
-		}
-	}
-
-	/**
-	 * sends the tool order
-	 * 
-	 * @throws Exception
-	 */
-	private void sendOrder() throws Exception {
-		shop.sendOrder();
-	}
->>>>>>> 621563286aab0135a9162b3c439a38b7adeb3b74
 
 	
 	@Override
@@ -194,7 +194,7 @@ public class Model implements Runnable {
 			}
 
 			System.out.println(socket.getInetAddress() + " entered: " + selection);
-<<<<<<< HEAD
+
 		
 //			switch(selection){
 //			case 1:
@@ -228,39 +228,39 @@ public class Model implements Runnable {
 		
 	}
 		
-=======
 
-			switch (selection) {
-			case 1:
-				// calls toString function in inventory
-				// System.out.println(shop.getInventory().toString());
-				break;
-			case 2:
-				searchByName();
-				break;
-			case 3:
-				searchByID();
-				break;
-			case 4:
-				checkQty();
-				break;
-			case 5:
-				decreaseQty();
-				break;
-			case 6:
-				try {
-					sendOrder();
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				break;
-			case 7:
-				System.out.println("Exit program.");
-				return;
-			}
 
+//			switch (selection) {
+//			case 1:
+//				// calls toString function in inventory
+//				// System.out.println(shop.getInventory().toString());
+//				break;
+//			case 2:
+//				searchByName();
+//				break;
+//			case 3:
+//				searchByID();
+//				break;
+//			case 4:
+//				checkQty();
+//				break;
+//			case 5:
+//				decreaseQty();
+//				break;
+//			case 6:
+//				try {
+//					sendOrder();
+//				} catch (Exception e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//				break;
+//			case 7:
+//				System.out.println("Exit program.");
+//				return;
+//			}
+//
 		}
->>>>>>> 621563286aab0135a9162b3c439a38b7adeb3b74
+
 	}
-}
+

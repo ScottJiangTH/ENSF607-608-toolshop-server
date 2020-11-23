@@ -8,11 +8,11 @@ package server.Model;
 public class Item {
 	
 	private int itemId;
-<<<<<<< HEAD
+
 	private int supplierId;
-=======
+
 	private String itemType;
->>>>>>> 621563286aab0135a9162b3c439a38b7adeb3b74
+
 	private String itemName;
 	private String itemDescription; 
 	private double itemPrice;
@@ -115,11 +115,11 @@ public class Item {
 		this.alreadyOrdered = alreadyOrdered;
 	}
 
-<<<<<<< HEAD
+
 	public int getSupplierID() {
 		// TODO Auto-generated method stub
-		return supplierId;
-=======
+		return supplierId;}
+
 	public String getItemType() {
 		// TODO Auto-generated method stub
 		return itemType;
@@ -132,7 +132,7 @@ public class Item {
 	public String getItemDescription() {
 		// TODO Auto-generated method stub
 		return itemDescription;
->>>>>>> 621563286aab0135a9162b3c439a38b7adeb3b74
+
 	}
 
 }
