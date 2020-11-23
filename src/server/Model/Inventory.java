@@ -12,6 +12,10 @@ public class Inventory {
 		myOrder = new Order();
 	}
 
+	public ArrayList<Item> listAllItems() {
+		return itemList;
+	}
+	
 	public Item findItemById(int itemId) {
 		for (Item i : itemList) {
 			if (i.getItemId() == itemId)
@@ -63,9 +67,7 @@ public class Inventory {
 			itemList.remove(i);
 	}
 
-	public ArrayList<Item> getItemList() {
-		return itemList;
-	}
+
 
 	public void setItemList(ArrayList<Item> itemList) {
 		this.itemList = itemList;

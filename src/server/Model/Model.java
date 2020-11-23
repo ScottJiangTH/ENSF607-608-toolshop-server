@@ -14,36 +14,11 @@ public class Model {
 		this.theCustomerList = theCustomerList;
 	}
 
-//	public Inventory getTheInventory() {
-//		return theInventory;
-//	}
-//
-//	public void setTheInventory(Inventory inventory) {
-//		theInventory = inventory;
-//	}
-//
-//	public void listAllItems() {
-//		System.out.println(theInventory);
-//	}
-//
-//	public String decreaseItem(String name) {
-//		if (theInventory.manageItem(name) == null)
-//			return "Couldn't not decrease item quantity!\n";
-//		else
-//			return "Item quantity was decreased!\n";
-//	}
-//
-//	public void listAllSuppliers() {
-//		theSupplierList.listAllSuppliers();
-//	}
-
-//
-//	public String printOrder() {
-//		// TODO Auto-generated method stub
-//
-//		return theInventory.printOrder();
-//	}
-
+	public ArrayList<Item> listAllItems(){
+		ArrayList<Item> allItems = theInventory.listAllItems();
+		return allItems;
+	}
+	
 	public Item findItemId(int itemId) {
 		Item theItem = theInventory.findItemById(itemId);
 		return theItem;
@@ -98,6 +73,10 @@ public class Model {
 
 	public ArrayList<Customer> findCustomerbyType(String type) {
 		return theCustomerList.findCustomerByType(type);
+	}
+
+	public String printOrder() {
+		return theInventory.printOrder();
 	}
 
 }
