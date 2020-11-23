@@ -36,7 +36,7 @@ public class ModelController implements Runnable {
 		while (true) { // loop run 1 time for every received singal
 			// the signal we are looking for is in format: "optionSignal-1" if option 1 is selected from GUI
 			String optionSignal = "";
-			while (!optionSignal.contains("optionSignal")) {
+			while (optionSignal == null || !optionSignal.contains("optionSignal")) {
 				optionSignal = socketIn.readLine();
 			}
 			int option = Integer.parseInt(optionSignal);
@@ -187,7 +187,7 @@ public class ModelController implements Runnable {
 
 	private Supplier matchSupplier(int supplierId) {
 		Supplier theSupplier = null;
-		for (Supplier s : suppliers) {
+		for (Supplier s : allSuppliers()) {
 			if (s.getSupId() == supplierId) {
 				theSupplier = s;
 				break;

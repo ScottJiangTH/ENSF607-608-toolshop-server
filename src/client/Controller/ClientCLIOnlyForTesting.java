@@ -33,7 +33,8 @@ public class ClientCLIOnlyForTesting {
 		String serverMessage = "";
 
 		while (true) {
-			System.out.println(socketIn.readLine());
+			serverMessage = socketIn.readLine();
+			System.out.println();
 			userInput = stdIn.readLine();
 			socketOut.print(userInput);
 		}
