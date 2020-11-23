@@ -73,6 +73,11 @@ public class ModelController {
 		return suppliers;
 	}
 
+	public Item searchForItem() {
+		Item theItem = null;
+		return theItem;
+	}
+	
 	private Supplier findSupplier(int supplierId) {
 		Supplier theSupplier = null;
 		for (Supplier s : suppliers) {
