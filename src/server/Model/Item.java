@@ -8,19 +8,26 @@ package server.Model;
 public class Item {
 	
 	private int itemId;
+<<<<<<< HEAD
 	private int supplierId;
+=======
+	private String itemType;
+>>>>>>> 621563286aab0135a9162b3c439a38b7adeb3b74
 	private String itemName;
-	private int itemQuantity;
+	private String itemDescription; 
 	private double itemPrice;
-	private boolean alreadyOrdered;
+	private int itemQuantity;
 	private Supplier theSupplier;
+	private boolean alreadyOrdered;
 	private static final int ORDERQUANTITY = 40;
-	private static final int MINIMUMUMBER = 20; 	
+	private static final int MINIMUMUMBER = 20;
 	
 	
-	public Item (int id, String name, int quanitiy, double price, Supplier sup) {
+	
+	public Item (int id, String type, String name, int quanitiy, double price, Supplier sup) {
 		
 		itemId = id;
+		itemType = type;
 		itemName = name;
 		itemQuantity = quanitiy;
 		itemPrice = price;
@@ -108,9 +115,24 @@ public class Item {
 		this.alreadyOrdered = alreadyOrdered;
 	}
 
+<<<<<<< HEAD
 	public int getSupplierID() {
 		// TODO Auto-generated method stub
 		return supplierId;
+=======
+	public String getItemType() {
+		// TODO Auto-generated method stub
+		return itemType;
+	}
+
+	public void addItemDescription(String description) {
+		this.itemDescription = description;
+	}
+	
+	public String getItemDescription() {
+		// TODO Auto-generated method stub
+		return itemDescription;
+>>>>>>> 621563286aab0135a9162b3c439a38b7adeb3b74
 	}
 
 }
