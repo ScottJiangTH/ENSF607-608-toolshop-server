@@ -83,4 +83,47 @@ public class ClientModel {
 		return clientList;
 	}
 
+	public void deleteClient(ClientController check) {
+		// TODO Auto-generated method stub
+		String sql = "DELETE FROM "+ tableName + " WHERE  CLIENT_ID=?";
+		try{
+			PreparedStatement statement1 = jdbc_connection.prepareStatement(sql);
+			statement1.setInt(1, check.getID());
+			statement1.executeUpdate();
+			statement1.close();
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+	}
+
+	public void addClient(ClientController client)
+	{
+		String sql = "INSERT INTO " + tableName +
+				" VALUES ( ?,?,?,?,?,?,?)";
+		try{
+			PreparedStatement statement1 = jdbc_connection.prepareStatement(sql);
+			
+			statement1.setInt(1,client.getID());
+			statement1.setString(2,client.getFirstName());
+			statement1.setString(3,client.getLastName());
+			statement1.setString(4,client.getAddress());
+			statement1.setString(5,client.getPostalCode());
+			statement1.setString(6,client.getPhoneNumber());
+			statement1.setString(7, client.getType()+"");
+//			clientList.add(counter,client);
+//			counter = counter+1;
+			
+			statement1.executeUpdate();
+			statement1.close();
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+
 }

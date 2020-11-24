@@ -73,6 +73,19 @@ public class CustomerGUIController {
 		@SuppressWarnings("unused")
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			
+				ClientController newClient = new ClientController(view.getClientID(),view.getFirstName(),view.getLastName(),view.getAddress(),view.getPostalCode(),view.getPhoneNumber(),view.getClientType());
+				if(checkValidInput(newClient)==true){
+					clientModel.addClient(newClient);
+					clientList.add(clientList.getSize(), newClient);
+					JOptionPane.showMessageDialog(view.getC(), "Successfully added client!");
+					view.clearInfo();
+					}
+				else {
+					JOptionPane.showMessageDialog(view.getC(), "Please enter a valid input!");
+				}				
+			
+			
 
 		}
 	}
@@ -86,11 +99,11 @@ public class CustomerGUIController {
 					view.getClientType());
 
 			ClientController check = selectedClient;
-			//if (tempClient.toString().equals(check.toString())) {
+			if (tempClient.toString().equals(check.toString())) {
 		
 			//TODO: fix null pointer
 			
-			if (tempClient.toString()!=null) {
+			//if (tempClient.toString()!=null) {
 				//clientModel.deleteClient(check);
 				clientList.remove(selectedIndex);
 				view.displayErrorMessage("successfully deleted");
@@ -101,7 +114,12 @@ public class CustomerGUIController {
 		
 
 	}
-
+	private boolean checkValidInput(ClientController someClient) {
+		if(someClient.getPostalCode()!=null && someClient.getPhoneNumber()!=null&&someClient.getFirstName().length()<=20&&someClient.getLastName().length()<=20	&&someClient.getAddress().length()<=50 && (someClient.getType()+"")!="") {
+		return true;	
+		} 
+		else return false;
+	}
 
 class ClearListener implements ActionListener {
 	@Override
