@@ -17,6 +17,7 @@ import javax.swing.event.ListSelectionListener;
 
 import client.View.CustomerManagementGUI;
 import server.Controller.DBController;
+import client.Model.*;
 
 
 
@@ -27,20 +28,22 @@ public class CustomerGUIController {
 	
 	private JList clientJList = new JList();
 	private String searchFilter;
-	private DBController clientModel;
+	private clientModel clientModel;
 
-	private ClientController selectedClient;
+	private ClientController clientController;
 	private DefaultListModel<ClientController> clientList;
 	private int selectedIndex;
 	private int newID;
+	
+	
 
-	public CustomerGUIController(CustomerManagementGUI view, ClientController client) throws SQLException {
+	public CustomerGUIController(CustomerManagementGUI view, clientModel clientModel, ClientController clientController) throws SQLException {
 		this.view = view;
-		this.client = client;
+		this.clientModel = clientModel;
+		this.clientController=clientController;
 		
-		//clientList = clientModel.getClientList();
-	//	this.clientJList = new JList(clientList);
-		this.clientJList = clientModel.getClientJList();
+		clientList = clientModel.getClientList();
+		this.clientJList = new JList(clientList);
 		view.setClientJList(clientJList);
 		view.addTypeSelectListener(new TypeListener());
 		view.addSaveListener(new SaveListener());
@@ -140,9 +143,13 @@ public class CustomerGUIController {
 	
 	public static void main(String[] args) throws SQLException {
 		
+		clientModel theModel = new clientModel();
+		theModel.populateList();
+
+		
 		CustomerManagementGUI g = new CustomerManagementGUI();
 		ClientController client = new ClientController("localhost", 9009);
-		CustomerGUIController c = new CustomerGUIController(g,client);
+		CustomerGUIController c = new CustomerGUIController(g ,theModel,client);
 		g.pack();
 		g.setVisible(true);
 		

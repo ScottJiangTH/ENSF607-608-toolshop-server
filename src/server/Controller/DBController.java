@@ -20,7 +20,7 @@ public class DBController {
 	public String localhost = "3306", databaseName = "toolshop";
 	public String connectionInfo = "jdbc:mysql://localhost:" + localhost + "/" + databaseName+"?serverTimezone=UTC",  
 			  login          = "root",
-			  password       = "lindaA5585769.";
+			  password       = "xxxxxx";
 	
 	public DBController() {
 		try{
@@ -155,57 +155,57 @@ public class DBController {
 				purchaseQuantity + ");";
 		insertToTable(sql);
 	}
-	
-	private DefaultListModel clientList = new DefaultListModel();
-	private JList<ClientController> clientJList;
-	private String tableName="customer";
-	private int counter=0;
-	
-	
-	
-	public JList populateList() throws SQLException {
-		String sql = "SELECT * FROM " + tableName;
-		ResultSet clients;
-		ClientController tempClient;
-	//	try {
-			PreparedStatement statement2 = jdbc_connection.prepareStatement(sql);
-			clients = statement2.executeQuery();
-			while(clients.next())
-			{
-				tempClient = new ClientController(clients.getInt("id"),
-										clients.getString("fname"), 
-										clients.getString("lname"),  
-										clients.getString("address"),  
-										clients.getString("postal"), 
-										clients.getString("phone"), 
-										clients.getString("ctype").charAt(0));
-				clientList.add(counter,tempClient);
-				counter = counter + 1;
-			}
-			clients.close();
-			statement2.close();
-			clientJList = new JList(clientList);
-			return clientJList;
-	//	} //catch (SQLException e) { e.printStackTrace(); }
-		
-		//return null;
-	}
-	
-	
-	public JList<ClientController > getClientJList() throws SQLException {
-		populateList();
-		return clientJList;
-	}
-	
-
-	public DefaultListModel<ClientController> getClientList() throws SQLException {
-		// TODO Auto-generated method stub
-		populateList();
-		return clientList;
-	}
-	
-	
-	
+//	
+//	private DefaultListModel clientList = new DefaultListModel();
+//	private JList<ClientController> clientJList;
+//	private String tableName="customer";
+//	private int counter=0;
+//	
+//	
+//	
+//	public JList populateList() throws SQLException {
+//		String sql = "SELECT * FROM " + tableName;
+//		ResultSet clients;
+//		ClientController tempClient;
+//	//	try {
+//			PreparedStatement statement2 = jdbc_connection.prepareStatement(sql);
+//			clients = statement2.executeQuery();
+//			while(clients.next())
+//			{
+//				tempClient = new ClientController(clients.getInt("id"),
+//										clients.getString("fname"), 
+//										clients.getString("lname"),  
+//										clients.getString("address"),  
+//										clients.getString("postal"), 
+//										clients.getString("phone"), 
+//										clients.getString("ctype").charAt(0));
+//				clientList.add(counter,tempClient);
+//				counter = counter + 1;
+//			}
+//			clients.close();
+//			statement2.close();
+//			clientJList = new JList(clientList);
+//			return clientJList;
+//	//	} //catch (SQLException e) { e.printStackTrace(); }
+//		
+//		//return null;
+//	}
+//	
+//	
+//	public JList<ClientController > getClientJList() throws SQLException {
+//		//populateList();
+//		return clientJList;
+//	}
+//	
+//
+//	public DefaultListModel<ClientController> getClientList() throws SQLException {
+//		// TODO Auto-generated method stub
+//		//populateList();
+//		return clientList;
+//	}
+//	
+//	
+//	
 	
 	
 	
