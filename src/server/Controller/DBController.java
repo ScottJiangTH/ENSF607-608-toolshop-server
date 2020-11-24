@@ -2,16 +2,10 @@ package server.Controller;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-
-import javax.swing.DefaultListModel;
-import javax.swing.JList;
-
-import client.Controller.ClientController;
 import server.Model.*;
 
 public class DBController {
@@ -78,7 +72,7 @@ public class DBController {
 				item.getItemDescription() + "', " + 
 				item.getItemPrice() + ", " + 
 				item.getItemQuantity() + ", " + 
-				item.getTheSupplier().getSupId() + ");";
+				item.getSupplierId() + ");";
 		insertToTable(sql);
 	}
 	
@@ -129,7 +123,7 @@ public class DBController {
 					+ dailyOrder.getOrderId() + ", '" + 
 					ol.getTheItem().getItemId() + ", '" + 
 					ol.getOrderQuantity() + ", '" + 
-					ol.getTheItem().getTheSupplier().getSupId() + ");";
+					ol.getTheItem().getSupplierId() + ");";
 			insertToTable(olSql);
 		}
 	}
@@ -155,60 +149,6 @@ public class DBController {
 				purchaseQuantity + ");";
 		insertToTable(sql);
 	}
-//	
-//	private DefaultListModel clientList = new DefaultListModel();
-//	private JList<ClientController> clientJList;
-//	private String tableName="customer";
-//	private int counter=0;
-//	
-//	
-//	
-//	public JList populateList() throws SQLException {
-//		String sql = "SELECT * FROM " + tableName;
-//		ResultSet clients;
-//		ClientController tempClient;
-//	//	try {
-//			PreparedStatement statement2 = jdbc_connection.prepareStatement(sql);
-//			clients = statement2.executeQuery();
-//			while(clients.next())
-//			{
-//				tempClient = new ClientController(clients.getInt("id"),
-//										clients.getString("fname"), 
-//										clients.getString("lname"),  
-//										clients.getString("address"),  
-//										clients.getString("postal"), 
-//										clients.getString("phone"), 
-//										clients.getString("ctype").charAt(0));
-//				clientList.add(counter,tempClient);
-//				counter = counter + 1;
-//			}
-//			clients.close();
-//			statement2.close();
-//			clientJList = new JList(clientList);
-//			return clientJList;
-//	//	} //catch (SQLException e) { e.printStackTrace(); }
-//		
-//		//return null;
-//	}
-//	
-//	
-//	public JList<ClientController > getClientJList() throws SQLException {
-//		//populateList();
-//		return clientJList;
-//	}
-//	
-//
-//	public DefaultListModel<ClientController> getClientList() throws SQLException {
-//		// TODO Auto-generated method stub
-//		//populateList();
-//		return clientList;
-//	}
-//	
-//	
-//	
-	
-	
-	
 }
 
 
