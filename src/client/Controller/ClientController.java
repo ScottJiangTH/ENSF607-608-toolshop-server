@@ -29,9 +29,18 @@ public class ClientController {
 		String input;
 		String[] item;
 
+<<<<<<< Updated upstream
 		DefaultTableModel m = new DefaultTableModel();
 		m.setColumnIdentifiers(new String[] { "Item ID", "Item Type", "Item Name","Item Description","Item Price","Item Quantity","Supplier Id","Already Ordered" });
 		socketOut.println("option,1");
+=======
+		String command = "option,1";
+		socketOut.println(command);
+		
+		DefaultTableModel m = new DefaultTableModel();
+		m.setColumnIdentifiers(new String[] { "Item ID", "Item Name", "Item Quantity" });
+		
+>>>>>>> Stashed changes
 		try {
 			while ((input = socketIn.readLine())!= null) {
 				item = input.split(",");
@@ -48,6 +57,7 @@ public class ClientController {
 //		socketOut.println("option,1");
 //	}
 
+<<<<<<< Updated upstream
 	public String getItemByID(int ID) {
 		String input = "", item = "";
 		socketOut.println("option,2");
@@ -56,11 +66,21 @@ public class ClientController {
 			while ((input = socketIn.readLine())!= null) {
 				item += input;
 			}
+=======
+	public String getItemByID(int itemId) {
+		String command = "option,2," + itemId;
+		socketOut.println(command);
+
+		try {
+			String json = socketIn.readLine();
+			JSONObject item = new JSONObject(json);
+			String s = "";
+>>>>>>> Stashed changes
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, "The server disconnected");
 		}
 
-		return item;
+		return s;
 	}
 
 	public String getItemByName(String name) {
