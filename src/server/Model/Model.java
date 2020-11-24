@@ -19,12 +19,12 @@ public class Model {
 		return allItems;
 	}
 	
-	public Item findItemId(int itemId) {
+	public Item findItemById(int itemId) {
 		Item theItem = theInventory.findItemById(itemId);
 		return theItem;
 	}
 
-	public Item findItemName(String itemName) {
+	public Item findItemByName(String itemName) {
 		Item theItem = theInventory.findItemByName(itemName);
 		return theItem;
 	}
@@ -47,7 +47,8 @@ public class Model {
 		// check input or create new supplier
 		Supplier s = findSupplierById(supplierId);
 		if (s != null) {
-			theInventory.addNewItem(id, type, name, quantity, price, s);
+			theInventory.addNewItem(id, type, name, quantity, price, supplierId);
+			s.getItemList().add(findItemById(id));
 		}
 	}
 

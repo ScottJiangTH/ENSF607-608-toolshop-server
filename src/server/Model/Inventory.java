@@ -55,8 +55,8 @@ public class Inventory {
 			i.updateItemQuantity(diff);
 	}
 
-	public void addNewItem(int id, String type, String name, int quantity, double price, Supplier s) {
-		Item i = new Item(id, type, name, quantity, price, s);
+	public void addNewItem(int id, String type, String name, int quantity, double price, int supplierId) {
+		Item i = new Item(id, type, name, quantity, price, supplierId);
 		itemList.add(i);
 	}
 

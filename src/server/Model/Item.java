@@ -13,22 +13,21 @@ public class Item {
 	private String itemDescription; 
 	private double itemPrice;
 	private int itemQuantity;
-
-	private Supplier theSupplier;
+	private int supplierId;
 	private boolean alreadyOrdered;
 	private static final int ORDERQUANTITY = 40;
 	private static final int MINIMUMUMBER = 20;
 	
 	
 	
-	public Item (int id, String type, String name, int quantity, double price, Supplier sup) {
+	public Item (int id, String type, String name, int quantity, double price, int supplierId) {
 		
-		itemId = id;
-		itemType = type;
-		itemName = name;
-		itemQuantity = quantity;
-		itemPrice = price;
-		sup = theSupplier; 
+		this.itemId = id;
+		this.itemType = type;
+		this.itemName = name;
+		this.itemQuantity = quantity;
+		this.itemPrice = price;
+		this.setSupplierId(supplierId); 
 		setAlreadyOrdered(false);
 	}
 
@@ -81,12 +80,6 @@ public class Item {
 	public void setItemPrice(double itemPrice) {
 		this.itemPrice = itemPrice;
 	}
-	public void setTheSupplier (Supplier sup) {
-		theSupplier = sup;
-	}
-	public Supplier getTheSupplier () {
-		return theSupplier;
-	}
 	
 	public String toString () {
 		return "Item ID: " + itemId + ", Item Name: " + itemName + ", Item Quantity: " + 
@@ -109,6 +102,14 @@ public class Item {
 
 	public void updateItemQuantity(int diff) {
 		itemQuantity = itemQuantity + diff;
+	}
+
+	public int getSupplierId() {
+		return supplierId;
+	}
+
+	public void setSupplierId(int supplierId) {
+		this.supplierId = supplierId;
 	}
 
 }

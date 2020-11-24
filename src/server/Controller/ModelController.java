@@ -52,12 +52,12 @@ public class ModelController implements Runnable {
 				break;
 			case 2: // Find item by item ID
 				int itemId = Integer.parseInt(token[2]);
-				Item i = model.findItemId(itemId);
+				Item i = model.findItemById(itemId);
 				socketOut.println(toJSON(i));
 				// TODO: add error message return to GUI
 				break;
 			case 3: // Find item by item name
-				i = model.findItemName(token[2]);
+				i = model.findItemByName(token[2]);
 				socketOut.println(toJSON(i));
 				// TODO: add error message return to GUI
 				break;
@@ -83,8 +83,8 @@ public class ModelController implements Runnable {
 				String itemType = token[3];
 				String itemName = token[4];
 				itemQuantity = Integer.parseInt(token[5]);
-				double itemPrice = Double.parseDouble(token[5]);
-				int supplierId = Integer.parseInt(token[6]);
+				double itemPrice = Double.parseDouble(token[6]);
+				int supplierId = Integer.parseInt(token[7]);
 				model.addNewItem(itemId, itemType, itemName, itemQuantity, itemPrice, supplierId);
 				socketOut.println("New tool " + token[4] + " is added.");
 				break;
@@ -150,12 +150,12 @@ public class ModelController implements Runnable {
 				String name = rs.getString(3);
 				String quantity = rs.getString(6);
 				String price = rs.getString(5);
-				String supplierID = rs.getString(7);
-				Supplier theSupplier = matchSupplier(Integer.parseInt(supplierID));
+				String supplierId = rs.getString(7);
 
 				Item anItem = new Item(Integer.parseInt(ID), type, name, Integer.parseInt(quantity),
-						Double.parseDouble(price), theSupplier);
+						Double.parseDouble(price), Integer.parseInt(supplierId));
 				items.add(anItem);
+				Supplier theSupplier = matchSupplier(Integer.parseInt(supplierId));
 				theSupplier.getItemList().add(anItem);
 			}
 		} catch (NumberFormatException e) {
