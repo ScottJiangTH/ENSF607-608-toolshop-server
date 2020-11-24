@@ -65,11 +65,11 @@ public class ClientController {
 	public String getItemByID(int itemId) {
 		String command = "option,2," + itemId;
 		socketOut.println(command);
+		String s = "";
 
 		try {
 			String json = socketIn.readLine();
 			JSONObject item = new JSONObject(json);
-			String s = "";
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, "The server disconnected");
 		}
