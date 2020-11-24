@@ -28,4 +28,5 @@ UML_2 Low Level Class Diagram Toolshop Model.mdj
 
 ### Instructions on How to Run this Program
 1. Include SQL jar file into classpath.
-2. [Include JACKSON jar file into classpath.](https://www.youtube.com/watch?v=J2RBO_9wjYg)
+2. At server side: [Include JACKSON jar file into classpath.](https://www.youtube.com/watch?v=J2RBO_9wjYg)
+3. At client side: [Include official JSON jar file into classpath.](https://github.com/stleary/JSON-java)
