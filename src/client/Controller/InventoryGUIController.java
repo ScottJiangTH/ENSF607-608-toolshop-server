@@ -21,16 +21,36 @@ public class InventoryGUIController {
 		this.view.addBrowseListener(new BrowseListener());
 		this.view.addIDListener(new IDListener());
 		this.view.addNameListener(new NameListener());
-		this.view.addCheckItemListener(new CheckItemListener());
-		this.view.addDecreaseItemListener(new DecreaseItemListener());
+		this.view.addCheckItemListenerByName(new CheckItemListenerByName());
+		
+		this.view.addCheckItemListenerById(new CheckItemListenerById());
+		
+		this.view.addUpdateItemListener(new UpdateItemListener());
+		
+		this.view.addToolListener(new AddToolListener());
+		this.view.addDeleteToolListener(new DeleteToolListener());
+		this.view.addSupplierListenerByName(new CheckSupplierListenerByName());
+		this.view.addSupplierListenerById(new CheckSupplierListenerById());
+		
+		
 		this.view.addPrintOrderListener(new PrintOrderListener());
 	}
 
-	class CheckItemListener implements ActionListener {
+	class CheckItemListenerByName implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			String name = JOptionPane.showInputDialog("Enter name of Item to check: ");
-			String quantity = client.getQuantity(name);
+			String quantity = client.getQuantityByName(name);
+			JOptionPane.showMessageDialog(null, quantity,
+					"Quantity", JOptionPane.PLAIN_MESSAGE);
+		}
+	}
+	
+	class CheckItemListenerById implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			int Id = Integer.parseInt(JOptionPane.showInputDialog("Enter Id of Item to check: "));
+			String quantity = client.getQuantityById(Id);
 			JOptionPane.showMessageDialog(null, quantity,
 					"Quantity", JOptionPane.PLAIN_MESSAGE);
 		}
@@ -69,7 +89,7 @@ public class InventoryGUIController {
 		}
 	}
 
-	class DecreaseItemListener implements ActionListener {
+	class UpdateItemListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -91,6 +111,7 @@ public class InventoryGUIController {
 		}
 
 	}
+	//classes below needs to modify
 	class AddToolListener implements ActionListener {
 
 		@Override
@@ -117,6 +138,37 @@ public class InventoryGUIController {
 		}
 
 	}
+	
+	class CheckSupplierListenerByName implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			String name = JOptionPane.showInputDialog("Enter name of supplier to add: ");
+			client.addSupplier(name);
+			view.setTableModel(client.getItemList());
+			JOptionPane.showMessageDialog(null, name, "Supplier", JOptionPane.PLAIN_MESSAGE);
+			
+			
+		}
+
+	}
+	class CheckSupplierListenerById implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+			String name = JOptionPane.showInputDialog("Enter name of supplier to delete: ");
+			client.removeSupplier(name);
+			view.setTableModel(client.getItemList());
+			JOptionPane.showMessageDialog(null, name, "Supplier", JOptionPane.PLAIN_MESSAGE);
+			
+		}
+
+	}
+
+	
+	
+	
 
 	public static void main(String[] args) {
 		InventoryManagementGUI g = new InventoryManagementGUI(Toolkit.getDefaultToolkit().getScreenSize());

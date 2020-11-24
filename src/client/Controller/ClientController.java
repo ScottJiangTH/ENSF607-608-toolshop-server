@@ -30,11 +30,12 @@ public class ClientController {
 		String[] item;
 
 		DefaultTableModel m = new DefaultTableModel();
-		m.setColumnIdentifiers(new String[] { "Item ID", "Item Name", "Item Quantity" });
-		socketOut.println("1");
+		m.setColumnIdentifiers(new String[] { "Item ID", "Item Type", "Item Name","Item Description","Item Price","Item Quantity","Supplier Id","Already Ordered" });
+		socketOut.println("option,1");
 		try {
 			while ((input = socketIn.readLine())!= null) {
 				item = input.split(",");
+			//	item = input;
 				m.addRow(item);
 			}
 		} catch (IOException e) {
@@ -42,10 +43,14 @@ public class ClientController {
 		}
 		return m;
 	}
+	
+//	public void getItemList() {
+//		socketOut.println("option,1");
+//	}
 
 	public String getItemByID(int ID) {
 		String input = "", item = "";
-		socketOut.println("2");
+		socketOut.println("option,2");
 		socketOut.println(ID);
 		try {
 			while ((input = socketIn.readLine())!= null) {
@@ -60,7 +65,7 @@ public class ClientController {
 
 	public String getItemByName(String name) {
 		String input = "";
-		socketOut.println("3");
+		socketOut.println("option,3");
 		socketOut.println(name);
 		String item = "";
 
@@ -75,9 +80,23 @@ public class ClientController {
 		return item;
 	}
 //need to add: search quantity by id
-	public String getQuantity(String name) {
+	public String getQuantityById(int ID) {
 		String input = "", quantity = "";
-		socketOut.println("5");
+		socketOut.println("option,4");
+		socketOut.println(ID);
+		try {
+			while ((input = socketIn.readLine())!= null) {
+				quantity += input;
+			}
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "The server disconnected");
+		}
+		return quantity;
+	}
+	
+	public String getQuantityByName(String name) {
+		String input = "", quantity = "";
+		socketOut.println("option,5");
 		socketOut.println(name);
 		try {
 			while ((input = socketIn.readLine())!= null) {
@@ -91,7 +110,7 @@ public class ClientController {
 
 	public String decreaseItemQuantity(String name) {
 		String input = "", message = "";
-		socketOut.println("6");
+		socketOut.println("option,6");
 		socketOut.println(name);
 
 		try {
@@ -197,8 +216,20 @@ public class ClientController {
 	public String toString() {
 		return (this.getID()+" ; "+this.getFirstName()+" ; "+this.getLastName()+" ; "+this.getAddress()+" ; "+this.getPostalCode()+" ; "+this.getPhoneNumber()+" ; "+this.getType());
 	}
+
+	public void addSupplier(String name) {
+		// TODO Auto-generated method stub
+		//need to add supplier to DB
+		
+		socketOut.println("option,6");
+		
+	}
 	
-	
+	public void removeSupplier(String name) {
+		// TODO Auto-generated method stub
+		//need to add supplier to DB
+		
+	}
 	
 	
 }

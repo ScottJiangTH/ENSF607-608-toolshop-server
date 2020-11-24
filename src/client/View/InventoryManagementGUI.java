@@ -7,16 +7,21 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
+
 public class InventoryManagementGUI extends JFrame {
 
 	private JButton browseTool = new JButton("List Tools");
 	private JButton searchName = new JButton("Search by Name");
 	private JButton searchID = new JButton("Search by ID");
-	private JButton checkQuantity = new JButton("Check Quantity");
-	private JButton decreaseQuantity = new JButton("Decrease Quantity");
-	private JButton printOrder = new JButton("Print Order");
+	private JButton checkQuantitybyId = new JButton("Check Quantity by ID");
+	private JButton checkQuantitybyName = new JButton("Check Quantity by Name");
+	private JButton UpdateQuantity = new JButton("Update Quantity");
+
 	private JButton addTool = new JButton("Add Tool");
 	private JButton deleteTool = new JButton("Delete Tool");
+	private JButton checkSupplierByName = new JButton("Check Supplier by name");
+	private JButton checkSupplierById = new JButton("check Supplier by Id");
+	private JButton printOrder = new JButton("Print Order");
 	private JLabel listLabel = new JLabel("List of Tools");
 	private JTable listTable;
 	private JScrollPane listScroll;
@@ -47,12 +52,17 @@ public class InventoryManagementGUI extends JFrame {
 		buttons.add(browseTool);
 		buttons.add(searchName);
 		buttons.add(searchID);
-		buttons.add(checkQuantity);
-		buttons.add(decreaseQuantity);
-		buttons.add(checkQuantity);
-		buttons.add(printOrder);
+		buttons.add(checkQuantitybyId);
+		buttons.add(checkQuantitybyName);
+		buttons.add(UpdateQuantity);
+		
 		buttons.add(addTool);
 		buttons.add(deleteTool);
+		
+		buttons.add(checkSupplierByName);
+		buttons.add(checkSupplierById);
+		
+		buttons.add(printOrder);
 		
 		getContentPane().add(labels, BorderLayout.NORTH);
 		getContentPane().add(new JScrollPane(txtArea), BorderLayout.CENTER);
@@ -72,28 +82,45 @@ public class InventoryManagementGUI extends JFrame {
 		searchName.addActionListener(nameListener);
 	}
 
-	
-	public void addCheckItemListener(ActionListener checkItemListener) {
-		checkQuantity.addActionListener(checkItemListener);
+	public void addCheckItemListenerByName(ActionListener checkItemListenerbyName) {
+		checkQuantitybyId.addActionListener(checkItemListenerbyName);
+	}
+	public void addCheckItemListenerById(ActionListener checkItemListenerbyId) {
+		checkQuantitybyId.addActionListener(checkItemListenerbyId);
 	}
 
 	
-	public void addDecreaseItemListener(ActionListener decreaseItemListener) {
-		decreaseQuantity.addActionListener(decreaseItemListener);
+	public void addUpdateItemListener(ActionListener updateItemListener) {
+		UpdateQuantity.addActionListener(updateItemListener);
 	}
 
 	public void addPrintOrderListener(ActionListener printOrderListener) {
 		printOrder.addActionListener(printOrderListener);
 	}
-	public void addAddToolListener(ActionListener addTool) {
-		printOrder.addActionListener(addTool);
+	public void addToolListener(ActionListener addToolListener) {
+		addTool.addActionListener(addToolListener);
 	}
-	public void deleteToolListener(ActionListener deleteTool) {
-		printOrder.addActionListener(deleteTool);
+	public void addDeleteToolListener(ActionListener deleteToolListener) {
+		deleteTool.addActionListener(deleteToolListener);
 	}
+	
+	
+	
 
 	public void setTableModel(DefaultTableModel m) {
 		listTable.setModel(m);
 	}
+
+	public void addSupplierListenerByName(ActionListener checkSupplierListenerByName) {
+		// TODO Auto-generated method stub
+		checkSupplierByName.addActionListener(checkSupplierListenerByName);
+		
+	}
+	
+	public void addSupplierListenerById(ActionListener checkSupplierListenerById) {
+		// TODO Auto-generated method stub
+		checkSupplierById.addActionListener(checkSupplierListenerById);
+	}
+
 
 }
