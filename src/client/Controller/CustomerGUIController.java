@@ -28,7 +28,7 @@ public class CustomerGUIController {
 	
 	private JList clientJList = new JList();
 	private String searchFilter;
-	private clientModel clientModel;
+	private ClientModel clientModel;
 
 	private ClientController clientController;
 	private DefaultListModel<ClientController> clientList;
@@ -37,7 +37,7 @@ public class CustomerGUIController {
 	
 	
 
-	public CustomerGUIController(CustomerManagementGUI view, clientModel clientModel, ClientController clientController) throws SQLException {
+	public CustomerGUIController(CustomerManagementGUI view, ClientModel clientModel, ClientController clientController) throws SQLException {
 		this.view = view;
 		this.clientModel = clientModel;
 		this.clientController=clientController;
@@ -143,7 +143,7 @@ public class CustomerGUIController {
 	
 	public static void main(String[] args) throws SQLException {
 		
-		clientModel theModel = new clientModel();
+		ClientModel theModel = new ClientModel();
 		theModel.populateList();
 
 		
