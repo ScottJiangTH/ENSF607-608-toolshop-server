@@ -42,18 +42,18 @@ public class ClientController {
 
 		String command = "option,1";
 		socketOut.println(command);
-		
+
 		DefaultTableModel m = new DefaultTableModel();
 		m.setColumnIdentifiers(new String[] { "Item ID", "Item Name", "Item Quantity" });
-		
+
 		try {
 			String json = socketIn.readLine();
 			JSONArray itemList = new JSONArray(json);
-			for (int i = 0; i < itemList.length();i++) {
+			for (int i = 0; i < itemList.length(); i++) {
 				int itemId = itemList.getJSONObject(i).getInt("itemId");
 				String itemName = itemList.getJSONObject(i).getString("itemName");
 				int itemQuantity = itemList.getJSONObject(i).getInt("itemQuantity");
-				String s[] = {Integer.toString(itemId), itemName, Integer.toString(itemQuantity)};
+				String s[] = { Integer.toString(itemId), itemName, Integer.toString(itemQuantity) };
 				m.addRow(s);
 			}
 		} catch (IOException e) {
@@ -62,91 +62,126 @@ public class ClientController {
 		return m;
 	}
 
-	public String getItemByID(int itemId) {
+	public DefaultTableModel getItemByID(int itemId) {
 		String command = "option,2," + itemId;
 		socketOut.println(command);
-		String s = "";
+
+		DefaultTableModel m = new DefaultTableModel();
+		m.setColumnIdentifiers(new String[] { "Item ID", "Item Name", "Item Quantity", "Supplier ID" });
 
 		try {
 			String json = socketIn.readLine();
 			JSONObject item = new JSONObject(json);
+			itemId = item.getInt("itemId");
+			String itemName = item.getString("itemName");
+			int itemQuantity = item.getInt("itemQuantity");
+			int supplierId = item.getInt("supplierId");
+			String s[] = { Integer.toString(itemId), itemName, Integer.toString(itemQuantity),
+					Integer.toString(supplierId) };
+			m.addRow(s);
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, "The server disconnected");
 		}
-
-		return s;
+		return m;
 	}
 
-	public String getItemByName(String name) {
-		String input = "";
-		socketOut.println("3");
-		socketOut.println(name);
-		String item = "";
+	public DefaultTableModel getItemByName(String itemName) {
+		String command = "option,3," + itemName;
+		socketOut.println(command);
+
+		DefaultTableModel m = new DefaultTableModel();
+		m.setColumnIdentifiers(new String[] { "Item ID", "Item Name", "Item Quantity", "Supplier ID" });
 
 		try {
-			while ((input = socketIn.readLine()) != null) {
-				item += input;
-			}
+			String json = socketIn.readLine();
+			JSONObject item = new JSONObject(json);
+			int itemId = item.getInt("itemId");
+			itemName = item.getString("itemName");
+			int itemQuantity = item.getInt("itemQuantity");
+			int supplierId = item.getInt("supplierId");
+			String s[] = { Integer.toString(itemId), itemName, Integer.toString(itemQuantity),
+					Integer.toString(supplierId) };
+			m.addRow(s);
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, "The server disconnected");
 		}
-
-		return item;
+		return m;
 	}
 
-//need to add: search quantity by id
-	public String getQuantity(String name) {
-		String input = "", quantity = "";
-		socketOut.println("5");
-		socketOut.println(name);
+	public String getQuantityById(int itemId) {
+		String command = "option,4," + itemId;
+		socketOut.println(command);
+		String qty = "";
 		try {
-			while ((input = socketIn.readLine()) != null) {
-				quantity += input;
-			}
+			 qty = socketIn.readLine();
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, "The server disconnected");
 		}
-		return quantity;
+		return qty;
+	}
+	
+	public String getQuantity(String itemName) {
+		String command = "option,5," + itemName;
+		socketOut.println(command);
+		String qty = "";
+		try {
+			 qty = socketIn.readLine();
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "The server disconnected");
+		}
+		return qty;
 	}
 
-	public String decreaseItemQuantity(String name) {
-		String input = "", message = "";
-		socketOut.println("6");
-		socketOut.println(name);
-
+	public String updateItemQuantity(String itemName, int diff) {
+		String command = "option,6," + itemName + diff;
+		socketOut.println(command);
+		String message = "";
 		try {
-			while ((input = socketIn.readLine()) != null) {
-				message += input;
-			}
+			message = socketIn.readLine();
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, "The server disconnected");
 		}
-
 		return message;
 	}
 
-	public String getPrintOrder() {
-		String input = "", order = "";
-		socketOut.println("1");
-		// need to read from json file passed
-//		try {
-//			while ((input = socketIn.readLine()).charAt(0) != '\0') {
-//				order += input + "\n";
-//			}
-//		} catch (IOException e) {
-//			JOptionPane.showMessageDialog(null, "The server disconnected");
-//		}
-		return order;
+	public String addTool(int id, String type, String name, int quantity, double price, int supplierId) {
+		String command = "option,7," + id + type + name + quantity + price + supplierId;
+		socketOut.println(command);
+		String message = "";
+		try {
+			message = socketIn.readLine();
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "The server disconnected");
+		}
+		return message;
 	}
-
+	
 	public void removeTool(String name) {
 		// TODO Auto-generated method stub
-
 	}
-
-	public void addTool(String name) {
-		// TODO Auto-generated method stub
-
+	
+	public void findSupplierById(int supplierId) {
+		
+	}
+	
+	public void findSupplierByName(int supplierName) {
+		
+	}
+	
+	public void findCustomerById(int supplierId) {
+		
+	}
+	
+	public void findCustomerByName(int supplierId) {
+		
+	}
+	
+	public void findCustomerByType(int supplierId) {
+		
+	}
+	
+	public String printOrder() {
+		return "";
 	}
 
 	// for customer management - need to think more
