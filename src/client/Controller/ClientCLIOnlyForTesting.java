@@ -29,17 +29,27 @@ public class ClientCLIOnlyForTesting {
 	}
 
 	public void prompt() throws IOException {
-		String userInput = "";
-		String serverMessage = "";
+		String oldInput = "";
+		String oldMessage = "";
+		String newInput = "Input stream ready";
+		String newMessage = "CLI ready";
 
 		while (true) {
-			serverMessage = socketIn.readLine();
-			System.out.println();
-			userInput = stdIn.readLine();
-			socketOut.print(userInput);
+			if (newMessage.equals(oldMessage)) {
+				newMessage = socketIn.readLine();
+			} else {
+				System.out.println(newMessage);
+				oldMessage = newMessage;
+			}
+			if (newInput.equals(oldInput)) {
+				newInput = stdIn.readLine();
+			} else {
+				socketOut.println(newInput);
+				oldInput = newInput;
+			}
 		}
 	}
-	
+
 	public static void main(String[] args) throws IOException {
 		ClientCLIOnlyForTesting aClient = new ClientCLIOnlyForTesting("localhost", 9009);
 		aClient.prompt();

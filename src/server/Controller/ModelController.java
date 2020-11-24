@@ -34,41 +34,43 @@ public class ModelController implements Runnable {
 	// a signal sent from GUI that serves as signal that can be parsed and then call different functions
 	private void listenSignal() throws IOException {
 		while (true) { // loop run 1 time for every received singal
-			// the signal we are looking for is in format: "optionSignal-1" if option 1 is selected from GUI
-			String optionSignal = "";
-			while (optionSignal == null || !optionSignal.contains("optionSignal")) {
+			// the signal we are looking for is in format: "option,1" if option 1 is selected from GUI
+			String optionSignal = null;
+			while (optionSignal == null) {
 				optionSignal = socketIn.readLine();
 			}
-			int option = Integer.parseInt(optionSignal);
-
+			int option = 0;
+			if (optionSignal != null && optionSignal.contains("option"))
+				option = Integer.parseInt(optionSignal.split(",")[1]);
+			socketOut.println("option is: " + option);
 			switch (option) {
 			case 1: // Print out all item
 				ArrayList<Item> allItems = model.listAllItems();
-				socketOut.print(toJSON(allItems));
+				socketOut.println(toJSON(allItems));
 				// TODO: add error message return to GUI
 				break;
 			case 2: // Find item by item ID
 				int itemId = Integer.parseInt(socketIn.readLine());
 				Item i = model.findItemId(itemId);
-				socketOut.print(toJSON(i));
+				socketOut.println(toJSON(i));
 				// TODO: add error message return to GUI
 				break;
 			case 3: // Find item by item name
 				String itemName = socketIn.readLine();
 				i = model.findItemName(itemName);
-				socketOut.print(toJSON(i));
+				socketOut.println(toJSON(i));
 				// TODO: add error message return to GUI
 				break;
 			case 4: // Check item quantity by item ID
 				itemId = Integer.parseInt(socketIn.readLine());
 				int itemQuantity = model.checkItemQuantity(itemId);
-				socketOut.print(itemQuantity);
+				socketOut.println(itemQuantity);
 				// TODO: add error message return to GUI
 				break;
 			case 5: // Check item quantity by item name
 				itemName = socketIn.readLine();
 				int itemQuantityByName = model.checkItemQuantity(itemName);
-				socketOut.print(itemQuantityByName);
+				socketOut.println(itemQuantityByName);
 				// TODO: add error message return to GUI
 				break;
 			case 6: // Update item quantity, can be either increment or decrement by any number
@@ -94,29 +96,29 @@ public class ModelController implements Runnable {
 			case 9: // Find supplier by ID
 				supplierId = Integer.parseInt(socketIn.readLine());
 				Supplier s = model.findSupplierById(supplierId);
-				socketOut.print(toJSON(s));
+				socketOut.println(toJSON(s));
 				// TODO: add error message return to GUI
 				break;
 			case 10: // Find supplier by name
 				String supplierName = socketIn.readLine();
 				s = model.findSupplierByName(supplierName);
-				socketOut.print(toJSON(s));
+				socketOut.println(toJSON(s));
 				// TODO: add error message return to GUI
 				break;
 			case 11: // Find customer by ID
 				int customerId = Integer.parseInt(socketIn.readLine());
 				Customer c = model.findCustomerById(customerId);
-				socketOut.print(toJSON(c));
+				socketOut.println(toJSON(c));
 				break;
 			case 12: // Find customer by last name, return a list
 				String lastname = socketIn.readLine();
 				ArrayList<Customer> cList= model.findCustomerbyLastName(lastname);
-				socketOut.print(toJSON(cList));
+				socketOut.println(toJSON(cList));
 				break;
 			case 13: // Find customer by type, return a list
 				String cType = socketIn.readLine();
 				cList = model.findCustomerbyType(cType);
-				socketOut.print(toJSON(cList));
+				socketOut.println(toJSON(cList));
 				break;
 			case 14:
 				System.out.println("Client GUI closed.");
@@ -227,6 +229,7 @@ public class ModelController implements Runnable {
 		SupplierList theSupplierList = new SupplierList(allSuppliers());
 		CustomerList theCustomerList = new CustomerList(allCustomers());
 		this.model = new Model(theInventory, theSupplierList, theCustomerList);
+		socketOut.println("Connected to Server");
 		try {
 			listenSignal();
 		} catch (IOException e) {
