@@ -3,6 +3,7 @@ package client.Controller;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 
@@ -33,13 +34,14 @@ public class CustomerGUIController {
 	private int selectedIndex;
 	private int newID;
 
-	public CustomerGUIController(CustomerManagementGUI view, ClientController client) {
+	public CustomerGUIController(CustomerManagementGUI view, ClientController client) throws SQLException {
 		this.view = view;
 		this.client = client;
 		
 		//clientList = clientModel.getClientList();
-		//this.clientJList = new JList(clientList);
-		//view.setClientJList(clientJList);
+	//	this.clientJList = new JList(clientList);
+		this.clientJList = clientModel.getClientJList();
+		view.setClientJList(clientJList);
 		view.addTypeSelectListener(new TypeListener());
 		view.addSaveListener(new SaveListener());
 		view.addDeleteListener(new DeleteListener());
@@ -136,7 +138,7 @@ public class CustomerGUIController {
 	
 	
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws SQLException {
 		
 		CustomerManagementGUI g = new CustomerManagementGUI();
 		ClientController client = new ClientController("localhost", 9009);

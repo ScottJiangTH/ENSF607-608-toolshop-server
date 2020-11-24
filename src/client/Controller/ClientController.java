@@ -129,7 +129,7 @@ public class ClientController {
 		
 	}
 	
-	//for customer management 
+	//for customer management - need to think more
 	
 	private int id;
 	private String firstName,lastName,address,postalCode,phoneNumber;
