@@ -50,10 +50,10 @@ public class ClientController {
 			String json = socketIn.readLine();
 			JSONArray itemList = new JSONArray(json);
 			for (int i = 0; i < itemList.length();i++) {
-				String itemId = itemList.getJSONObject(i).getString("itemId");
+				int itemId = itemList.getJSONObject(i).getInt("itemId");
 				String itemName = itemList.getJSONObject(i).getString("itemName");
-				String itemQuantity = itemList.getJSONObject(i).getString("itemQuantity");
-				String s[] = {itemId, itemName, itemQuantity};
+				int itemQuantity = itemList.getJSONObject(i).getInt("itemQuantity");
+				String s[] = {Integer.toString(itemId), itemName, Integer.toString(itemQuantity)};
 				m.addRow(s);
 			}
 		} catch (IOException e) {
