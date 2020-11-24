@@ -3,12 +3,12 @@ package server.Controller;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import server.Model.*;
 
@@ -34,15 +34,16 @@ public class ModelController implements Runnable {
 	// a signal sent from GUI that serves as signal that can be parsed and then call different functions
 	private void listenSignal() throws IOException {
 		while (true) { // loop run 1 time for every received singal
-			// the signal we are looking for is in format: "option,1" if option 1 is selected from GUI
-			String optionSignal = null;
-			while (optionSignal == null) {
-				optionSignal = socketIn.readLine();
+			// command is in format: "option",option#,arg1,arg2,...  DO NOT pass anything that is not in this format
+			// e.g. for add new item: option,7,itemId,itemType,itemName,itemQuantity,itemPrice,supplierId
+			String command = null;
+			while (command == null) {
+				command = socketIn.readLine();
 			}
-			int option = 0;
-			if (optionSignal != null && optionSignal.contains("option"))
-				option = Integer.parseInt(optionSignal.split(",")[1]);
-			socketOut.println("option is: " + option);
+			
+			String[] token = command.split(",");
+			int option = Integer.parseInt(token[1]);
+			
 			switch (option) {
 			case 1: // Print out all item
 				ArrayList<Item> allItems = model.listAllItems();
@@ -50,74 +51,70 @@ public class ModelController implements Runnable {
 				// TODO: add error message return to GUI
 				break;
 			case 2: // Find item by item ID
-				int itemId = Integer.parseInt(socketIn.readLine());
+				int itemId = Integer.parseInt(token[2]);
 				Item i = model.findItemId(itemId);
 				socketOut.println(toJSON(i));
 				// TODO: add error message return to GUI
 				break;
 			case 3: // Find item by item name
-				String itemName = socketIn.readLine();
-				i = model.findItemName(itemName);
+				i = model.findItemName(token[2]);
 				socketOut.println(toJSON(i));
 				// TODO: add error message return to GUI
 				break;
 			case 4: // Check item quantity by item ID
-				itemId = Integer.parseInt(socketIn.readLine());
+				itemId = Integer.parseInt(token[2]);
 				int itemQuantity = model.checkItemQuantity(itemId);
 				socketOut.println(itemQuantity);
 				// TODO: add error message return to GUI
 				break;
 			case 5: // Check item quantity by item name
-				itemName = socketIn.readLine();
-				int itemQuantityByName = model.checkItemQuantity(itemName);
+				int itemQuantityByName = model.checkItemQuantity(token[2]);
 				socketOut.println(itemQuantityByName);
 				// TODO: add error message return to GUI
 				break;
 			case 6: // Update item quantity, can be either increment or decrement by any number
-				itemName = socketIn.readLine();
-				int diff = Integer.parseInt(socketIn.readLine());
-				model.updateItemQuantity(itemName, diff);
+				int diff = Integer.parseInt(token[3]);
+				model.updateItemQuantity(token[2], diff);
 				// TODO: add error message return to GUI
+				socketOut.println("The quantity of " + token[2] + " is updated.");
 				break;
 			case 7: // Add new item
-				itemId = Integer.parseInt(socketIn.readLine());
-				String itemType = socketIn.readLine();
-				itemName = socketIn.readLine();
-				itemQuantity = Integer.parseInt(socketIn.readLine());
-				double itemPrice = Double.parseDouble(socketIn.readLine());
-				int supplierId = Integer.parseInt(socketIn.readLine());
+				itemId = Integer.parseInt(token[2]);
+				String itemType = token[3];
+				String itemName = token[4];
+				itemQuantity = Integer.parseInt(token[5]);
+				double itemPrice = Double.parseDouble(token[5]);
+				int supplierId = Integer.parseInt(token[6]);
 				model.addNewItem(itemId, itemType, itemName, itemQuantity, itemPrice, supplierId);
+				socketOut.println("New tool " + token[4] + " is added.");
 				break;
 			case 8: // Delete item
-				itemName = socketIn.readLine();
-				model.deleteItem(itemName);
+				model.deleteItem(token[2]);
+				socketOut.println("Tool " + token[2] + " is deleted.");
 				// TODO: add error message return to GUI
 				break;
 			case 9: // Find supplier by ID
-				supplierId = Integer.parseInt(socketIn.readLine());
+				supplierId = Integer.parseInt(token[2]);
 				Supplier s = model.findSupplierById(supplierId);
 				socketOut.println(toJSON(s));
 				// TODO: add error message return to GUI
 				break;
 			case 10: // Find supplier by name
-				String supplierName = socketIn.readLine();
-				s = model.findSupplierByName(supplierName);
+				s = model.findSupplierByName(token[2]);
 				socketOut.println(toJSON(s));
 				// TODO: add error message return to GUI
 				break;
 			case 11: // Find customer by ID
-				int customerId = Integer.parseInt(socketIn.readLine());
+				int customerId = Integer.parseInt(token[2]);
 				Customer c = model.findCustomerById(customerId);
 				socketOut.println(toJSON(c));
 				break;
 			case 12: // Find customer by last name, return a list
-				String lastname = socketIn.readLine();
-				ArrayList<Customer> cList= model.findCustomerbyLastName(lastname);
+				ArrayList<Customer> cList= model.findCustomerbyLastName(token[2]);
 				socketOut.println(toJSON(cList));
 				break;
 			case 13: // Find customer by type, return a list
-				String cType = socketIn.readLine();
-				cList = model.findCustomerbyType(cType);
+				cList = model.findCustomerbyType(token[2]);
 				socketOut.println(toJSON(cList));
 				break;
 			case 14:
@@ -132,10 +129,14 @@ public class ModelController implements Runnable {
 	}
 
 	private String toJSON(Object o) {
-		// TODO write method to convert any object and ArrayList of object to JSON
-		String s = "Just for Testing. To be replaced later. Printing object memory address below";
-		s += o.toString();
-		return s;
+		ObjectMapper mapper = new ObjectMapper();
+		String json = "";
+		try {
+			json = mapper.writeValueAsString(o);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		return json;
 	}
 
 	public ArrayList<Item> allItems() {
@@ -229,7 +230,6 @@ public class ModelController implements Runnable {
 		SupplierList theSupplierList = new SupplierList(allSuppliers());
 		CustomerList theCustomerList = new CustomerList(allCustomers());
 		this.model = new Model(theInventory, theSupplierList, theCustomerList);
-		socketOut.println("Connected to Server");
 		try {
 			listenSignal();
 		} catch (IOException e) {

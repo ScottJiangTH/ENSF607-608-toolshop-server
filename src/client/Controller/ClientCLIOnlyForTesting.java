@@ -29,24 +29,9 @@ public class ClientCLIOnlyForTesting {
 	}
 
 	public void prompt() throws IOException {
-		String oldInput = "";
-		String oldMessage = "";
-		String newInput = "Input stream ready";
-		String newMessage = "CLI ready";
-
 		while (true) {
-			if (newMessage.equals(oldMessage)) {
-				newMessage = socketIn.readLine();
-			} else {
-				System.out.println(newMessage);
-				oldMessage = newMessage;
-			}
-			if (newInput.equals(oldInput)) {
-				newInput = stdIn.readLine();
-			} else {
-				socketOut.println(newInput);
-				oldInput = newInput;
-			}
+			socketOut.println(stdIn.readLine());
+			System.out.println(socketIn.readLine());
 		}
 	}
 

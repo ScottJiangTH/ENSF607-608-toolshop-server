@@ -99,8 +99,6 @@ public class Item {
 		this.alreadyOrdered = alreadyOrdered;
 	}
 
-	public int getSupplierID() {return theSupplier.getSupId();}
-
 	public String getItemType() {return itemType;}
 
 	public void addItemDescription(String description) {
