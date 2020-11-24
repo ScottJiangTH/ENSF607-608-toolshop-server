@@ -58,8 +58,7 @@ public class CustomerManagementGUI extends JFrame {
 		client.setLayout(new FlowLayout());
 		client.add(new JLabel("Client ID"));
 		clientIDField.setPreferredSize(new Dimension(50,20));
-		clientIDField.setEditable(false);
-		clientIDField.setText("0");
+	
 		client.add(clientIDField);
 	
 		

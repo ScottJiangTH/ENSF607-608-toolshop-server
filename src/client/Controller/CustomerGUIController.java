@@ -19,29 +19,27 @@ import client.View.CustomerManagementGUI;
 import server.Controller.DBController;
 import client.Model.*;
 
-
-
 public class CustomerGUIController {
 	CustomerManagementGUI view;
 
 	ClientController client;
-	
+
 	private JList clientJList = new JList();
 	private String searchFilter;
 	private ClientModel clientModel;
+	private ClientController selectedClient;
 
 	private ClientController clientController;
 	private DefaultListModel<ClientController> clientList;
 	private int selectedIndex;
 	private int newID;
-	
-	
 
-	public CustomerGUIController(CustomerManagementGUI view, ClientModel clientModel, ClientController clientController) throws SQLException {
+	public CustomerGUIController(CustomerManagementGUI view, ClientModel clientModel, ClientController clientController)
+			throws SQLException {
 		this.view = view;
 		this.clientModel = clientModel;
-		this.clientController=clientController;
-		
+		this.clientController = clientController;
+
 		clientList = clientModel.getClientList();
 		this.clientJList = new JList(clientList);
 		view.setClientJList(clientJList);
@@ -57,104 +55,170 @@ public class CustomerGUIController {
 		view.addClientListListener(new ClientListListener());
 
 	}
-	class TypeListener implements ActionListener{
+
+	class TypeListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			JComboBox selectedType = (JComboBox)e.getSource();
-			String typeS = (String)selectedType.getSelectedItem();
+			JComboBox selectedType = (JComboBox) e.getSource();
+			String typeS = (String) selectedType.getSelectedItem();
 			if (typeS != "") {
-			//client.setClientType(typeS.charAt(0));
+				view.setClientType(typeS.charAt(0));
+			}
+
 		}
-		
 	}
-	}
-	class SaveListener implements ActionListener{
+
+	class SaveListener implements ActionListener {
 		@SuppressWarnings("unused")
 		@Override
 		public void actionPerformed(ActionEvent e) {
 
 		}
 	}
-	class DeleteListener implements ActionListener{
+
+	class DeleteListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 
-		}
-	}
-	class ClearListener implements ActionListener{
-		@Override
-		public void actionPerformed(ActionEvent e) {
+			ClientController tempClient = new ClientController(view.getClientID(), view.getFirstName(),
+					view.getLastName(), view.getAddress(), view.getPostalCode(), view.getPhoneNumber(),
+					view.getClientType());
+
+			ClientController check = selectedClient;
+			//if (tempClient.toString().equals(check.toString())) {
 		
-		}
-	}
-	class SearchListener implements ActionListener{
-		@Override
-		public void actionPerformed(ActionEvent e) {
-		
-		}
-	}	
-	class ClearSearchListener implements ActionListener{
-		@Override
-		public void actionPerformed(ActionEvent e) {
-
-		}
-	}
-	class ClientIDFilterListener implements ActionListener{
-		@Override
-		public void actionPerformed(ActionEvent e) {
-
-		}
-	}
-	class LastNameFilterListener implements ActionListener{
-		@Override
-		public void actionPerformed(ActionEvent e) {
-
+			//TODO: fix null pointer
 			
+			if (tempClient.toString()!=null) {
+				//clientModel.deleteClient(check);
+				clientList.remove(selectedIndex);
+				view.displayErrorMessage("successfully deleted");
+			} else {
+				view.displayErrorMessage("Cannot delete this client as he's not in our database!!");
+			}
 		}
-	}
-	class TypeFilterListener implements ActionListener{
-		@Override
-		public void actionPerformed(ActionEvent e) {
-
-		}
-	}
-	class ClientListListener implements ListSelectionListener{
-		@Override
-		public void valueChanged(ListSelectionEvent evt) {
-
-		}
-
+		
 
 	}
+
+
+class ClearListener implements ActionListener {
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		view.clearInfo();
+
+	}
+}
+
+class SearchListener implements ActionListener {
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		searchFunction(view.getSearchKeyword());
+		//currently not working 
+	}
+}
+
+class ClearSearchListener implements ActionListener {
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		view.clearSearchBar();
+		clientJList.setModel(clientList);
+
+	}
+}
+
+class ClientIDFilterListener implements ActionListener {
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		view.setSelection("id");
+		searchFilter = view.getSelection();
+	}
+}
+
+class LastNameFilterListener implements ActionListener {
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		view.setSelection("lname");
+		searchFilter = view.getSelection();
+	}
+}
+
+class TypeFilterListener implements ActionListener {
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		view.setSelection("ctype");
+		searchFilter = view.getSelection();
+	}
+}
+
+class ClientListListener implements ListSelectionListener {
+	@Override
+	public void valueChanged(ListSelectionEvent evt) {
+		//Client selectedClient = (Client) ;
+		selectedClient = (ClientController) clientJList.getSelectedValue();
+		if(selectedClient !=null) {
+			selectedIndex = clientJList.getSelectedIndex();
+			view.displayInfo(selectedClient);
+		}
+		else {
+			view.clearInfo();
+		}
+	}
+
+}
 
 //	private boolean checkValidInput(Client someClient) {
 
 //	}
 	private void searchFunction(String keyword) {
 
-	//	return newID;
-	}
+		DefaultListModel filteredItems=new DefaultListModel();
+		int counter = 0;
+		try {
+			for(int i=0;i<clientList.getSize();i++) {
+				ClientController tempClient = clientList.getElementAt(i);
+				if (searchFilter.equals("lname")) {
+					if (tempClient.getLastName().toLowerCase().contains(keyword.toLowerCase())) {
+						filteredItems.add(counter, clientList.getElementAt(i));
+						counter = counter + 1;
+						
+						}
+				}
+				else if(searchFilter.equals("id")) {
+						int searchID = Integer.parseInt(keyword);
+						if (tempClient.getID()==searchID) {
+							filteredItems.add(counter, clientList.getElementAt(i));
+							counter = counter + 1;
+							
+							}
+						}
+					
+				
+				else if(searchFilter.equals("ctype")) {
+					if (tempClient.getType()==keyword.charAt(0)) {
+							filteredItems.add(counter, clientList.getElementAt(i));
+							counter = counter + 1;
+							}
+						}
+		}
+				clientJList.setModel(filteredItems);}
 
+		catch(NumberFormatException e) {
+			JOptionPane.showMessageDialog(view.getC(), "Please enter a number!");
+			view.clearSearchBar();
+			}	}
 
-	
-	
-	
-	
 	public static void main(String[] args) throws SQLException {
-		
+
 		ClientModel theModel = new ClientModel();
 		theModel.populateList();
 
-		
 		CustomerManagementGUI g = new CustomerManagementGUI();
 		ClientController client = new ClientController("localhost", 9009);
-		CustomerGUIController c = new CustomerGUIController(g ,theModel,client);
+		CustomerGUIController c = new CustomerGUIController(g, theModel, client);
 		g.pack();
 		g.setVisible(true);
-		
-	
-
 
 	}
 }
