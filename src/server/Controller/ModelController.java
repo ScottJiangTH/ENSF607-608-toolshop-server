@@ -75,8 +75,9 @@ public class ModelController implements Runnable {
 			case 6: // Update item quantity, can be either increment or decrement by any number
 				int diff = Integer.parseInt(token[3]);
 				model.updateItemQuantity(token[2], diff);
+				dBController.updateItemQuantity(token[2], diff);
 				// TODO: add error message return to GUI
-				socketOut.println("The quantity of " + token[2] + " is updated.");
+				socketOut.println("The quantity of " + token[2] + " is updated. Changes saved to database.");
 				break;
 			case 7: // Add new item
 				itemId = Integer.parseInt(token[2]);
@@ -86,11 +87,13 @@ public class ModelController implements Runnable {
 				double itemPrice = Double.parseDouble(token[6]);
 				int supplierId = Integer.parseInt(token[7]);
 				model.addNewItem(itemId, itemType, itemName, itemQuantity, itemPrice, supplierId);
-				socketOut.println("New tool " + token[4] + " is added.");
+				dBController.addNewItem(itemId, itemType, itemName, itemQuantity, itemPrice, supplierId);
+				socketOut.println("New tool " + token[4] + " is added. Changes saved to database.");
 				break;
-			case 8: // Delete item
+			case 8: // Delete item by name
 				model.deleteItem(token[2]);
-				socketOut.println("Tool " + token[2] + " is deleted.");
+				dBController.deleteItem(token[2]);
+				socketOut.println("Tool " + token[2] + " is deleted. Changes saved to database.");
 				// TODO: add error message return to GUI
 				break;
 			case 9: // Find supplier by ID
@@ -117,7 +120,29 @@ public class ModelController implements Runnable {
 				cList = model.findCustomerbyType(token[2]);
 				socketOut.println(toJSON(cList));
 				break;
-			case 14:
+			case 14: // Add new customer
+				customerId = Integer.parseInt(token[2]);
+				String firstName = token[3];
+				String lastName = token[4];
+				String address = token[5];
+				String postalCode = token[6];
+				String phone = token[7];
+				String type = token[8];
+				model.addNewCustomer(customerId, firstName, lastName, address, postalCode, phone, type);
+				dBController.addNewCustomer(customerId, firstName, lastName, address, postalCode, phone, type);
+				socketOut.println("New customer " + firstName + lastName + " is added. Changes saved to database.");
+				break;
+			case 15: // Delete customer by id
+				model.deleteCustomer(Integer.parseInt(token[2]));
+				dBController.deleteCustomer(Integer.parseInt(token[2]));
+				socketOut.println("Customer ID " + token[2] + " is deleted. Changes saved to database.");
+				break;
+			case 16: // print daily_order
+				Order dailyOrder = model.printOrder();
+				dBController.saveDailyOrder(dailyOrder);
+				socketOut.println(toJSON(dailyOrder));
+				break;
+			case 17:
 				System.out.println("Client GUI closed.");
 				return;
 			default:

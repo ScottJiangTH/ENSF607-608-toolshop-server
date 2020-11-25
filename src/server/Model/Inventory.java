@@ -88,7 +88,7 @@ public class Inventory {
 		return str;
 	}
 
-	public String printOrder() {
-		return myOrder.toString();
+	public Order printOrder() {
+		return myOrder;
 	}
 }

@@ -76,8 +76,16 @@ public class Model {
 		return theCustomerList.findCustomerByType(type);
 	}
 
-	public String printOrder() {
-		return theInventory.printOrder();
+	public void addNewCustomer(int customerId, String firstName, String lastName, String address, String postalCode,
+			String phone, String type) {
+		theCustomerList.addNewCustomer(customerId, firstName, lastName, address, postalCode, phone, type);
 	}
 
+	public void deleteCustomer(int customerId) {
+		theCustomerList.deleteCustomer(customerId);
+	}
+
+	public Order printOrder() {
+		return theInventory.printOrder();
+	}
 }
