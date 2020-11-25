@@ -29,15 +29,14 @@ SELECT O.oid,S.company_name FROM order_line AS O LEFT OUTER JOIN supplier AS S O
 #6.update operation with necessary triggers
 DROP TABLE IF EXISTS order_line;
 CREATE TABLE order_line(
-oid   integer not null,
-iid integer not null,
-quantity integer not null,
-sid integer not null,
-foreign key(oid) references daily_order(id),
-foreign key(iid) references item(id),
-foreign key(sid) references supplier(id)
+  oid			char(9) not null,
+  iid			char(9) not null,
+  quantity		integer not null,
+  sid   		char(9) not null,
+  primary key (oid, iid),
+  foreign key (oid) references daily_order(id), 
+  foreign key (iid) references item(id), 
+  foreign key (sid) references supplier(id)
 ON DELETE CASCADE
 ON UPDATE CASCADE
-
 )
-
