@@ -1,4 +1,6 @@
 #2. basic retrieval
+USE toolshop;
+
 SELECT * FROM item;
 SELECT * FROM electrical_item;
 SELECT * FROM supplier;
@@ -25,5 +27,17 @@ SELECT iname FROM (electrical_item JOIN item ON iid=id) WHERE power_type="110V";
 SELECT O.oid,S.company_name FROM order_line AS O LEFT OUTER JOIN supplier AS S ON O.sid=S.id WHERE S.stype="domestic";
 
 #6.update operation with necessary triggers
+DROP TABLE IF EXISTS order_line;
+CREATE TABLE order_line(
+oid   integer not null,
+iid integer not null,
+quantity integer not null,
+sid integer not null,
+foreign key(oid) references daily_order(id),
+foreign key(iid) references item(id),
+foreign key(sid) references supplier(id)
+ON DELETE CASCADE
+ON UPDATE CASCADE
 
+)
 
