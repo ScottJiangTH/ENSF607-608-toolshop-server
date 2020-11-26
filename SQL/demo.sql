@@ -27,17 +27,17 @@ SELECT iname FROM (electrical_item JOIN item ON iid=id) WHERE power_type="110V";
 SELECT O.oid,S.company_name FROM order_line AS O LEFT OUTER JOIN supplier AS S ON O.sid=S.id WHERE S.stype="domestic";
 
 #6.update operation with necessary triggers
-DROP TABLE IF EXISTS order_line;
-CREATE TABLE order_line(
-oid   integer not null,
-iid integer not null,
-quantity integer not null,
-sid integer not null,
-foreign key(oid) references daily_order(id),
-foreign key(iid) references item(id),
-foreign key(sid) references supplier(id)
-ON DELETE CASCADE
-ON UPDATE CASCADE
+DROP TRIGGER IF EXISTS `toolshop`.`supplier_AFTER_INSERT`;
 
-)
+DELIMITER $$
+USE `toolshop`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `toolshop`.`supplier_AFTER_INSERT` AFTER INSERT ON `supplier` FOR EACH ROW
+BEGIN
+IF (NEW.stype='international') THEN
+INSERT INTO international_supplier VALUES (NEW.id,NULL);
+END IF;
+
+END$$
+DELIMITER ;
+
 
