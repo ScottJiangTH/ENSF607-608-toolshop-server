@@ -40,4 +40,15 @@ END IF;
 END$$
 DELIMITER ;
 
+DROP TRIGGER IF EXISTS `toolshop`.`item_BEFORE_DELETE`;
 
+DELIMITER $$
+USE `toolshop`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `toolshop`.`item_AFTER_DELETE` AFTER DELETE ON `item` FOR EACH ROW
+BEGIN
+IF (OLD.itype='electrical') THEN
+DELETE FROM electrical_item ;
+END IF;
+END
+$$
+DELIMITER ;
