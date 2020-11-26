@@ -55,4 +55,15 @@ public class Customer {
 		return type;
 	}
 
+	public void updateCustomerInfo(int customerId, String firstName, String lastName, String address,
+			String postalCode, String phone, String type) {
+		this.customerId = customerId;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.address = address;
+		this.postalCode = postalCode;
+		this.phone = phone;
+		this.type = type;
+	}
+
 }

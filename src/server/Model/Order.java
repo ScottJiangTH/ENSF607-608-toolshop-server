@@ -1,12 +1,7 @@
 package server.Model;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.PrintWriter;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Random;
 
 /**
@@ -21,19 +16,15 @@ import java.util.Random;
 public class Order {
 
 	private int orderId;
-	private Date orderDate = new Date();
-	LocalDate localDate = orderDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+	private LocalDate orderDate;
 	private ArrayList<OrderLine> orderLines;
 
 	public Order() {
+		orderId = gen();
 		orderLines = new ArrayList<OrderLine>();
+		setOrderDate(LocalDate.now());
 	}
 
-	/**
-	 * generates the order id
-	 * 
-	 * @return order id
-	 */
 	private int gen() {
 		Random r = new Random(System.currentTimeMillis());
 		return 10000 + r.nextInt(20000);
@@ -47,14 +38,6 @@ public class Order {
 		this.orderId = newId;
 	}
 	
-	public LocalDate getLocalDate() {
-		return localDate;
-	}
-
-	public void setLocalDate(LocalDate localDate) {
-		this.localDate = localDate;
-	}
-	
 	public void addOrderLine(OrderLine ol) {
 		orderLines.add(ol);
 	}
@@ -65,5 +48,13 @@ public class Order {
 
 	public void setOrderLines(ArrayList<OrderLine> orderLines) {
 		this.orderLines = orderLines;
+	}
+
+	public LocalDate getOrderDate() {
+		return orderDate;
+	}
+
+	public void setOrderDate(LocalDate orderDate) {
+		this.orderDate = orderDate;
 	}
 }

@@ -5,11 +5,11 @@ import java.util.ArrayList;
 public class Inventory {
 
 	private ArrayList<Item> itemList;
-	private Order myOrder;
+	private Order dailyOrder;
 
 	public Inventory(ArrayList<Item> itemList) {
 		this.itemList = itemList;
-		myOrder = new Order();
+		dailyOrder = new Order();
 	}
 
 	public ArrayList<Item> listAllItems() {
@@ -48,47 +48,53 @@ public class Inventory {
 		return q;
 	}
 
-	public void updateItemQuantity(String itemName, int diff) {
-		// TODO: add some return signal to GUI if item not found
+	public String updateItemQuantity(String itemName, int diff) {
 		Item i = findItemByName(itemName);
 		if (i != null)
 			i.updateItemQuantity(diff);
+		else 
+			return itemName + " not found. Please verify tool name.";
+		OrderLine ol = triggerOrderLine(i);
+		if (ol != null)
+			return "Order line generated. Please click Print Order to see.";
+		return "The quantity of " + i.getItemName() + "has been updated.";
 	}
 
-	public void addNewItem(int id, String type, String name, int quantity, double price, int supplierId) {
-		Item i = new Item(id, type, name, quantity, price, supplierId);
-		itemList.add(i);
+	@SuppressWarnings("unused")
+	public String addNewItem(int id, String type, String name, int quantity, double price, int supplierId) {
+		Item i = null;
+		i = new Item(id, type, name, quantity, price, supplierId);
+		if (i != null) {
+			itemList.add(i);
+			return "New tool created.";
+		}
+		else
+			return "Create new tool failed, please verify input and try again.";
 	}
 
-	public void deleteItem(String itemName) {
-		// TODO: add some return signal to GUI if item not found
+	public String deleteItem(String itemName) {
 		Item i = findItemByName(itemName);
 		if (i != null)
 			itemList.remove(i);
+		else 
+			return itemName + " not found. Please verify tool name.";
+		return i.getItemName() + "has been deleted.";
 	}
 
-
-
+	private OrderLine triggerOrderLine(Item theItem) {
+		OrderLine ol = null;
+		if (theItem.getItemQuantity() < 40) {
+			ol = new OrderLine(theItem, 50 - theItem.getItemQuantity());
+		}
+		return ol;
+	}
+	
+	public Order getOrder() {
+		return dailyOrder;
+	}
+	
 	public void setItemList(ArrayList<Item> itemList) {
 		this.itemList = itemList;
 	}
-
-	public void placeOrder(Item theItem) {
-		OrderLine ol = theItem.generateOrderLine();
-		if (ol != null) {
-			myOrder.addOrderLine(ol);
-		}
-	}
-
-	public String toString() {
-		String str = "";
-		for (Item i : itemList) {
-			str += i;
-		}
-		return str;
-	}
-
-	public Order printOrder() {
-		return myOrder;
-	}
+	
 }

@@ -14,21 +14,15 @@ public class Item {
 	private double itemPrice;
 	private int itemQuantity;
 	private int supplierId;
-	private boolean alreadyOrdered;
-	private static final int ORDERQUANTITY = 40;
-	private static final int MINIMUMUMBER = 20;
-	
-	
 	
 	public Item (int id, String type, String name, int quantity, double price, int supplierId) {
 		
 		this.itemId = id;
-		this.itemType = type;
+		this.setItemType(type);
 		this.itemName = name;
 		this.itemQuantity = quantity;
 		this.itemPrice = price;
 		this.setSupplierId(supplierId); 
-		setAlreadyOrdered(false);
 	}
 
 	public boolean decreaseItemQuantity () {
@@ -38,15 +32,6 @@ public class Item {
 		}
 		else
 			return false;	
-	}
-	public OrderLine generateOrderLine (){
-		OrderLine ol;
-		if (getItemQuantity() < MINIMUMUMBER && alreadyOrdered == false){
-			ol = new OrderLine (this, ORDERQUANTITY);
-			alreadyOrdered = true;
-			return ol;
-		}
-	    return null;
 	}
 
 	public int getItemId() {
@@ -81,19 +66,6 @@ public class Item {
 		this.itemPrice = itemPrice;
 	}
 	
-	public String toString () {
-		return "Item ID: " + itemId + ", Item Name: " + itemName + ", Item Quantity: " + 
-	           itemQuantity + "\n";
-	}
-
-	public boolean isAlreadyOrdered() {return alreadyOrdered;}
-
-	public void setAlreadyOrdered(boolean alreadyOrdered) {
-		this.alreadyOrdered = alreadyOrdered;
-	}
-
-	public String getItemType() {return itemType;}
-
 	public void addItemDescription(String description) {
 		this.itemDescription = description;
 	}
@@ -110,6 +82,14 @@ public class Item {
 
 	public void setSupplierId(int supplierId) {
 		this.supplierId = supplierId;
+	}
+
+	public String getItemType() {
+		return itemType;
+	}
+
+	public void setItemType(String itemType) {
+		this.itemType = itemType;
 	}
 
 }

@@ -18,10 +18,7 @@ public class DBController {
 	
 	public DBController() {
 		try{
-			// If this throws an error, make sure you have added the mySQL connector JAR to the project
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			
-			// If this fails make sure your connectionInfo and login/password are correct
 			jdbc_connection = DriverManager.getConnection(connectionInfo, login, password);
 			System.out.println("Connected to: " + connectionInfo + "\n");
 		}
@@ -41,7 +38,7 @@ public class DBController {
 		return rs;
 	}
 	
-	public void insertToTable(String sql) {
+	public void updateTable(String sql) {
 		try{
 			statement = jdbc_connection.createStatement();
 			statement.executeUpdate(sql);
@@ -65,24 +62,24 @@ public class DBController {
 	private void addItem(Item item) { 
 		// never need to be called from other class since item is the super class
 		// insert to item table on DB
-		String sql = "INSERT INTO item " + " VALUES ( "
-				+ item.getItemId() + ", '" + 
-				item.getItemType() + "', " + 
-				item.getItemName() + "', " + 
+		String sql = "INSERT INTO item " + " VALUES ( '"
+				+ item.getItemId() + "', '" + 
+				item.getItemType() + "', '" + 
+				item.getItemName() + "', '" + 
 				item.getItemDescription() + "', " + 
 				item.getItemPrice() + ", " + 
-				item.getItemQuantity() + ", " + 
-				item.getSupplierId() + ");";
-		insertToTable(sql);
+				item.getItemQuantity() + ", '" + 
+				item.getSupplierId() + "' );";
+		updateTable(sql);
 	}
 	
 	public void addElectricalItem(ElectricalItem eItem) {
 		addItem(eItem);
 		// insert to electrical item table on DB
-		String sql = "INSERT INTO electrical_item " + " VALUES ( "
-				+ eItem.getItemId() + ", '" + 
-				eItem.getPowerType() + ");";
-		insertToTable(sql);
+		String sql = "INSERT INTO electrical_item " + " VALUES ( '"
+				+ eItem.getItemId() + "', '" + 
+				eItem.getPowerType() + "' );";
+		updateTable(sql);
 	}
 	
 	public void addNonElectricalItem(NonElectricalItem neItem) {
@@ -92,94 +89,104 @@ public class DBController {
 	
 	private void addSupplier(Supplier supplier) {
 		// insert to supplier table on DB
-		String sql = "INSERT INTO supplier " + " VALUES ( "
-				+ supplier.getSupId() + ", '" + 
-				supplier.getSupType() + "', " + 
-				supplier.getSupName() + ", " + 
-				supplier.getSupAddress() + ", " + 
-				supplier.getSupContactName() + ");";
-		insertToTable(sql);
+		String sql = "INSERT INTO supplier " + " VALUES ( '"
+				+ supplier.getSupId() + "', '" + 
+				supplier.getSupType() + "', '" + 
+				supplier.getSupName() + "', '" + 
+				supplier.getSupAddress() + "', '" + 
+				supplier.getSupContactName() + "' );";
+		updateTable(sql);
 	}
 	
 	public void addInternationalSupplier(InternationalSupplier iSupplier) {
 		addSupplier(iSupplier);
 		// insert to international_supplier table on DB
-		String sql = "INSERT INTO international_supplier " + " VALUES ( "
-				+ iSupplier.getSupId() + ", '" + 
+		String sql = "INSERT INTO international_supplier " + " VALUES ( '"
+				+ iSupplier.getSupId() + "', " + 
 				iSupplier.getImportTax() + ");";
-		insertToTable(sql);
-	}
-	
-	public void addOrder(Order dailyOrder) {
-		// insert to daily_order table on DB
-		String sql = "INSERT INTO daily_order " + " VALUES ( "
-				+ dailyOrder.getOrderId() + ", '" + 
-				dailyOrder.getLocalDate() + ");";
-		insertToTable(sql);
-		// insert to order_line table line by line
-		ArrayList<OrderLine> olList = dailyOrder.getOrderLines();
-		for (OrderLine ol : olList) {
-			String olSql = "INSERT INTO order_line " + " VALUES ( "
-					+ dailyOrder.getOrderId() + ", '" + 
-					ol.getTheItem().getItemId() + ", '" + 
-					ol.getOrderQuantity() + ", '" + 
-					ol.getTheItem().getSupplierId() + ");";
-			insertToTable(olSql);
-		}
-	}
-	
-	public void addCustomer(Customer customer) {
-		// insert to customer table on DB
-		String sql = "INSERT INTO customer " + " VALUES ( "
-				+ customer.getCustomerId() + ", '" + 
-				customer.getFirstName() + ", " + 
-				customer.getLastName() + ", " + 
-				customer.getAddress() + ", " + 
-				customer.getPostalCode() + ", " + 
-				customer.getPhone() + ", " + 
-				customer.getType() + ");";
-		insertToTable(sql);
+		updateTable(sql);
 	}
 	
 	public void addPurchaseHistory(Customer customer, Item item, int purchaseQuantity) {
 		// insert to purchase history table on DB
-		String sql = "INSERT INTO purchase_history " + " VALUES ( "
-				+ customer.getCustomerId() + ", '" + 
-				item.getItemId() + ", " + 
+		String sql = "INSERT INTO purchase_history " + " VALUES ( '"
+				+ customer.getCustomerId() + "', '" + 
+				item.getItemId() + "', " + 
 				purchaseQuantity + ");";
-		insertToTable(sql);
+		updateTable(sql);
 	}
 
-	public void updateItemQuantity(String string, int diff) {
-		// TODO Auto-generated method stub
-		
+	// need to check item quantity by itself
+	public void updateItemQuantity(String itemName, int newQuantity) {
+		String sql = "UPDATE item SET quantity = " + newQuantity + " WHERE iname = '" + itemName + "';";
+		updateTable(sql);
 	}
 
 	public void addNewItem(int itemId, String itemType, String itemName, int itemQuantity, double itemPrice,
 			int supplierId) {
-		// TODO Auto-generated method stub
+		String sql = "INSERT INTO item " + " VALUES ( '"
+				+ itemId + "', '" + 
+				itemType + "', '" + 
+				itemName + "', " + 
+				itemQuantity + ", " + 
+				itemPrice + ", '" + 
+				supplierId + "' );";
+		updateTable(sql);	
 		
 	}
 
-	public void deleteItem(String string) {
-		// TODO Auto-generated method stub
-		
+	public void deleteItem(String itemName) {
+		String sql = "DELETE FROM item WHERE iname = '" + itemName + "'";
+		updateTable(sql);
 	}
 
 	public void addNewCustomer(int customerId, String firstName, String lastName, String address, String postalCode,
 			String phone, String type) {
-		// TODO Auto-generated method stub
-		
+		String sql = "INSERT INTO customer " + " VALUES ( '"
+				+ customerId + "', '" + 
+				firstName + "', '" + 
+				lastName + "', '" + 
+				address + "', '" + 
+				postalCode + "', '" + 
+				phone + "', '" + 
+				type + "' );";
+		updateTable(sql);		
 	}
 
-	public void deleteCustomer(int parseInt) {
-		// TODO Auto-generated method stub
-		
+	public void deleteCustomer(int customerId) {
+		String sql = "DELETE FROM customer WHERE id = '" + customerId + "'";
+		updateTable(sql);
 	}
 
+	public void updateCustomerInfo(int customerId, String firstName, String lastName, String address, String postalCode,
+			String phone, String type) {
+		String sql = "UPDATE item SET fname = '" + firstName
+				+ "', lname = '" + lastName
+				+ "', address = '" + address
+				+ "', postal = '" + postalCode
+				+ "', phone = '" + phone
+				+ "', ctype = '" + type
+				+ "', WHERE id = '" + customerId + "';";
+		updateTable(sql);
+		
+	}
+	
 	public void saveDailyOrder(Order dailyOrder) {
-		// TODO Auto-generated method stub
-		
+		// insert to daily_order table on DB
+		String sql = "INSERT INTO daily_order " + " VALUES ( '"
+				+ dailyOrder.getOrderId() + "', '" + 
+				dailyOrder.getOrderDate() + "' );";
+		updateTable(sql);
+		// insert to order_line table line by line
+		ArrayList<OrderLine> olList = dailyOrder.getOrderLines();
+		for (OrderLine ol : olList) {
+			String olSql = "INSERT INTO order_line " + " VALUES ( '"
+					+ dailyOrder.getOrderId() + "', '" + 
+					ol.getTheItem().getItemId() + "', " + 
+					ol.getOrderQuantity() + ", '" + 
+					ol.getTheItem().getSupplierId() + "' );";
+			updateTable(olSql);
+		}
 	}
 }
 

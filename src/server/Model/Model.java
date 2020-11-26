@@ -20,13 +20,11 @@ public class Model {
 	}
 	
 	public Item findItemById(int itemId) {
-		Item theItem = theInventory.findItemById(itemId);
-		return theItem;
+		return theInventory.findItemById(itemId);
 	}
 
 	public Item findItemByName(String itemName) {
-		Item theItem = theInventory.findItemByName(itemName);
-		return theItem;
+		return theInventory.findItemByName(itemName);
 	}
 
 	public int checkItemQuantity(int itemId) {
@@ -37,23 +35,24 @@ public class Model {
 		return theInventory.checkItemQuantity(itemName);
 	}
 
-	public void updateItemQuantity(String itemName, int diff) {
-		theInventory.updateItemQuantity(itemName, diff);
-
+	public String updateItemQuantity(String itemName, int diff) {
+		return theInventory.updateItemQuantity(itemName, diff);
 	}
 
-	public void addNewItem(int id, String type, String name, int quantity, double price, int supplierId) {
-		// TODO: add some return signal to GUI if supplier not found. e.g. prompt user
-		// check input or create new supplier
+	public String addNewItem(int id, String type, String name, int quantity, double price, int supplierId) {
 		Supplier s = findSupplierById(supplierId);
+		String message;
 		if (s != null) {
-			theInventory.addNewItem(id, type, name, quantity, price, supplierId);
+			message = theInventory.addNewItem(id, type, name, quantity, price, supplierId);
 			s.getItemList().add(findItemById(id));
 		}
+		else 
+			return "Supplier ID" + supplierId + "not found. Please verify supplier ID.";
+		return message;
 	}
 
-	public void deleteItem(String itemName) {
-		theInventory.deleteItem(itemName);
+	public String deleteItem(String itemName) {
+		return theInventory.deleteItem(itemName);
 	}
 
 	public Supplier findSupplierById(int supplierId) {
@@ -85,7 +84,12 @@ public class Model {
 		theCustomerList.deleteCustomer(customerId);
 	}
 
+	public void updateCustomerInfo(int customerId, String firstName, String lastName, String address, String postalCode,
+			String phone, String type) {
+		theCustomerList.updateCustomerInfo(customerId, firstName, lastName, address, postalCode, phone, type);
+	}
+	
 	public Order printOrder() {
-		return theInventory.printOrder();
+		return theInventory.getOrder();
 	}
 }

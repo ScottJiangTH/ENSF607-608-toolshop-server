@@ -47,4 +47,10 @@ public class CustomerList {
 			customerList.remove(c);
 	}
 
+	public void updateCustomerInfo(int customerId, String firstName, String lastName, String address, String postalCode,
+			String phone, String type) {
+		Customer c = findCustomerById(customerId);
+		c.updateCustomerInfo(customerId, firstName, lastName, address, postalCode, phone, type);
+	}
+
 }

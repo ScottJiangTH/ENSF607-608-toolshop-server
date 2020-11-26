@@ -27,13 +27,9 @@ public class ModelController implements Runnable {
 
 	// TODO: add methods to import from DB and construct specialized item, supplier, customer objects
 	// TODO: add method to import from DB existing orders
-	// TODO: add method to update DB at any time of the day
-	// TODO: add method to update DB at the end the day, including daily_order
-	// TODO: add method to print out daily_order at any time of the day
 	
-	// a signal sent from GUI that serves as signal that can be parsed and then call different functions
 	private void listenSignal() throws IOException {
-		while (true) { // loop run 1 time for every received singal
+		while (true) { 
 			// command is in format: "option",option#,arg1,arg2,...  DO NOT pass anything that is not in this format
 			// e.g. for add new item: option,7,itemId,itemType,itemName,itemQuantity,itemPrice,supplierId
 			String command = null;
@@ -74,10 +70,10 @@ public class ModelController implements Runnable {
 				break;
 			case 6: // Update item quantity, can be either increment or decrement by any number
 				int diff = Integer.parseInt(token[3]);
-				model.updateItemQuantity(token[2], diff);
-				dBController.updateItemQuantity(token[2], diff);
-				// TODO: add error message return to GUI
-				socketOut.println("The quantity of " + token[2] + " is updated. Changes saved to database.");
+				String message = model.updateItemQuantity(token[2], diff);
+				int currentQuantity = model.checkItemQuantity(token[2]);
+				dBController.updateItemQuantity(token[2], currentQuantity);
+				socketOut.println(message);
 				break;
 			case 7: // Add new item
 				itemId = Integer.parseInt(token[2]);
@@ -91,10 +87,9 @@ public class ModelController implements Runnable {
 				socketOut.println("New tool " + token[4] + " is added. Changes saved to database.");
 				break;
 			case 8: // Delete item by name
-				model.deleteItem(token[2]);
+				message = model.deleteItem(token[2]);
 				dBController.deleteItem(token[2]);
-				socketOut.println("Tool " + token[2] + " is deleted. Changes saved to database.");
-				// TODO: add error message return to GUI
+				socketOut.println(message);
 				break;
 			case 9: // Find supplier by ID
 				supplierId = Integer.parseInt(token[2]);
@@ -137,12 +132,24 @@ public class ModelController implements Runnable {
 				dBController.deleteCustomer(Integer.parseInt(token[2]));
 				socketOut.println("Customer ID " + token[2] + " is deleted. Changes saved to database.");
 				break;
-			case 16: // print daily_order
+			case 16: // updateCustomerInfo
+				customerId = Integer.parseInt(token[2]);
+				firstName = token[3];
+				lastName = token[4];
+				address = token[5];
+				postalCode = token[6];
+				phone = token[7];
+				type = token[8];
+				model.updateCustomerInfo(customerId, firstName, lastName, address, postalCode, phone, type);
+				dBController.updateCustomerInfo(customerId, firstName, lastName, address, postalCode, phone, type);
+				socketOut.println(firstName + lastName + "profile updated.");
+				break;
+			case 17: // print daily_order
 				Order dailyOrder = model.printOrder();
 				dBController.saveDailyOrder(dailyOrder);
 				socketOut.println(toJSON(dailyOrder));
 				break;
-			case 17:
+			case 18:
 				System.out.println("Client GUI closed.");
 				return;
 			default:
