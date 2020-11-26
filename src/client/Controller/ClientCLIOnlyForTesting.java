@@ -33,17 +33,18 @@ public class ClientCLIOnlyForTesting {
 	public void prompt() throws IOException {
 		while (true) {
 			socketOut.println(stdIn.readLine());
-			String json = socketIn.readLine();
-			JSONArray itemList = new JSONArray(json);
-			for (int i = 0; i < itemList.length(); i++) {
-				int itemId = itemList.getJSONObject(i).getInt("itemId");
-				String itemName = itemList.getJSONObject(i).getString("itemName");
-				int itemQuantity = itemList.getJSONObject(i).getInt("itemQuantity");
-				String s[] = { Integer.toString(itemId), itemName, Integer.toString(itemQuantity) };
-				for (String str : s) {
-					System.out.println(str);
-				}
-			}
+//			String json = socketIn.readLine();
+//			JSONArray itemList = new JSONArray(json);
+//			for (int i = 0; i < itemList.length(); i++) {
+//				int itemId = itemList.getJSONObject(i).getInt("itemId");
+//				String itemName = itemList.getJSONObject(i).getString("itemName");
+//				int itemQuantity = itemList.getJSONObject(i).getInt("itemQuantity");
+//				String s[] = { Integer.toString(itemId), itemName, Integer.toString(itemQuantity) };
+//				for (String str : s) {
+//					System.out.println(str);
+//				}
+//			}
+			System.out.println(socketIn.readLine());
 		}
 	}
 

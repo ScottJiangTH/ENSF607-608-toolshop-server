@@ -1,65 +1,77 @@
 package client.View;
 
-import java.awt.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-
-import client.Controller.ClientController;
-
-import java.awt.event.ActionEvent;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
-import javax.swing.*;
+import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.ScrollPaneLayout;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ListSelectionListener;
 
 public class CustomerManagementGUI extends JFrame {
+	
+	private static final long serialVersionUID = 1L;
 	Container c;
 	JPanel selections = new JPanel();
 	private String selection;
 	JPanel information = new JPanel();
 	JPanel leftPanel = new JPanel();
 
-	private JTextField clientIDField = new JTextField();
+	private JTextField customerIDField = new JTextField();
 	private JTextField firstNameField = new JTextField();
 	private JTextField lastNameField = new JTextField();
 	private JTextField addressField = new JTextField();
 	private JTextField postalCodeField = new JTextField();
 	private JTextField phoneField = new JTextField();
 	private JComboBox typeList;
-	private char clientType;
+	private char customerType;
 	private JButton save = new JButton("Save");
 	private JButton delete = new JButton("Delete");
 	private JButton clear = new JButton("Clear");
 	private JButton searchButton = new JButton("Search");
 	private JButton clearButton = new JButton("Clear Search");
 	private JTextField searchBar = new JTextField();
-	private JRadioButton clientIDFilter = new JRadioButton("Client ID");
+	private JRadioButton customerIDFilter = new JRadioButton("Customer ID");
 	private JRadioButton lastNameFilter = new JRadioButton("Last Name");
-	private JRadioButton typeFilter = new JRadioButton("Client Type");
+	private JRadioButton typeFilter = new JRadioButton("Customer Type");
 	private JScrollPane searchResults = new JScrollPane();
 //	private JTextArea results = new JTextArea();
-	private JList clientJList;
+	private JList customerJList;
 
 	
 	
 	public CustomerManagementGUI() {
-		super("Client Management System");
+		super("Customer Management System");
 		c = getContentPane();
 		//		setting up information menu
-		TitledBorder informationBorder = new TitledBorder("Client Information");
+		TitledBorder informationBorder = new TitledBorder("Customer Information");
 	    informationBorder.setTitleJustification(TitledBorder.CENTER);
 	    informationBorder.setTitlePosition(TitledBorder.TOP);
 	    information.setBorder(informationBorder);
 	    
 		information.setLayout(new GridLayout(0,1));
 		
-		JPanel client = new JPanel();
-		client.setLayout(new FlowLayout());
-		client.add(new JLabel("Client ID"));
-		clientIDField.setPreferredSize(new Dimension(50,20));
+		JPanel cmg = new JPanel();
+		cmg.setLayout(new FlowLayout());
+		cmg.add(new JLabel("Customer ID"));
+		customerIDField.setPreferredSize(new Dimension(50,20));
 	
-		client.add(clientIDField);
+		cmg.add(customerIDField);
 	
 		
 		JPanel first = new JPanel();
@@ -114,7 +126,7 @@ public class CustomerManagementGUI extends JFrame {
 		
 		
 		
-		information.add(client);
+		information.add(cmg);
 		information.add(first);
 		information.add(last);
 		information.add(addressPanel);
@@ -128,22 +140,22 @@ public class CustomerManagementGUI extends JFrame {
 		
 		//setting up selection menu
 		
-		TitledBorder border = new TitledBorder("Search Clients");
+		TitledBorder border = new TitledBorder("Search Customers");
 	    border.setTitleJustification(TitledBorder.CENTER);
 	    border.setTitlePosition(TitledBorder.TOP);
 	    selections.setBorder(border);
 	    
 		selections.setLayout(new GridLayout(0,1));
-		selections.add(new JLabel("Search type of clients to be performed:"));
+		selections.add(new JLabel("Search type of customers to be performed:"));
 
-		clientIDFilter.setMnemonic(KeyEvent.VK_B);
+		customerIDFilter.setMnemonic(KeyEvent.VK_B);
        	lastNameFilter.setMnemonic(KeyEvent.VK_B);
        	typeFilter.setMnemonic(KeyEvent.VK_B);
 
   
         
         ButtonGroup group = new ButtonGroup();
-        group.add(clientIDFilter);
+        group.add(customerIDFilter);
         group.add(lastNameFilter);
         group.add(typeFilter);
         
@@ -161,7 +173,7 @@ public class CustomerManagementGUI extends JFrame {
         
         
         
-        selections.add(clientIDFilter);
+        selections.add(customerIDFilter);
         selections.add(lastNameFilter);
         selections.add(typeFilter);
         selections.add(new JLabel("Enter the search parameter below :"));
@@ -170,7 +182,7 @@ public class CustomerManagementGUI extends JFrame {
         //creating new scroll pane
         leftPanel.setLayout(new BoxLayout(leftPanel,BoxLayout.Y_AXIS));
 
-		searchResults = new JScrollPane(clientJList);
+		searchResults = new JScrollPane(customerJList);
         searchResults.setLayout(new ScrollPaneLayout());
 //        results.setPreferredSize(new Dimension(200,200));
 //        results.add(searchResults);   
@@ -211,8 +223,8 @@ public class CustomerManagementGUI extends JFrame {
 		public void addClearListener(ActionListener listenForClearListener) {
 			clear.addActionListener(listenForClearListener);
 		}
-		public void addClientIDFilterListener(ActionListener listenForIDilter) {
-			clientIDFilter.addActionListener(listenForIDilter);
+		public void addCustomerIDFilterListener(ActionListener listenForIDilter) {
+			customerIDFilter.addActionListener(listenForIDilter);
 		}
 		public void addLastNameFilterListener(ActionListener listenForLNFilter) {
 			lastNameFilter.addActionListener(listenForLNFilter);
@@ -226,7 +238,7 @@ public class CustomerManagementGUI extends JFrame {
 		public void addClearSearchListener(ActionListener listenForClearSearch) {
 			clearButton.addActionListener(listenForClearSearch);
 		}
-		public void addClientListListener(ListSelectionListener listenerForJList) {
+		public void addCustomerListListener(ListSelectionListener listenerForJList) {
 			//clientJList.addListSelectionListener(listenerForJList);
 		}
 
@@ -240,8 +252,8 @@ public class CustomerManagementGUI extends JFrame {
 		public void setSelection(String selection) {
 			this.selection = selection;
 		}
-		public int getClientID() {
-			String id = getTextFromTextBox(clientIDField);
+		public int getCustomerID() {
+			String id = getTextFromTextBox(customerIDField);
 			return Integer.parseInt(id);
 		}
 		public String getFirstName() {
@@ -259,24 +271,24 @@ public class CustomerManagementGUI extends JFrame {
 		public String getPhoneNumber() {
 			return getTextFromTextBox(phoneField);
 		}
-		public char getClientType() {
+		public char getCustomerType() {
 
-			return clientType;
+			return customerType;
 		}
-		public JList getClientJList() {
-			return clientJList;
+		public JList getCustomerJList() {
+			return customerJList;
 		}
-		public void setClientType(char newType) {
-			clientType = newType;
+		public void setCustomerType(char newType) {
+			customerType = newType;
 		}
 		public Container getC() {
 			return c;
 		}
-		private int getIntFromTextBox(JTextField clientIDField2) {
-			return Integer.parseInt(clientIDField2.getText());
+		private int getIntFromTextBox(JTextField customerIDField2) {
+			return Integer.parseInt(customerIDField2.getText());
 		}
-		private String getTextFromTextBox(JTextField clientNameField) {
-			return clientNameField.getText();
+		private String getTextFromTextBox(JTextField customerNameField) {
+			return customerNameField.getText();
 		}
 		
 		
@@ -284,17 +296,17 @@ public class CustomerManagementGUI extends JFrame {
 		public void displayErrorMessage(String errorMessage) {
 			JOptionPane.showMessageDialog(this, errorMessage);
 		}
-		public void displayInfo(ClientController tempClient) {
-			clientIDField.setText(tempClient.getID()+"");
-			firstNameField.setText(tempClient.getFirstName());
-			lastNameField.setText(tempClient.getLastName());
-			addressField.setText(tempClient.getAddress());
-			postalCodeField.setText(tempClient.getPostalCode());
-			phoneField.setText(tempClient.getPhoneNumber());
-			typeList.setSelectedItem(tempClient.getType()+"");
-		}
+//		public void displayInfo(ClientController tempClient) {
+//			clientIDField.setText(tempClient.getID()+"");
+//			firstNameField.setText(tempClient.getFirstName());
+//			lastNameField.setText(tempClient.getLastName());
+//			addressField.setText(tempClient.getAddress());
+//			postalCodeField.setText(tempClient.getPostalCode());
+//			phoneField.setText(tempClient.getPhoneNumber());
+//			typeList.setSelectedItem(tempClient.getType()+"");
+//		}
 		public void clearInfo() {
-			clientIDField.setText("0");
+			customerIDField.setText("0");
 			firstNameField.setText("");
 			lastNameField.setText("");
 			addressField.setText("");
@@ -306,8 +318,8 @@ public class CustomerManagementGUI extends JFrame {
 			searchBar.setText("");
 		}
 		public void setClientJList(JList someList) {
-			this.clientJList = someList;
-			searchResults = new JScrollPane(clientJList);
+			this.customerJList = someList;
+			searchResults = new JScrollPane(customerJList);
 			leftPanel.add(searchResults);
 		}
 

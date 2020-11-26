@@ -28,7 +28,7 @@ public class ModelController implements Runnable {
 	// TODO: add methods to import from DB and construct specialized item, supplier, customer objects
 	// TODO: add method to import from DB existing orders
 	
-	private void listenSignal() throws IOException {
+	private void communication() throws IOException {
 		while (true) { 
 			// command is in format: "option",option#,arg1,arg2,...  DO NOT pass anything that is not in this format
 			// e.g. for add new item: option,7,itemId,itemType,itemName,itemQuantity,itemPrice,supplierId
@@ -263,7 +263,7 @@ public class ModelController implements Runnable {
 		CustomerList theCustomerList = new CustomerList(allCustomers());
 		this.model = new Model(theInventory, theSupplierList, theCustomerList);
 		try {
-			listenSignal();
+			communication();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

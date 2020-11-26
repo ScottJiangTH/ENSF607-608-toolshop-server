@@ -127,7 +127,7 @@ public class DBController {
 		String sql = "INSERT INTO item " + " VALUES ( '"
 				+ itemId + "', '" + 
 				itemType + "', '" + 
-				itemName + "', " + 
+				itemName + "', NULL, " + 
 				itemQuantity + ", " + 
 				itemPrice + ", '" + 
 				supplierId + "' );";
