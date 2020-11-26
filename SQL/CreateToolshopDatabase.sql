@@ -18,6 +18,8 @@ CREATE TABLE international_supplier (
   import_tax	float,
   primary key (sid),
   foreign key (sid) references supplier(id)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE
 );
 
 DROP TABLE IF EXISTS item;
@@ -31,6 +33,8 @@ CREATE TABLE item (
   sid			char(9) not null,
   primary key (id),
   foreign key (sid) references supplier(id)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE
 );
 
 DROP TABLE IF EXISTS electrical_item;
@@ -39,6 +43,8 @@ CREATE TABLE electrical_item (
   power_type	varchar(15),
   primary key (iid),
   foreign key (iid) references item(id)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE
 );
 
 DROP TABLE IF EXISTS daily_order;

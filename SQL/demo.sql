@@ -21,7 +21,17 @@ SELECT iname FROM (electrical_item JOIN item ON iid=id) WHERE power_type="110V";
 
 SELECT O.oid,S.company_name FROM order_line AS O LEFT OUTER JOIN supplier AS S ON O.sid=S.id WHERE S.stype="domestic";
 
-#6.update operation with necessary triggers
+#6.update operation with necessary triggers- insert
+UPDATE item SET id=9998 WHERE id=1000;
+SELECT * FROM item;
+SELECT * FROM electrical_item;
+
+#7deletion operation with triggers
+DELETE FROM item WHERE id=1010;
+SELECT * FROM item;
+SELECT * FROM electrical_item;
+
+
 DROP TRIGGER IF EXISTS `toolshop`.`supplier_AFTER_INSERT`;
 
 DELIMITER $$
@@ -34,7 +44,7 @@ END IF;
 
 END$$
 DELIMITER ;
-
+#7.update operation with necessary triggers- delete
 DROP TRIGGER IF EXISTS `toolshop`.`item_BEFORE_DELETE`;
 
 DELIMITER $$
