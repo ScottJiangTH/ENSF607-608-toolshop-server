@@ -56,7 +56,6 @@ public class ServerController {
 	public static void main(String[] args) {
 		ServerController s = new ServerController(9009);
 		s.communicate();
-
 	}
 
 }

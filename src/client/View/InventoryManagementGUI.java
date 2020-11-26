@@ -16,13 +16,12 @@ public class InventoryManagementGUI extends JFrame {
 	private JButton checkQuantitybyId = new JButton("Check Quantity by ID");
 	private JButton checkQuantitybyName = new JButton("Check Quantity by Name");
 	private JButton UpdateQuantity = new JButton("Update Quantity");
-
 	private JButton addTool = new JButton("Add Tool");
 	private JButton deleteTool = new JButton("Delete Tool");
 	private JButton checkSupplierByName = new JButton("Check Supplier by Name");
 	private JButton checkSupplierById = new JButton("Check Supplier by ID");
 	private JButton printOrder = new JButton("Print Order");
-	private JLabel listLabel = new JLabel("List of Tools");
+	private JLabel listLabel = new JLabel("Table Display");
 	private JTable listTable;
 	private JScrollPane listScroll;
 
@@ -47,25 +46,30 @@ public class InventoryManagementGUI extends JFrame {
 		listTable.setFillsViewportHeight(true);
 		txtArea.add(listScroll);
 
-		JPanel buttons = new JPanel();
-		buttons.setLayout(new GridLayout(2, 3));
-		buttons.add(browseTool);
-		buttons.add(searchID);
-		buttons.add(searchName);
-		buttons.add(checkQuantitybyId);
-		buttons.add(checkQuantitybyName);
-		buttons.add(UpdateQuantity);
-		buttons.add(addTool);
-		buttons.add(deleteTool);
-		buttons.add(checkSupplierById);
-		buttons.add(checkSupplierByName);
-		buttons.add(printOrder);
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.setLayout(new GridLayout(2, 3));
+		buttonPanel.add(browseTool);
+		buttonPanel.add(searchID);
+		buttonPanel.add(searchName);
+		buttonPanel.add(checkQuantitybyId);
+		buttonPanel.add(checkQuantitybyName);
+		buttonPanel.add(UpdateQuantity);
+		buttonPanel.add(addTool);
+		buttonPanel.add(deleteTool);
+		buttonPanel.add(checkSupplierById);
+		buttonPanel.add(checkSupplierByName);
+		buttonPanel.add(printOrder);
 
 		getContentPane().add(labels, BorderLayout.NORTH);
 		getContentPane().add(new JScrollPane(txtArea), BorderLayout.CENTER);
-		getContentPane().add(buttons, BorderLayout.SOUTH);
+		getContentPane().add(buttonPanel, BorderLayout.SOUTH);
 	}
 
+
+	public void setTableModel(DefaultTableModel m) {
+		listTable.setModel(m);
+	}
+	
 	public void addBrowseListener(ActionListener browseListener) {
 		browseTool.addActionListener(browseListener);
 	}
@@ -77,21 +81,17 @@ public class InventoryManagementGUI extends JFrame {
 	public void addNameListener(ActionListener nameListener) {
 		searchName.addActionListener(nameListener);
 	}
-
-	public void addCheckItemListenerByName(ActionListener checkItemListenerbyName) {
-		checkQuantitybyId.addActionListener(checkItemListenerbyName);
-	}
-
+	
 	public void addCheckItemListenerById(ActionListener checkItemListenerbyId) {
 		checkQuantitybyId.addActionListener(checkItemListenerbyId);
+	}
+	
+	public void addCheckItemListenerByName(ActionListener checkItemListenerbyName) {
+		checkQuantitybyName.addActionListener(checkItemListenerbyName);
 	}
 
 	public void addUpdateItemListener(ActionListener updateItemListener) {
 		UpdateQuantity.addActionListener(updateItemListener);
-	}
-
-	public void addPrintOrderListener(ActionListener printOrderListener) {
-		printOrder.addActionListener(printOrderListener);
 	}
 
 	public void addToolListener(ActionListener addToolListener) {
@@ -102,15 +102,15 @@ public class InventoryManagementGUI extends JFrame {
 		deleteTool.addActionListener(deleteToolListener);
 	}
 
-	public void setTableModel(DefaultTableModel m) {
-		listTable.setModel(m);
-	}
-
 	public void addSupplierListenerByName(ActionListener checkSupplierListenerByName) {
 		checkSupplierByName.addActionListener(checkSupplierListenerByName);
 	}
 
 	public void addSupplierListenerById(ActionListener checkSupplierListenerById) {
 		checkSupplierById.addActionListener(checkSupplierListenerById);
+	}
+
+	public void addPrintOrderListener(ActionListener printOrderListener) {
+		printOrder.addActionListener(printOrderListener);
 	}
 }

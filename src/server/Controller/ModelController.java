@@ -125,7 +125,7 @@ public class ModelController implements Runnable {
 				String type = token[8];
 				model.addNewCustomer(customerId, firstName, lastName, address, postalCode, phone, type);
 				dBController.addNewCustomer(customerId, firstName, lastName, address, postalCode, phone, type);
-				socketOut.println("New customer " + firstName + lastName + " is added. Changes saved to database.");
+				socketOut.println("New customer " + firstName +" "+ lastName + " is added. Changes saved to database.");
 				break;
 			case 15: // Delete customer by id
 				model.deleteCustomer(Integer.parseInt(token[2]));

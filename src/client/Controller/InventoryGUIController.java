@@ -32,15 +32,15 @@ public class InventoryGUIController {
 		view.addBrowseListener(new BrowseListener());
 		view.addIDListener(new IDListener());
 		view.addNameListener(new NameListener());
-		view.addCheckItemListenerByName(new CheckItemListenerByName());
 		view.addCheckItemListenerById(new CheckItemListenerById());
+		view.addCheckItemListenerByName(new CheckItemListenerByName());
 		view.addUpdateItemListener(new UpdateItemListener());
 		view.addToolListener(new AddToolListener());
 		view.addDeleteToolListener(new DeleteToolListener());
-		view.addSupplierListenerByName(new CheckSupplierListenerByName());
 		view.addSupplierListenerById(new CheckSupplierListenerById());
+		view.addSupplierListenerByName(new CheckSupplierListenerByName());
 		view.addPrintOrderListener(new PrintOrderListener());
-
+		
 		view.pack();
 		view.setVisible(true);
 	}
