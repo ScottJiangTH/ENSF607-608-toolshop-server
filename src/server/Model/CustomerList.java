@@ -35,4 +35,16 @@ public class CustomerList {
 		return cList;
 	}
 
+	public void addNewCustomer(int customerId, String firstName, String lastName, String address, String postalCode,
+			String phone, String type) {
+		Customer newCustomer = new Customer(customerId, firstName, lastName, address, postalCode, phone, type);
+		customerList.add(newCustomer);
+	}
+
+	public void deleteCustomer(int customerId) {
+		Customer c = findCustomerById(customerId);
+		if (c != null)
+			customerList.remove(c);
+	}
+
 }

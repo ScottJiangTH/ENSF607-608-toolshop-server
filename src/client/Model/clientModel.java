@@ -21,6 +21,7 @@ import client.Controller.ClientController;
  *
  */
 public class ClientModel {
+	
 
 	private DefaultListModel clientList = new DefaultListModel();
 	private JList<ClientController> clientJList;

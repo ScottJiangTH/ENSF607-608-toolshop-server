@@ -149,6 +149,38 @@ public class DBController {
 				purchaseQuantity + ");";
 		insertToTable(sql);
 	}
+
+	public void updateItemQuantity(String string, int diff) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void addNewItem(int itemId, String itemType, String itemName, int itemQuantity, double itemPrice,
+			int supplierId) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void deleteItem(String string) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void addNewCustomer(int customerId, String firstName, String lastName, String address, String postalCode,
+			String phone, String type) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void deleteCustomer(int parseInt) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void saveDailyOrder(Order dailyOrder) {
+		// TODO Auto-generated method stub
+		
+	}
 }
 
 
