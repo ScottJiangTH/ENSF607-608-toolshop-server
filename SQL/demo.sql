@@ -1,14 +1,9 @@
 #2. basic retrieval
 USE toolshop;
 
-SELECT * FROM item;
-SELECT * FROM electrical_item;
-SELECT * FROM supplier;
-SELECT * FROM international_supplier;
-SELECT * FROM customer;
-SELECT * FROM order_line;
-SELECT * FROM daily_order;
-SELECT * FROM purchase_history;
+SELECT * FROM item WHERE quantity=10;
+SELECT * FROM electrical_item WHERE power_type='220V';
+SELECT * FROM supplier WHERE sales_contact='Wendy';
 
 #3. retrieval query with ordered results
 SELECT * from item ORDER BY price DESC;
@@ -34,7 +29,7 @@ USE `toolshop`$$
 CREATE DEFINER = CURRENT_USER TRIGGER `toolshop`.`supplier_AFTER_INSERT` AFTER INSERT ON `supplier` FOR EACH ROW
 BEGIN
 IF (NEW.stype='international') THEN
-INSERT INTO international_supplier VALUES (NEW.id,NULL);
+INSERT INTO international_supplier VALUES (NEW.id,10.75);
 END IF;
 
 END$$
@@ -44,10 +39,24 @@ DROP TRIGGER IF EXISTS `toolshop`.`item_BEFORE_DELETE`;
 
 DELIMITER $$
 USE `toolshop`$$
-CREATE DEFINER = CURRENT_USER TRIGGER `toolshop`.`item_AFTER_DELETE` AFTER DELETE ON `item` FOR EACH ROW
+CREATE DEFINER = CURRENT_USER TRIGGER `toolshop`.`item_BEFORE_DELETE` BEFORE DELETE ON `item` FOR EACH ROW
 BEGIN
 IF (OLD.itype='electrical') THEN
-DELETE FROM electrical_item ;
+DELETE FROM electrical_item AS E WHERE OLD.id=E.iid;
+END IF;
+END
+$$
+DELIMITER ;
+
+
+DROP TRIGGER IF EXISTS `toolshop`.`supplier_BEFORE_DELETE`;
+
+DELIMITER $$
+USE `toolshop`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `toolshop`.`supplier_BEFORE_DELETE` BEFORE DELETE ON `supplier` FOR EACH ROW
+BEGIN
+IF (OLD.stype='international') THEN
+DELETE FROM international_supplier AS I WHERE OLD.id=I.sid;
 END IF;
 END
 $$
