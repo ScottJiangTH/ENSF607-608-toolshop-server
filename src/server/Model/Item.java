@@ -5,7 +5,7 @@ package server.Model;
  * @Since October 10 2020
  *
  */
-public class Item {
+public abstract class Item {
 	
 	private int itemId;
 	private String itemType;
@@ -23,15 +23,6 @@ public class Item {
 		this.itemQuantity = quantity;
 		this.itemPrice = price;
 		this.setSupplierId(supplierId); 
-	}
-
-	public boolean decreaseItemQuantity () {
-		if (itemQuantity > 0) {
-			itemQuantity--;
-		    return true;	
-		}
-		else
-			return false;	
 	}
 
 	public int getItemId() {

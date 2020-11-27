@@ -50,7 +50,7 @@ public class InventoryGUIController {
 	private DefaultTableModel parseJsonArrayOfItems() {
 		DefaultTableModel m = new DefaultTableModel();
 		m.setColumnIdentifiers(
-				new String[] { "Item ID", "Item Name", "Item Quantity", "Price", "Supplier ID", "Type" });
+				new String[] { "Item ID", "Item Name", "Item Quantity", "Price", "Supplier ID", "Type", "Voltage Rating" });
 
 		try {
 			String json = socketIn.readLine();
@@ -62,9 +62,11 @@ public class InventoryGUIController {
 				double price = itemList.getJSONObject(i).getDouble("itemPrice");
 				int supplierId = itemList.getJSONObject(i).getInt("supplierId");
 				String type = itemList.getJSONObject(i).getString("itemType");
-
+				String powerType = "";
+				if (itemList.getJSONObject(i).has("powerType"))
+					powerType = itemList.getJSONObject(i).getString("powerType");
 				String s[] = { Integer.toString(itemId), itemName, Integer.toString(itemQuantity),
-						Double.toString(price), Integer.toString(supplierId), type };
+						Double.toString(price), Integer.toString(supplierId), type, powerType };
 				m.addRow(s);
 			}
 		} catch (IOException e) {
@@ -76,7 +78,7 @@ public class InventoryGUIController {
 	private DefaultTableModel parseJsonObjectOfItems() {
 		DefaultTableModel m = new DefaultTableModel();
 		m.setColumnIdentifiers(
-				new String[] { "Item ID", "Item Name", "Item Quantity", "Price", "Supplier ID", "Type" });
+				new String[] { "Item ID", "Item Name", "Item Quantity", "Price", "Supplier ID", "Type", "Voltage Rating" });
 
 		try {
 			String json = socketIn.readLine();
@@ -87,8 +89,11 @@ public class InventoryGUIController {
 			double price = item.getDouble("itemPrice");
 			int supplierId = item.getInt("supplierId");
 			String type = item.getString("itemType");
+			String powerType = "";
+			if (item.has("powerType"))
+				powerType = item.getString("powerType");
 			String s[] = { Integer.toString(itemId), itemName, Integer.toString(itemQuantity), Double.toString(price),
-					Integer.toString(supplierId), type };
+					Integer.toString(supplierId), type, powerType };
 			m.addRow(s);
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, "The server disconnected");

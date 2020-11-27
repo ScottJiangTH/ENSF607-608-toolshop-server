@@ -37,7 +37,7 @@ public class InventoryManagementGUI extends JFrame {
 		labels.add(listLabel);
 
 		JPanel txtArea = new JPanel();
-		String[] colName = { "Item ID", "Item Name", "Item Quantity", "Price", "Supplier ID", "Type" };
+		String[] colName = { "Item ID", "Item Name", "Item Quantity", "Price", "Supplier ID", "Tool Type", "Voltage Rating" };
 
 		DefaultTableModel tableModel = new DefaultTableModel(colName, 10);
 		listTable = new JTable(tableModel);

@@ -40,11 +40,23 @@ public class Model {
 		return theInventory.updateItemQuantity(itemName, diff);
 	}
 
-	public String addNewItem(int id, String type, String name, int quantity, double price, int supplierId) {
+	public String addNewEItem(int id, String type, String name, int quantity, double price, int supplierId, String powerType) {
 		Supplier s = findSupplierById(supplierId);
 		String message;
 		if (s != null) {
-			message = theInventory.addNewItem(id, type, name, quantity, price, supplierId);
+			message = theInventory.addNewEItem(id, type, name, quantity, price, supplierId, powerType);
+			s.getItemList().add(findItemById(id));
+		}
+		else 
+			return "Supplier ID" + supplierId + "not found. Please verify supplier ID.";
+		return message;
+	}
+	
+	public String addNewNEItem(int id, String type, String name, int quantity, double price, int supplierId) {
+		Supplier s = findSupplierById(supplierId);
+		String message;
+		if (s != null) {
+			message = theInventory.addNewNEItem(id, type, name, quantity, price, supplierId);
 			s.getItemList().add(findItemById(id));
 		}
 		else 

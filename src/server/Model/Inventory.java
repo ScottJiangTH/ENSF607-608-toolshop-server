@@ -64,9 +64,21 @@ public class Inventory {
 	}
 
 	@SuppressWarnings("unused")
-	public String addNewItem(int id, String type, String name, int quantity, double price, int supplierId) {
+	public String addNewEItem(int id, String type, String name, int quantity, double price, int supplierId, String powerType) {
 		Item i = null;
-		i = new Item(id, type, name, quantity, price, supplierId);
+		i = new ElectricalItem(id, type, name, quantity, price, supplierId, powerType);
+		if (i != null) {
+			itemList.add(i);
+			return "New tool created.";
+		}
+		else
+			return "Create new tool failed, please verify input and try again.";
+	}
+	
+	@SuppressWarnings("unused")
+	public String addNewNEItem(int id, String type, String name, int quantity, double price, int supplierId) {
+		Item i = null;
+		i = new NonElectricalItem(id, type, name, quantity, price, supplierId);
 		if (i != null) {
 			itemList.add(i);
 			return "New tool created.";

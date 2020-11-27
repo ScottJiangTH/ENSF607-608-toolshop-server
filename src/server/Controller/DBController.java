@@ -49,44 +49,21 @@ public class DBController {
 	
 	public ResultSet readWholeTable(String tableName) {
 		// able to send result set to model controller to construct all types of objects
-		String sql = "SELECT * FROM " + tableName;
+		String sql = "SELECT * FROM " + tableName + ";";
 		return readFromTable(sql);
 	}
 	
 	public ResultSet searchFromTable(String tableName, String attributeName, String searchString) {
 		// able to send result set to model controller to construct all types of objects
-		String sql = "SELECT * FROM " + tableName + " WHERE " + attributeName + "=" + searchString;		
+		String sql = "SELECT * FROM " + tableName + " WHERE " + attributeName + "='" + searchString + "';";		
 		return readFromTable(sql);
 	}
 	
-	private void addItem(Item item) { 
-		// never need to be called from other class since item is the super class
-		// insert to item table on DB
-		String sql = "INSERT INTO item " + " VALUES ( '"
-				+ item.getItemId() + "', '" + 
-				item.getItemType() + "', '" + 
-				item.getItemName() + "', '" + 
-				item.getItemDescription() + "', " + 
-				item.getItemPrice() + ", " + 
-				item.getItemQuantity() + ", '" + 
-				item.getSupplierId() + "' );";
-		updateTable(sql);
+	public String findPowerType(String iD) {
+		// TODO Auto-generated method stub
+		return null;
 	}
-	
-	public void addElectricalItem(ElectricalItem eItem) {
-		addItem(eItem);
-		// insert to electrical item table on DB
-		String sql = "INSERT INTO electrical_item " + " VALUES ( '"
-				+ eItem.getItemId() + "', '" + 
-				eItem.getPowerType() + "' );";
-		updateTable(sql);
-	}
-	
-	public void addNonElectricalItem(NonElectricalItem neItem) {
-		// a wrapper method for non-electrical item to insert to table item on DB
-		addItem(neItem);
-	}
-	
+
 	private void addSupplier(Supplier supplier) {
 		// insert to supplier table on DB
 		String sql = "INSERT INTO supplier " + " VALUES ( '"
@@ -116,7 +93,6 @@ public class DBController {
 		updateTable(sql);
 	}
 
-	// need to check item quantity by itself
 	public void updateItemQuantity(String itemName, int newQuantity) {
 		String sql = "UPDATE item SET quantity = " + newQuantity + " WHERE iname = '" + itemName + "';";
 		updateTable(sql);
@@ -134,7 +110,15 @@ public class DBController {
 		updateTable(sql);	
 		
 	}
-
+	
+	public void addElectricalItem(int itemId, String itemType, String itemName, int itemQuantity, double itemPrice,
+			int supplierId, String powerType) {
+		addNewItem(itemId, itemType, itemName, itemQuantity, itemPrice, supplierId);
+		// insert to electrical item table on DB
+		String sql = "INSERT INTO electrical_item " + " VALUES ( '" + itemId + "', '" + powerType + "' );";
+		updateTable(sql);
+	}
+	
 	public void deleteItem(String itemName) {
 		String sql = "DELETE FROM item WHERE iname = '" + itemName + "'";
 		updateTable(sql);

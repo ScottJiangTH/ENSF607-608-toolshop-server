@@ -14,7 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import server.Model.*;
 
 public class ModelController implements Runnable {
-	
+
 	private BufferedReader socketIn;
 	private PrintWriter socketOut;
 	private DBController dBController;
@@ -26,21 +26,24 @@ public class ModelController implements Runnable {
 		this.socketOut = socketOut;
 	}
 
-	// TODO: add methods to import from DB and construct specialized item, supplier, customer objects
-	// TODO: add method to import from DB existing orders
-	
+	// TODO: add methods to import from DB and construct specialized item, supplier,
+	// customer objects
+	// TODO: add method to import existing orders from DB, link to case 17
+
 	private void communication() throws IOException {
-		while (true) { 
-			// command is in format: "option",option#,arg1,arg2,...  DO NOT pass anything that is not in this format
-			// e.g. for add new item: option,7,itemId,itemType,itemName,itemQuantity,itemPrice,supplierId
+		while (true) {
+			// command is in format: "option",option#,arg1,arg2,... DO NOT pass anything
+			// that is not in this format
+			// e.g. for add new item:
+			// option,7,itemId,itemType,itemName,itemQuantity,itemPrice,supplierId
 			String command = null;
 			while (command == null) {
 				command = socketIn.readLine();
 			}
-			
+
 			String[] token = command.split(",");
 			int option = Integer.parseInt(token[1]);
-			
+
 			switch (option) {
 			case 1: // Print out all item
 				ArrayList<Item> allItems = model.listAllItems();
@@ -83,9 +86,22 @@ public class ModelController implements Runnable {
 				itemQuantity = Integer.parseInt(token[5]);
 				double itemPrice = Double.parseDouble(token[6]);
 				int supplierId = Integer.parseInt(token[7]);
-				model.addNewItem(itemId, itemType, itemName, itemQuantity, itemPrice, supplierId);
-				dBController.addNewItem(itemId, itemType, itemName, itemQuantity, itemPrice, supplierId);
-				socketOut.println("New tool " + token[4] + " is added. Changes saved to database.");
+				if (token[8] != null) { // if there is power type entry
+					if (itemType.equals("electrical")) {
+						model.addNewEItem(itemId, itemType, itemName, itemQuantity, itemPrice, supplierId, token[8]);
+						dBController.addElectricalItem(itemId, itemType, itemName, itemQuantity, itemPrice, supplierId,
+								token[8]);
+						socketOut.println("New electrical tool " + token[4] + " is added. Changes saved to database.");
+					} else
+						socketOut.println("Wrong tool type entry.");
+				} else { // no power type entry
+					if (itemType.equals("non-electrical")) {
+						model.addNewNEItem(itemId, itemType, itemName, itemQuantity, itemPrice, supplierId);
+						dBController.addNewItem(itemId, itemType, itemName, itemQuantity, itemPrice, supplierId);
+						socketOut.println(
+								"New non-electrical tool " + token[4] + " is added. Changes saved to database.");
+					}
+				}
 				break;
 			case 8: // Delete item by name
 				message = model.deleteItem(token[2]);
@@ -109,7 +125,7 @@ public class ModelController implements Runnable {
 				socketOut.println(toJSON(c));
 				break;
 			case 12: // Find customer by last name, return a list
-				ArrayList<Customer> cList= model.findCustomerbyLastName(token[2]);
+				ArrayList<Customer> cList = model.findCustomerbyLastName(token[2]);
 				socketOut.println(toJSON(cList));
 				break;
 			case 13: // Find customer by type, return a list
@@ -126,7 +142,8 @@ public class ModelController implements Runnable {
 				String type = token[8];
 				model.addNewCustomer(customerId, firstName, lastName, address, postalCode, phone, type);
 				dBController.addNewCustomer(customerId, firstName, lastName, address, postalCode, phone, type);
-				socketOut.println("New customer " + firstName +" "+ lastName + " is added. Changes saved to database.");
+				socketOut.println(
+						"New customer " + firstName + " " + lastName + " is added. Changes saved to database.");
 				break;
 			case 15: // Delete customer by id
 				model.deleteCustomer(Integer.parseInt(token[2]));
@@ -185,9 +202,17 @@ public class ModelController implements Runnable {
 				String quantity = rs.getString(6);
 				String price = rs.getString(5);
 				String supplierId = rs.getString(7);
-
-				Item anItem = new Item(Integer.parseInt(ID), type, name, Integer.parseInt(quantity),
-						Double.parseDouble(price), Integer.parseInt(supplierId));
+				Item anItem;
+				String powerType="";
+				if (type.equals("electrical")) {
+					ResultSet rsPower = dBController.searchFromTable("electrical_item", "iid", ID);
+					if (rsPower.next())
+						powerType = rsPower.getString(2);
+					anItem = new ElectricalItem(Integer.parseInt(ID), type, name, Integer.parseInt(quantity),
+							Double.parseDouble(price), Integer.parseInt(supplierId), powerType);
+				} else
+					anItem = new NonElectricalItem(Integer.parseInt(ID), type, name, Integer.parseInt(quantity),
+							Double.parseDouble(price), Integer.parseInt(supplierId));
 				items.add(anItem);
 				Supplier theSupplier = matchSupplier(Integer.parseInt(supplierId));
 				theSupplier.getItemList().add(anItem);
