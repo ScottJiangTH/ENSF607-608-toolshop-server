@@ -55,8 +55,11 @@ public class Inventory {
 		else 
 			return itemName + " not found. Please verify tool name.";
 		OrderLine ol = triggerOrderLine(i);
-		if (ol != null)
+		if (ol != null) {
+			i.updateItemQuantity(ol.getOrderQuantity());
+			dailyOrder.addOrderLine(ol);
 			return "Order line generated. Please click Print Order to see.";
+		}
 		return "The quantity of " + i.getItemName() + "has been updated.";
 	}
 

@@ -1,30 +1,18 @@
 package client.Controller;
 
-import java.awt.Component;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
 
-import javax.swing.DefaultListModel;
-import javax.swing.JComboBox;
-import javax.swing.JDialog;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import client.View.CustomerManagementGUI;
-import server.Controller.DBController;
 
 public class CustomerGUIController {
 	private CustomerManagementGUI view;

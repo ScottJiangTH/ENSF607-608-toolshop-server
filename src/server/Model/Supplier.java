@@ -13,7 +13,6 @@ public class Supplier {
 	
 	
 	public Supplier (int id, String type, String name, String address, String contactName) {
-		
 		supId = id;
 		supType = type;
 		supName = name;

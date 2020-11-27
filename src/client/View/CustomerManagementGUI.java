@@ -185,12 +185,6 @@ public class CustomerManagementGUI extends JFrame {
 		typeFilter.setSelected(false);
 		listTable.setModel(new DefaultTableModel());
 	}
-
-//	public void setClientJList(JList someList) {
-//		this.customerJList = someList;
-//		searchResults = new JScrollPane(customerJList);
-//		searchDisplayPanel.add(searchResults);
-//	}
 	
 	// getters and setters
 	private String getTextFromTextBox(JTextField customerNameField) {return customerNameField.getText();}

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -145,7 +146,8 @@ public class ModelController implements Runnable {
 				socketOut.println(firstName + lastName + "profile updated.");
 				break;
 			case 17: // print daily_order
-				Order dailyOrder = model.printOrder();
+				LocalDate date = LocalDate.parse(token[2]);
+				Order dailyOrder = model.printOrder(date);
 				dBController.saveDailyOrder(dailyOrder);
 				socketOut.println(toJSON(dailyOrder));
 				break;

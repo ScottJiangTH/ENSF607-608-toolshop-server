@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDate;
 
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -39,19 +40,17 @@ public class InventoryGUIController {
 		view.addDeleteToolListener(new DeleteToolListener());
 		view.addSupplierListenerById(new CheckSupplierListenerById());
 		view.addSupplierListenerByName(new CheckSupplierListenerByName());
-		view.addPrintOrderListener(new PrintOrderListener());
-		
+		view.addPrintDailyOrderListener(new PrintDailyOrderListener());
+		view.addPrintHistoryOrderListener(new PrintHistoryOrderListener());
+
 		view.pack();
 		view.setVisible(true);
 	}
 
-	public DefaultTableModel getItemList() {
-
-		String command = "option,1";
-		socketOut.println(command);
-
+	private DefaultTableModel parseJsonArrayOfItems() {
 		DefaultTableModel m = new DefaultTableModel();
-		m.setColumnIdentifiers(new String[] { "Item ID", "Item Name", "Item Quantity" });
+		m.setColumnIdentifiers(
+				new String[] { "Item ID", "Item Name", "Item Quantity", "Price", "Supplier ID", "Type" });
 
 		try {
 			String json = socketIn.readLine();
@@ -60,7 +59,12 @@ public class InventoryGUIController {
 				int itemId = itemList.getJSONObject(i).getInt("itemId");
 				String itemName = itemList.getJSONObject(i).getString("itemName");
 				int itemQuantity = itemList.getJSONObject(i).getInt("itemQuantity");
-				String s[] = { Integer.toString(itemId), itemName, Integer.toString(itemQuantity) };
+				double price = itemList.getJSONObject(i).getDouble("itemPrice");
+				int supplierId = itemList.getJSONObject(i).getInt("supplierId");
+				String type = itemList.getJSONObject(i).getString("itemType");
+
+				String s[] = { Integer.toString(itemId), itemName, Integer.toString(itemQuantity),
+						Double.toString(price), Integer.toString(supplierId), type };
 				m.addRow(s);
 			}
 		} catch (IOException e) {
@@ -69,173 +73,148 @@ public class InventoryGUIController {
 		return m;
 	}
 
-	public DefaultTableModel getItemById(int itemId) {
-		String command = "option,2," + itemId;
-		socketOut.println(command);
-
+	private DefaultTableModel parseJsonObjectOfItems() {
 		DefaultTableModel m = new DefaultTableModel();
-		m.setColumnIdentifiers(new String[] { "Item ID", "Item Name", "Item Quantity", "Supplier ID" });
-
-		try {
-			String json = socketIn.readLine();
-			JSONObject item = new JSONObject(json);
-			itemId = item.getInt("itemId");
-			String itemName = item.getString("itemName");
-			int itemQuantity = item.getInt("itemQuantity");
-			int supplierId = item.getInt("supplierId");
-			String s[] = { Integer.toString(itemId), itemName, Integer.toString(itemQuantity),
-					Integer.toString(supplierId) };
-			m.addRow(s);
-		} catch (IOException e) {
-			JOptionPane.showMessageDialog(null, "The server disconnected");
-		}
-		return m;
-	}
-
-	public DefaultTableModel getItemByName(String itemName) {
-		String command = "option,3," + itemName;
-		socketOut.println(command);
-
-		DefaultTableModel m = new DefaultTableModel();
-		m.setColumnIdentifiers(new String[] { "Item ID", "Item Name", "Item Quantity", "Supplier ID" });
+		m.setColumnIdentifiers(
+				new String[] { "Item ID", "Item Name", "Item Quantity", "Price", "Supplier ID", "Type" });
 
 		try {
 			String json = socketIn.readLine();
 			JSONObject item = new JSONObject(json);
 			int itemId = item.getInt("itemId");
-			itemName = item.getString("itemName");
+			String itemName = item.getString("itemName");
 			int itemQuantity = item.getInt("itemQuantity");
+			double price = item.getDouble("itemPrice");
 			int supplierId = item.getInt("supplierId");
-			String s[] = { Integer.toString(itemId), itemName, Integer.toString(itemQuantity),
-					Integer.toString(supplierId) };
+			String type = item.getString("itemType");
+			String s[] = { Integer.toString(itemId), itemName, Integer.toString(itemQuantity), Double.toString(price),
+					Integer.toString(supplierId), type };
 			m.addRow(s);
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, "The server disconnected");
 		}
 		return m;
+	}
+
+	private DefaultTableModel parseJsonObjectOfSupplier() {
+		DefaultTableModel m = new DefaultTableModel();
+		m.setColumnIdentifiers(
+				new String[] { "Supplier ID", "Supplier Name", "Address", "Sales Contact", "Supplier Type" });
+
+		try {
+			String json = socketIn.readLine();
+			JSONObject supplier = new JSONObject(json);
+			int supplierId = supplier.getInt("supId");
+			String supplierName = supplier.getString("supName");
+			String address = supplier.getString("supAddress");
+			String contact = supplier.getString("supContactName");
+			String supplierType = supplier.getString("supType");
+			String s[] = { Integer.toString(supplierId), supplierName, address, contact, supplierType };
+			m.addRow(s);
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "The server disconnected");
+		}
+		return m;
+	}
+
+	private DefaultTableModel parseJsonObjectOfOrders() {
+		DefaultTableModel m = new DefaultTableModel();
+		m.setColumnIdentifiers(
+				new String[] { "Order ID", "Order Date", "Orderline-Item ID", "Orderline-Order Quantity" });
+		try {
+			String json = socketIn.readLine();
+			JSONObject order = new JSONObject(json);
+			int orderId = order.getInt("orderId");
+			JSONObject dateObj = order.getJSONObject("orderDate");
+			String date = dateObj.getInt("year") + "-" + dateObj.getInt("monthValue") + "-" + dateObj.getInt("dayOfMonth");
+			JSONArray orderlines = order.getJSONArray("orderLines");
+			for (int i = 0; i < orderlines.length(); i++) {
+				int itemId = orderlines.getJSONObject(i).getJSONObject("theItem").getInt("itemId");
+				int orderQuantity = orderlines.getJSONObject(i).getInt("orderQuantity");
+				String s[] = { Integer.toString(orderId), date, Integer.toString(itemId), Integer.toString(orderQuantity)  };
+				m.addRow(s);
+			}
+			
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "The server disconnected");
+		}
+		return m;
+	}
+
+	private String parseStringMessage() {
+		String message = "";
+		try {
+			message = socketIn.readLine();
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "The server disconnected");
+		}
+		return message;
+	}
+
+	public DefaultTableModel getItemList() {
+		String command = "option,1";
+		socketOut.println(command);
+		return parseJsonArrayOfItems();
+	}
+
+	public DefaultTableModel getItemById(int itemId) {
+		String command = "option,2," + itemId;
+		socketOut.println(command);
+		return parseJsonObjectOfItems();
+	}
+
+	public DefaultTableModel getItemByName(String itemName) {
+		String command = "option,3," + itemName;
+		socketOut.println(command);
+		return parseJsonObjectOfItems();
 	}
 
 	public String getQuantityById(int itemId) {
 		String command = "option,4," + itemId;
 		socketOut.println(command);
-		String qty = "";
-		try {
-			qty = socketIn.readLine();
-		} catch (IOException e) {
-			JOptionPane.showMessageDialog(null, "The server disconnected");
-		}
-		return qty;
+		return parseStringMessage();
 	}
 
 	public String getQuantityByName(String itemName) {
 		String command = "option,5," + itemName;
 		socketOut.println(command);
-		String qty = "";
-		try {
-			qty = socketIn.readLine();
-		} catch (IOException e) {
-			JOptionPane.showMessageDialog(null, "The server disconnected");
-		}
-		return qty;
+		return parseStringMessage();
 	}
 
 	public String updateItemQuantity(String itemName, int diff) {
 		String command = "option,6," + itemName + "," + diff;
 		socketOut.println(command);
-		String message = "";
-		try {
-			message = socketIn.readLine();
-		} catch (IOException e) {
-			JOptionPane.showMessageDialog(null, "The server disconnected");
-		}
-		return message;
+		return parseStringMessage();
 	}
 
 	public String addTool(int id, String type, String name, int quantity, double price, int supplierId) {
 		String command = "option,7," + id + "," + type + "," + name + "," + quantity + "," + price + "," + supplierId;
 		socketOut.println(command);
-		String message = "";
-		try {
-			message = socketIn.readLine();
-		} catch (IOException e) {
-			JOptionPane.showMessageDialog(null, "The server disconnected");
-		}
-		return message;
+		return parseStringMessage();
 	}
 
 	public String deleteTool(String itemName) { // by name
 		String command = "option,8," + itemName;
 		socketOut.println(command);
-		String message = "";
-		try {
-			message = socketIn.readLine();
-		} catch (IOException e) {
-			JOptionPane.showMessageDialog(null, "The server disconnected");
-		}
-		return message;
+		return parseStringMessage();
 	}
 
 	public DefaultTableModel findSupplierById(int supplierId) {
 		String command = "option,9," + supplierId;
 		socketOut.println(command);
-
-		DefaultTableModel m = new DefaultTableModel();
-		m.setColumnIdentifiers(new String[] { "Supplier ID", "Supplier Name", "Supplier Type" });
-
-		try {
-			String json = socketIn.readLine();
-			JSONObject supplier = new JSONObject(json);
-			supplierId = supplier.getInt("supId");
-			String supplierName = supplier.getString("supName");
-			String supplierType = supplier.getString("supType");
-			String s[] = { Integer.toString(supplierId), supplierName, supplierType };
-			m.addRow(s);
-		} catch (IOException e) {
-			JOptionPane.showMessageDialog(null, "The server disconnected");
-		}
-		return m;
+		return parseJsonObjectOfSupplier();
 	}
 
 	public DefaultTableModel findSupplierByName(String supplierName) {
 		String command = "option,10," + supplierName;
 		socketOut.println(command);
-
-		DefaultTableModel m = new DefaultTableModel();
-		m.setColumnIdentifiers(new String[] { "Supplier ID", "Supplier Name", "Supplier Type" });
-
-		try {
-			String json = socketIn.readLine();
-			JSONObject supplier = new JSONObject(json);
-			int supplierId = supplier.getInt("supId");
-			supplierName = supplier.getString("supName");
-			String supplierType = supplier.getString("supType");
-			String s[] = { Integer.toString(supplierId), supplierName, supplierType };
-			m.addRow(s);
-		} catch (IOException e) {
-			JOptionPane.showMessageDialog(null, "The server disconnected");
-		}
-		return m;
+		return parseJsonObjectOfSupplier();
 	}
 
-	public DefaultTableModel printOrder() {
-		String command = "option,17";
+	public DefaultTableModel printOrder(LocalDate date) {
+		String command = "option,17," + date.toString();
 		socketOut.println(command);
-		
-		DefaultTableModel m = new DefaultTableModel();
-		m.setColumnIdentifiers(new String[] { "Supplier ID", "Supplier Name", "Supplier Type" });
-
-		try {
-			String json = socketIn.readLine();
-			JSONObject supplier = new JSONObject(json);
-			int supplierId = supplier.getInt("supId");
-			String supplierName = supplier.getString("supName");
-			String supplierType = supplier.getString("supType");
-			String s[] = { Integer.toString(supplierId), supplierName, supplierType };
-			m.addRow(s);
-		} catch (IOException e) {
-			JOptionPane.showMessageDialog(null, "The server disconnected");
-		}
-		return m;
+		return parseJsonObjectOfOrders();
 	}
 
 ///////////////////////FOLLOWING ARE LISTENER CLASSES/////////////////////////
@@ -339,7 +318,6 @@ public class InventoryGUIController {
 			view.setTableModel(getItemList());
 			JOptionPane.showMessageDialog(null, message, "Deleting tool status", JOptionPane.PLAIN_MESSAGE);
 		}
-
 	}
 
 	class CheckSupplierListenerById implements ActionListener {
@@ -355,7 +333,6 @@ public class InventoryGUIController {
 			}
 			view.setTableModel(findSupplierById(id));
 		}
-
 	}
 
 	class CheckSupplierListenerByName implements ActionListener {
@@ -367,14 +344,25 @@ public class InventoryGUIController {
 		}
 	}
 
-	class PrintOrderListener implements ActionListener {
+	class PrintDailyOrderListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO: finished this
-//			String order = printOrder();
-//			JOptionPane.showMessageDialog(null, order, "Order for Today", JOptionPane.PLAIN_MESSAGE);
+			view.setTableModel(printOrder(LocalDate.now()));
 		}
+	}
+	
+	class PrintHistoryOrderListener implements ActionListener {
 
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			String dateString = JOptionPane.showInputDialog("Enter a date in format YYYY-MM-DD: ");
+			LocalDate date = LocalDate.parse(dateString);
+			if (date != null)
+				view.setTableModel(printOrder(date));
+			else
+				JOptionPane.showMessageDialog(null, "Wrong format, input in YYYY-MM-DD!", "Error Message",
+						JOptionPane.ERROR_MESSAGE);
+		}
 	}
 }

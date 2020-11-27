@@ -1,5 +1,6 @@
 package server.Model;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Model {
@@ -89,7 +90,7 @@ public class Model {
 		theCustomerList.updateCustomerInfo(customerId, firstName, lastName, address, postalCode, phone, type);
 	}
 	
-	public Order printOrder() {
+	public Order printOrder(LocalDate date) {
 		return theInventory.getOrder();
 	}
 }
