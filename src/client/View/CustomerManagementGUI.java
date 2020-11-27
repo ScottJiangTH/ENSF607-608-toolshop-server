@@ -1,5 +1,6 @@
 package client.View;
 
+import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -24,7 +25,7 @@ import javax.swing.table.DefaultTableModel;
 public class CustomerManagementGUI extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private Container c = getContentPane();;
+	//private Container c = getContentPane();
 
 	private JPanel leftPanel = new JPanel();
 	private JPanel informationPanel = new JPanel();
@@ -43,7 +44,6 @@ public class CustomerManagementGUI extends JFrame {
 	private JTextField postalCodeField = new JTextField();
 	private JTextField phoneField = new JTextField();
 	private JComboBox<String> typeCBox;
-	private String customerType;
 
 	private JButton searchButton = new JButton("Search");
 	private JButton clearSearchButton = new JButton("Clear Search");
@@ -162,10 +162,9 @@ public class CustomerManagementGUI extends JFrame {
 		group.add(typeFilter);
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		c.setLayout(new GridLayout(0, 2));
-		c.add(leftPanel);
-		c.add(informationPanel);
-		c.add(searchResults);
+		getContentPane().add(leftPanel, BorderLayout.WEST);
+		getContentPane().add(informationPanel, BorderLayout.EAST);
+		getContentPane().add(searchResults, BorderLayout.CENTER);
 	}
 
 	public void clearInfo() {
@@ -196,7 +195,7 @@ public class CustomerManagementGUI extends JFrame {
 		return Integer.parseInt(id);
 	}
 	
-	public Container getC() {return c;}
+	public Container getC() {return getContentPane();}
 	
 	public String getFirstName() {return getTextFromTextBox(firstNameField);}
 
@@ -208,7 +207,7 @@ public class CustomerManagementGUI extends JFrame {
 
 	public String getPhoneNumber() {return getTextFromTextBox(phoneField);}
 
-	public String getCustomerType() {return typeCBox.getName();}
+	public String getCustomerType() {return typeCBox.getSelectedItem().toString();}
 
 	public JTable getCustomerJList() {return listTable;}
 		

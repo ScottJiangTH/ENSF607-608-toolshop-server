@@ -24,9 +24,7 @@ public class CustomerGUIController {
 	public CustomerGUIController(BufferedReader socketIn, PrintWriter socketOut) {
 		this.socketIn = socketIn;
 		this.socketOut = socketOut;
-		m = new DefaultTableModel();
-		m.setColumnIdentifiers(new String[] { "Customer ID", "Customer First Name", "Customer Last Name", "Address",
-				"Postal Code", "Phone", "Type" });
+		
 	}
 
 	public void show() {
@@ -45,56 +43,10 @@ public class CustomerGUIController {
 		view.setVisible(true);
 	}
 
-	public DefaultTableModel findCustomerById(int customerId) {
-		String command = "option,11," + customerId;
-		socketOut.println(command);
-
-		try {
-			String json = socketIn.readLine();
-			JSONObject customer = new JSONObject(json);
-			customerId = customer.getInt("customerId");
-			String firstName = customer.getString("firstName");
-			String lastName = customer.getString("lastName");
-			String address = customer.getString("address");
-			String postalCode = customer.getString("postalCode");
-			String phone = customer.getString("phone");
-			String type = customer.getString("type");
-			String[] s = { Integer.toString(customerId), firstName, lastName, address, postalCode, phone, type };
-			m.addRow(s);
-		} catch (IOException e) {
-			JOptionPane.showMessageDialog(null, "The server disconnected");
-		}
-		return m;
-	}
-
-	public DefaultTableModel findCustomerByName(String lastName) {
-		String command = "option,12," + lastName;
-		socketOut.println(command);
-
-		try {
-			String json = socketIn.readLine();
-			JSONArray customerList = new JSONArray(json);
-			for (int i = 0; i < customerList.length(); i++) {
-				int customerId = customerList.getJSONObject(i).getInt("customerId");
-				String firstName = customerList.getJSONObject(i).getString("firstName");
-				lastName = customerList.getJSONObject(i).getString("lastName");
-				String address = customerList.getJSONObject(i).getString("address");
-				String postalCode = customerList.getJSONObject(i).getString("postalCode");
-				String phone = customerList.getJSONObject(i).getString("phone");
-				String type = customerList.getJSONObject(i).getString("type");
-				String s[] = { Integer.toString(customerId), firstName, lastName, address, postalCode, phone, type };
-				m.addRow(s);
-			}
-		} catch (IOException e) {
-			JOptionPane.showMessageDialog(null, "The server disconnected");
-		}
-		return m;
-	}
-
-	public DefaultTableModel findCustomerByType(String customerType) {
-		String command = "option,13," + customerType;
-		socketOut.println(command);
-
+	private DefaultTableModel parseJsonArray() {
+		m = new DefaultTableModel();
+		m.setColumnIdentifiers(new String[] { "Customer ID", "Customer First Name", "Customer Last Name", "Address",
+				"Postal Code", "Phone", "Type" });
 		try {
 			String json = socketIn.readLine();
 			JSONArray customerList = new JSONArray(json);
@@ -113,6 +65,47 @@ public class CustomerGUIController {
 			JOptionPane.showMessageDialog(null, "The server disconnected");
 		}
 		return m;
+	}
+	
+	private DefaultTableModel parseJsonObject() {
+		m = new DefaultTableModel();
+		m.setColumnIdentifiers(new String[] { "Customer ID", "Customer First Name", "Customer Last Name", "Address",
+				"Postal Code", "Phone", "Type" });
+		try {
+			String json = socketIn.readLine();
+			JSONObject customer = new JSONObject(json);
+			int customerId = customer.getInt("customerId");
+			String firstName = customer.getString("firstName");
+			String lastName = customer.getString("lastName");
+			String address = customer.getString("address");
+			String postalCode = customer.getString("postalCode");
+			String phone = customer.getString("phone");
+			String type = customer.getString("type");
+			String[] s = { Integer.toString(customerId), firstName, lastName, address, postalCode, phone, type };
+			m.addRow(s);
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "The server disconnected");
+		}
+		return m;
+	}
+
+	public DefaultTableModel findCustomerById(int customerId) {
+		String command = "option,11," + customerId;
+		socketOut.println(command);
+		return parseJsonObject();
+		
+	}
+
+	public DefaultTableModel findCustomerByName(String lastName) {
+		String command = "option,12," + lastName;
+		socketOut.println(command);
+		return parseJsonArray();
+	}
+
+	public DefaultTableModel findCustomerByType(String customerType) {
+		String command = "option,13," + customerType;
+		socketOut.println(command);
+		return parseJsonArray();
 	}
 
 	public String addCustomer(int customerId, String firstName, String lastName, String address, String postalCode,
@@ -190,7 +183,7 @@ public class CustomerGUIController {
 
 			} else if (searchType.equals("type")) {
 				String customerType = view.getSearchKeyword();
-				view.setTableModel(findCustomerByName(customerType));
+				view.setTableModel(findCustomerByType(customerType));
 
 			} else {
 				JOptionPane.showMessageDialog(null, "Please select a searching criteria!", "Error Message",
