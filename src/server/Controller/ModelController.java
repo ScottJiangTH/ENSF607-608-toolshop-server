@@ -244,9 +244,9 @@ public class ModelController implements Runnable {
 						importTax = rsTax.getString(2);
 					aSupplier = new InternationalSupplier(Integer.parseInt(supplierID), supplierType, companyName,
 							address, salesContact, Float.parseFloat(importTax));
-				} else 
-					aSupplier = new DomesticSupplier(Integer.parseInt(supplierID), supplierType, companyName,
-							address, salesContact);
+				} else
+					aSupplier = new DomesticSupplier(Integer.parseInt(supplierID), supplierType, companyName, address,
+							salesContact);
 				suppliers.add(aSupplier);
 			}
 		} catch (NumberFormatException e) {
@@ -281,8 +281,13 @@ public class ModelController implements Runnable {
 				String postal = rs.getString(5);
 				String phone = rs.getString(6);
 				String type = rs.getString(7);
-				customers.add(
-						new Customer(Integer.parseInt(customerID), firstname, lastname, address, postal, phone, type));
+				if (type.equals("R"))
+					customers.add(new ResidentialCustomer(Integer.parseInt(customerID), firstname, lastname, address,
+							postal, phone, type));
+				else if (type.equals("C"))
+					customers.add(new CommercialCustomer(Integer.parseInt(customerID), firstname, lastname, address,
+							postal, phone, type));
+					
 			}
 		} catch (NumberFormatException e) {
 			e.printStackTrace();

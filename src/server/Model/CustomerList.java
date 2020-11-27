@@ -37,7 +37,11 @@ public class CustomerList {
 
 	public void addNewCustomer(int customerId, String firstName, String lastName, String address, String postalCode,
 			String phone, String type) {
-		Customer newCustomer = new Customer(customerId, firstName, lastName, address, postalCode, phone, type);
+		Customer newCustomer = null;
+		if (type.equals("R"))
+			newCustomer = new ResidentialCustomer(customerId, firstName, lastName, address, postalCode, phone, type);
+		else if (type.equals("C"))
+			newCustomer = new CommercialCustomer(customerId, firstName, lastName, address, postalCode, phone, type);
 		customerList.add(newCustomer);
 	}
 

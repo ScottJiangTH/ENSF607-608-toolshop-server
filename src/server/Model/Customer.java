@@ -1,6 +1,6 @@
 package server.Model;
 
-public class Customer {
+public abstract class Customer {
 
 	private int customerId;
 	private String firstName;
@@ -21,37 +21,30 @@ public class Customer {
 	}
 	
 	public int getCustomerId() {
-		// TODO Auto-generated method stub
 		return customerId;
 	}
 
 	public String getFirstName() {
-		// TODO Auto-generated method stub
 		return firstName;
 	}
 
 	public String getLastName() {
-		// TODO Auto-generated method stub
 		return lastName;
 	}
 
 	public String getAddress() {
-		// TODO Auto-generated method stub
 		return address;
 	}
 
 	public String getPostalCode() {
-		// TODO Auto-generated method stub
 		return postalCode;
 	}
 
 	public String getPhone() {
-		// TODO Auto-generated method stub
 		return phone;
 	}
 
 	public String getType() {
-		// TODO Auto-generated method stub
 		return type;
 	}
 

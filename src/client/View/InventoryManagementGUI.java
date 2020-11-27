@@ -20,34 +20,37 @@ public class InventoryManagementGUI extends JFrame {
 	private JButton deleteTool = new JButton("Delete Tool");
 	private JButton checkSupplierByName = new JButton("Check Supplier by Name");
 	private JButton checkSupplierById = new JButton("Check Supplier by ID");
-	private JButton printDailyOrder = new JButton("Print Order of Today");
-	private JButton printHistoryOrder = new JButton("Print History Order");
+	private JButton printDailyOrder = new JButton("Order of Today");
+	private JButton printHistoryOrder = new JButton("History Order");
 	private JLabel listLabel = new JLabel("Table Display");
 	private JTable listTable;
 	private JScrollPane listScroll;
 
 	public InventoryManagementGUI(Dimension dim) {
 		setTitle("Tool Shop Application");
-		setBounds(0, 0, dim.width / 2, dim.height / 2);
-		setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
+		setBounds(0, 0, dim.width, dim.height / 2);
+		setLocation(0, (int) (this.getSize().height));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
+		setSize(800, 400);
 
 		JPanel labels = new JPanel();
 		labels.add(listLabel);
 
 		JPanel txtArea = new JPanel();
-		String[] colName = { "Item ID", "Item Name", "Item Quantity", "Price", "Supplier ID", "Tool Type", "Voltage Rating" };
+		String[] colName = { "Tool ID", "Tool Name", "Tool Qty", "Price", "Supplier ID", "Tool Type", "Voltage Rating" };
 
 		DefaultTableModel tableModel = new DefaultTableModel(colName, 10);
 		listTable = new JTable(tableModel);
 		listScroll = new JScrollPane(listTable);
+		listScroll.setSize(800, 400);
 		
 		listTable.setEnabled(false);
 		listTable.setFillsViewportHeight(true);
 		txtArea.add(listScroll);
 
 		JPanel buttonPanelLeft = new JPanel();
+		buttonPanelLeft.setSize(100, 400);
 		JPanel buttonPanelRight = new JPanel();
 		buttonPanelLeft.setLayout(new GridLayout(6, 1));
 		buttonPanelRight.setLayout(new GridLayout(6, 1));

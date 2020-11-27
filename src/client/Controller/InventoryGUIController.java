@@ -49,8 +49,8 @@ public class InventoryGUIController {
 
 	private DefaultTableModel parseJsonArrayOfItems() {
 		DefaultTableModel m = new DefaultTableModel();
-		m.setColumnIdentifiers(new String[] { "Item ID", "Item Name", "Item Quantity", "Price", "Supplier ID",
-				"Tool Type", "Voltage Rating" });
+		m.setColumnIdentifiers(new String[] { "Tool ID", "Tool Name", "Tool Qty", "Price", "Supplier ID", "Tool Type",
+				"Voltage Rating" });
 
 		try {
 			String json = socketIn.readLine();
@@ -77,8 +77,8 @@ public class InventoryGUIController {
 
 	private DefaultTableModel parseJsonObjectOfItems() {
 		DefaultTableModel m = new DefaultTableModel();
-		m.setColumnIdentifiers(new String[] { "Item ID", "Item Name", "Item Quantity", "Price", "Supplier ID",
-				"Tool Type", "Voltage Rating" });
+		m.setColumnIdentifiers(new String[] { "Tool ID", "Tool Name", "Tool Qty", "Price", "Supplier ID", "Tool Type",
+				"Voltage Rating" });
 
 		try {
 			String json = socketIn.readLine();
