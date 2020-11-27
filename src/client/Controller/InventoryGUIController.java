@@ -49,8 +49,8 @@ public class InventoryGUIController {
 
 	private DefaultTableModel parseJsonArrayOfItems() {
 		DefaultTableModel m = new DefaultTableModel();
-		m.setColumnIdentifiers(
-				new String[] { "Item ID", "Item Name", "Item Quantity", "Price", "Supplier ID", "Type", "Voltage Rating" });
+		m.setColumnIdentifiers(new String[] { "Item ID", "Item Name", "Item Quantity", "Price", "Supplier ID",
+				"Tool Type", "Voltage Rating" });
 
 		try {
 			String json = socketIn.readLine();
@@ -77,8 +77,8 @@ public class InventoryGUIController {
 
 	private DefaultTableModel parseJsonObjectOfItems() {
 		DefaultTableModel m = new DefaultTableModel();
-		m.setColumnIdentifiers(
-				new String[] { "Item ID", "Item Name", "Item Quantity", "Price", "Supplier ID", "Type", "Voltage Rating" });
+		m.setColumnIdentifiers(new String[] { "Item ID", "Item Name", "Item Quantity", "Price", "Supplier ID",
+				"Tool Type", "Voltage Rating" });
 
 		try {
 			String json = socketIn.readLine();
@@ -103,8 +103,8 @@ public class InventoryGUIController {
 
 	private DefaultTableModel parseJsonObjectOfSupplier() {
 		DefaultTableModel m = new DefaultTableModel();
-		m.setColumnIdentifiers(
-				new String[] { "Supplier ID", "Supplier Name", "Address", "Sales Contact", "Supplier Type" });
+		m.setColumnIdentifiers(new String[] { "Supplier ID", "Supplier Name", "Address", "Sales Contact",
+				"Supplier Type", "Import Tax" });
 
 		try {
 			String json = socketIn.readLine();
@@ -114,7 +114,11 @@ public class InventoryGUIController {
 			String address = supplier.getString("supAddress");
 			String contact = supplier.getString("supContactName");
 			String supplierType = supplier.getString("supType");
-			String s[] = { Integer.toString(supplierId), supplierName, address, contact, supplierType };
+			float importTax = 0;
+			if (supplier.has("importTax"))
+				importTax = supplier.getFloat("importTax");
+			String s[] = { Integer.toString(supplierId), supplierName, address, contact, supplierType,
+					Float.toString(importTax) };
 			m.addRow(s);
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, "The server disconnected");
@@ -131,15 +135,17 @@ public class InventoryGUIController {
 			JSONObject order = new JSONObject(json);
 			int orderId = order.getInt("orderId");
 			JSONObject dateObj = order.getJSONObject("orderDate");
-			String date = dateObj.getInt("year") + "-" + dateObj.getInt("monthValue") + "-" + dateObj.getInt("dayOfMonth");
+			String date = dateObj.getInt("year") + "-" + dateObj.getInt("monthValue") + "-"
+					+ dateObj.getInt("dayOfMonth");
 			JSONArray orderlines = order.getJSONArray("orderLines");
 			for (int i = 0; i < orderlines.length(); i++) {
 				int itemId = orderlines.getJSONObject(i).getJSONObject("theItem").getInt("itemId");
 				int orderQuantity = orderlines.getJSONObject(i).getInt("orderQuantity");
-				String s[] = { Integer.toString(orderId), date, Integer.toString(itemId), Integer.toString(orderQuantity)  };
+				String s[] = { Integer.toString(orderId), date, Integer.toString(itemId),
+						Integer.toString(orderQuantity) };
 				m.addRow(s);
 			}
-			
+
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, "The server disconnected");
 		}
@@ -356,7 +362,7 @@ public class InventoryGUIController {
 			view.setTableModel(printOrder(LocalDate.now()));
 		}
 	}
-	
+
 	class PrintHistoryOrderListener implements ActionListener {
 
 		@Override

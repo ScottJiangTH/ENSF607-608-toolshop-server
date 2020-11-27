@@ -2,7 +2,7 @@ package server.Model;
 
 import java.util.ArrayList;
 
-public class Supplier {
+public abstract class Supplier {
 	
 	private int supId;
 	private String supType;

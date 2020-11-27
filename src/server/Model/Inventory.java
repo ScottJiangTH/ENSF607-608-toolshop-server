@@ -58,9 +58,9 @@ public class Inventory {
 		if (ol != null) {
 			i.updateItemQuantity(ol.getOrderQuantity());
 			dailyOrder.addOrderLine(ol);
-			return "Order line generated. Please click Print Order to see.";
+			return "Order line generated and added to Daily Order. Please click Print Order to see.";
 		}
-		return "The quantity of " + i.getItemName() + "has been updated.";
+		return "The quantity of " + i.getItemName() + " has been updated and saved to server.";
 	}
 
 	@SuppressWarnings("unused")

@@ -203,7 +203,7 @@ public class ModelController implements Runnable {
 				String price = rs.getString(5);
 				String supplierId = rs.getString(7);
 				Item anItem;
-				String powerType="";
+				String powerType = "";
 				if (type.equals("electrical")) {
 					ResultSet rsPower = dBController.searchFromTable("electrical_item", "iid", ID);
 					if (rsPower.next())
@@ -236,8 +236,18 @@ public class ModelController implements Runnable {
 				String companyName = rs.getString(3);
 				String address = rs.getString(4);
 				String salesContact = rs.getString(5);
-				suppliers.add(
-						new Supplier(Integer.parseInt(supplierID), supplierType, companyName, address, salesContact));
+				Supplier aSupplier;
+				String importTax = "";
+				if (supplierType.equals("international")) {
+					ResultSet rsTax = dBController.searchFromTable("international_supplier", "sid", supplierID);
+					if (rsTax.next())
+						importTax = rsTax.getString(2);
+					aSupplier = new InternationalSupplier(Integer.parseInt(supplierID), supplierType, companyName,
+							address, salesContact, Float.parseFloat(importTax));
+				} else 
+					aSupplier = new DomesticSupplier(Integer.parseInt(supplierID), supplierType, companyName,
+							address, salesContact);
+				suppliers.add(aSupplier);
 			}
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
