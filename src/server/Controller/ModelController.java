@@ -3,7 +3,6 @@ package server.Controller;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -163,17 +162,26 @@ public class ModelController implements Runnable {
 				dBController.updateCustomerInfo(customerId, firstName, lastName, address, postalCode, phone, type);
 				socketOut.println(firstName + lastName + "profile updated.");
 				break;
-			case 17: // print daily_order
-				LocalDate date = LocalDate.parse(token[2]);
-				Order dailyOrder = findOrder(date);
-				if (date == LocalDate.now() && dailyOrder == null) // if no order from database, then search in memory
-					dailyOrder = model.getOrder();
-				if (dailyOrder != null) {
+			case 17: // print today's daily_order
+				Order dailyOrder = model.getOrder();
+				
+				if (dailyOrder == null) { 
+					socketOut.println("No order found.");
+				} else {
 					dBController.saveDailyOrder(dailyOrder);
 					socketOut.println(toJSON(dailyOrder));
 				}
 				break;
-			case 18:
+			case 18: // print today's daily_order
+				LocalDate date = LocalDate.parse(token[2]);
+				Order historyOrder = findOrder(date); // searching DB for the order of selected day
+				if (historyOrder == null) { 
+					socketOut.println("No order found.");
+				} else {
+					socketOut.println(toJSON(historyOrder));
+				}
+				break;
+			case 19:
 				System.out.println("Client GUI closed.");
 				return;
 			default:
@@ -213,7 +221,6 @@ public class ModelController implements Runnable {
 				theOrder = new Order(Integer.parseInt(orderId), orderDate, orderLines);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return theOrder;

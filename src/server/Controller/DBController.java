@@ -43,8 +43,8 @@ public class DBController {
 			statement = jdbc_connection.createStatement();
 			statement.executeUpdate(sql);
 		}
-		catch(SQLException e)
-		{e.printStackTrace();}
+		catch(SQLException e) {}
+		//{ e.printStackTrace(); }
 	}
 	
 	public ResultSet readWholeTable(String tableName) {

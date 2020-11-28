@@ -132,6 +132,10 @@ public class InventoryGUIController {
 				new String[] { "Order ID", "Order Date", "Orderline-Item ID", "Orderline-Order Quantity" });
 		try {
 			String json = socketIn.readLine();
+			if (json.equals("No order found.")) {
+				JOptionPane.showMessageDialog(null, "No order found.");
+				return m;
+			}
 			JSONObject order = new JSONObject(json);
 			int orderId = order.getInt("orderId");
 			JSONObject dateObj = order.getJSONObject("orderDate");
@@ -222,8 +226,14 @@ public class InventoryGUIController {
 		return parseJsonObjectOfSupplier();
 	}
 
-	public DefaultTableModel printOrder(LocalDate date) {
-		String command = "option,17," + date.toString();
+	public DefaultTableModel printDailyOrder() {
+		String command = "option,17";
+		socketOut.println(command);
+		return parseJsonObjectOfOrders();
+	}
+	
+	public DefaultTableModel printHistoryOrder(LocalDate date) {
+		String command = "option,18," + date.toString();
 		socketOut.println(command);
 		return parseJsonObjectOfOrders();
 	}
@@ -359,7 +369,7 @@ public class InventoryGUIController {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			view.setTableModel(printOrder(LocalDate.now()));
+			view.setTableModel(printDailyOrder());
 		}
 	}
 
@@ -370,7 +380,7 @@ public class InventoryGUIController {
 			String dateString = JOptionPane.showInputDialog("Enter a date in format YYYY-MM-DD: ");
 			LocalDate date = LocalDate.parse(dateString);
 			if (date != null)
-				view.setTableModel(printOrder(date));
+				view.setTableModel(printHistoryOrder(date));
 			else
 				JOptionPane.showMessageDialog(null, "Wrong format, input in YYYY-MM-DD!", "Error Message",
 						JOptionPane.ERROR_MESSAGE);
