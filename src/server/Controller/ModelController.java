@@ -86,7 +86,7 @@ public class ModelController implements Runnable {
 				itemQuantity = Integer.parseInt(token[5]);
 				double itemPrice = Double.parseDouble(token[6]);
 				int supplierId = Integer.parseInt(token[7]);
-				if (token[8] != null) { // if there is power type entry
+				if (token.length == 9) { // if there is power type entry
 					if (itemType.equals("electrical")) {
 						model.addNewEItem(itemId, itemType, itemName, itemQuantity, itemPrice, supplierId, token[8]);
 						dBController.addElectricalItem(itemId, itemType, itemName, itemQuantity, itemPrice, supplierId,

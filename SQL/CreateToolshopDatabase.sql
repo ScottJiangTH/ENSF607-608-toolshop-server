@@ -65,6 +65,8 @@ CREATE TABLE order_line (
   foreign key (oid) references daily_order(id), 
   foreign key (iid) references item(id), 
   foreign key (sid) references supplier(id)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE
 );
 
 
