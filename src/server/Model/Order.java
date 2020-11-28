@@ -24,6 +24,11 @@ public class Order {
 		orderLines = new ArrayList<OrderLine>();
 		setOrderDate(LocalDate.now());
 	}
+	public Order (int orderId, LocalDate orderDate, ArrayList<OrderLine> orderlines) {
+		this.orderId = orderId;
+		this.orderDate = orderDate;
+		this.orderLines = orderlines;
+	}
 
 	private int gen() {
 		Random r = new Random(System.currentTimeMillis());

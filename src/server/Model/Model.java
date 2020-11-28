@@ -102,7 +102,7 @@ public class Model {
 		theCustomerList.updateCustomerInfo(customerId, firstName, lastName, address, postalCode, phone, type);
 	}
 	
-	public Order printOrder(LocalDate date) {
+	public Order getOrder() {
 		return theInventory.getOrder();
 	}
 }

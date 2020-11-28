@@ -9,13 +9,12 @@ public class Inventory {
 
 	public Inventory(ArrayList<Item> itemList) {
 		this.itemList = itemList;
-		dailyOrder = new Order();
 	}
 
 	public ArrayList<Item> listAllItems() {
 		return itemList;
 	}
-	
+
 	public Item findItemById(int itemId) {
 		for (Item i : itemList) {
 			if (i.getItemId() == itemId)
@@ -52,29 +51,32 @@ public class Inventory {
 		Item i = findItemByName(itemName);
 		if (i != null)
 			i.updateItemQuantity(diff);
-		else 
+		else
 			return itemName + " not found. Please verify tool name.";
 		OrderLine ol = triggerOrderLine(i);
 		if (ol != null) {
 			i.updateItemQuantity(ol.getOrderQuantity());
+			if (dailyOrder == null)
+				dailyOrder = new Order();
 			dailyOrder.addOrderLine(ol);
-			return "Order line generated and added to Daily Order. Please click Print Order to see.";
+			return "Order line of " + i.getItemName()
+					+ " generated and added to Daily Order. Please click \"Order of Today\" to see.";
 		}
 		return "The quantity of " + i.getItemName() + " has been updated and saved to server.";
 	}
 
 	@SuppressWarnings("unused")
-	public String addNewEItem(int id, String type, String name, int quantity, double price, int supplierId, String powerType) {
+	public String addNewEItem(int id, String type, String name, int quantity, double price, int supplierId,
+			String powerType) {
 		Item i = null;
 		i = new ElectricalItem(id, type, name, quantity, price, supplierId, powerType);
 		if (i != null) {
 			itemList.add(i);
 			return "New tool created.";
-		}
-		else
+		} else
 			return "Create new tool failed, please verify input and try again.";
 	}
-	
+
 	@SuppressWarnings("unused")
 	public String addNewNEItem(int id, String type, String name, int quantity, double price, int supplierId) {
 		Item i = null;
@@ -82,8 +84,7 @@ public class Inventory {
 		if (i != null) {
 			itemList.add(i);
 			return "New tool created.";
-		}
-		else
+		} else
 			return "Create new tool failed, please verify input and try again.";
 	}
 
@@ -91,7 +92,7 @@ public class Inventory {
 		Item i = findItemByName(itemName);
 		if (i != null)
 			itemList.remove(i);
-		else 
+		else
 			return itemName + " not found. Please verify tool name.";
 		return i.getItemName() + "has been deleted.";
 	}
@@ -103,13 +104,17 @@ public class Inventory {
 		}
 		return ol;
 	}
-	
+
 	public Order getOrder() {
 		return dailyOrder;
 	}
-	
+
 	public void setItemList(ArrayList<Item> itemList) {
 		this.itemList = itemList;
 	}
-	
+
+	public void setOrder(Order dailyOrder) {
+		this.dailyOrder = dailyOrder;
+	}
+
 }

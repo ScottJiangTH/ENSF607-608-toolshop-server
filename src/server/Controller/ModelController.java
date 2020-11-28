@@ -3,6 +3,7 @@ package server.Controller;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -164,9 +165,13 @@ public class ModelController implements Runnable {
 				break;
 			case 17: // print daily_order
 				LocalDate date = LocalDate.parse(token[2]);
-				Order dailyOrder = model.printOrder(date);
-				dBController.saveDailyOrder(dailyOrder);
-				socketOut.println(toJSON(dailyOrder));
+				Order dailyOrder = findOrder(date);
+				if (date == LocalDate.now() && dailyOrder == null) // if no order from database, then search in memory
+					dailyOrder = model.getOrder();
+				if (dailyOrder != null) {
+					dBController.saveDailyOrder(dailyOrder);
+					socketOut.println(toJSON(dailyOrder));
+				}
 				break;
 			case 18:
 				System.out.println("Client GUI closed.");
@@ -176,7 +181,6 @@ public class ModelController implements Runnable {
 				break;
 			}
 		}
-
 	}
 
 	private String toJSON(Object o) {
@@ -188,6 +192,31 @@ public class ModelController implements Runnable {
 			e.printStackTrace();
 		}
 		return json;
+	}
+
+	private Order findOrder(LocalDate date) {
+		Order theOrder = null;
+		ResultSet rsOrder = dBController.searchFromTable("daily_order", "odate", date.toString());
+		try {
+			if (rsOrder.next()) {
+				String orderId = rsOrder.getString(1);
+				LocalDate orderDate = rsOrder.getDate(2).toLocalDate();
+				ArrayList<OrderLine> orderLines = new ArrayList<OrderLine>();
+				ResultSet rsOrderline = dBController.searchFromTable("order_line", "oid", orderId);
+				while (rsOrderline.next()) {
+					String itemId = rsOrderline.getString(2);
+					Item theItem = model.findItemById(Integer.parseInt(itemId));
+					int orderQuantity = rsOrderline.getInt(3);
+					OrderLine anOrderLine = new OrderLine(theItem, orderQuantity);
+					orderLines.add(anOrderLine);
+				}
+				theOrder = new Order(Integer.parseInt(orderId), orderDate, orderLines);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return theOrder;
 	}
 
 	public ArrayList<Item> allItems() {
@@ -287,7 +316,7 @@ public class ModelController implements Runnable {
 				else if (type.equals("C"))
 					customers.add(new CommercialCustomer(Integer.parseInt(customerID), firstname, lastname, address,
 							postal, phone, type));
-					
+
 			}
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
@@ -304,6 +333,7 @@ public class ModelController implements Runnable {
 		SupplierList theSupplierList = new SupplierList(allSuppliers());
 		CustomerList theCustomerList = new CustomerList(allCustomers());
 		this.model = new Model(theInventory, theSupplierList, theCustomerList);
+		theInventory.setOrder(findOrder(LocalDate.now()));
 		try {
 			communication();
 		} catch (IOException e) {
