@@ -25,8 +25,14 @@ UML_2 Low Level Class Diagram Toolshop Model.mdj
 
 ##### Design Note
 1. To minimize interaction with DB, in Model constructor, it reads all supplier, item and client lists from DB and store info in local. This is under the assumption that database size is small. If database size increases dramatically, this has to be changed into a query-on-demand manner.
+2. Upon the initiation of each client application, all content in MySQL table item, electrical_item, supplier, international_supplier, customer, and part of daily_order(WHERE odate = LocalDate.now()) will be loaded to memory. 
+3. After initialization, all changes will be updated to MySQL tables in realtime. Those changes include: update item quantity, add new item, delete item, create new order, create new orderline, add new customer, delete customer.
 
 ### Instructions on How to Run this Program
 1. Include SQL jar file into classpath.
 2. At server side: [Include JACKSON jar file into classpath.](https://www.youtube.com/watch?v=J2RBO_9wjYg)
 3. At client side: [Include official JSON jar file into classpath.](https://github.com/stleary/JSON-java)
+4. Both server and client side project are built on JDK-14 (Java Runtime version 58.0). Please set up JDK to this version or up, otherwise project build will fail.
+
+### AWS Deployment Note
+1. Before server program deployment, AWS plugin for Eclipse should be installed with the following guide.[Link](https://aws.amazon.com/eclipse/)
