@@ -35,4 +35,4 @@ UML_2 Low Level Class Diagram Toolshop Model.mdj
 4. Both server and client side project are built on JDK-14 (Java Runtime version 58.0). Please set up JDK to this version or up, otherwise project build will fail.
 
 ### AWS Deployment Note
-1. Before server program deployment, AWS plugin for Eclipse should be installed with the following guide.[Link](https://aws.amazon.com/eclipse/)
+1. Before server program deployment, AWS plugin for Eclipse should be installed with the following guide. [AWS Link](https://aws.amazon.com/eclipse/) and [YouTube Link](https://www.youtube.com/watch?time_continue=1027&v=Ozc5Yu_IcaI&feature=emb_logo)

@@ -7,7 +7,6 @@ public class InternationalSupplier extends Supplier{
 	public InternationalSupplier(int id, String type, String name, String address, String contactName, float importTax) {
 		super(id, type, name, address, contactName);
 		this.setImportTax(importTax);
-		// TODO Auto-generated constructor stub
 	}
 
 	public float getImportTax() {

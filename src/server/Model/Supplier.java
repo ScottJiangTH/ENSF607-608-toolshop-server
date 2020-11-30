@@ -11,7 +11,6 @@ public abstract class Supplier {
 	private String supContactName;
 	private ArrayList <Item> itemList;
 	
-	
 	public Supplier (int id, String type, String name, String address, String contactName) {
 		supId = id;
 		supType = type;
@@ -21,41 +20,33 @@ public abstract class Supplier {
 		itemList = new ArrayList <Item>();
 	}
 
-
 	public int getSupId() {
 		return supId;
 	}
-
 
 	public void setSupId(int supId) {
 		this.supId = supId;
 	}
 
-
 	public String getSupName() {
 		return supName;
 	}
-
 
 	public void setSupName(String supName) {
 		this.supName = supName;
 	}
 
-
 	public String getSupAddress() {
 		return supAddress;
 	}
-
 
 	public void setSupAddress(String supAddress) {
 		this.supAddress = supAddress;
 	}
 
-
 	public String getSupContactName() {
 		return supContactName;
 	}
-
 
 	public void setSupContactName(String supContactName) {
 		this.supContactName = supContactName;
@@ -64,20 +55,15 @@ public abstract class Supplier {
 		return supName + " Supplier ID: " + supId+ "\n";
 	}
 
-
 	public ArrayList <Item> getItemList() {
 		return itemList;
 	}
-
 
 	public void setItemList(ArrayList <Item> itemList) {
 		this.itemList = itemList;
 	}
 
-
 	public String getSupType() {
 		return supType;
 	}
-	
-
 }

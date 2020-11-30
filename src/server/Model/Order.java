@@ -4,15 +4,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Random;
 
-/**
- * Stores information of an order, writes an txt file as output for the order
- * generated
- * 
- * @author Yunying Zhang
- * @Since October 10 2020
- *
- */
-
 public class Order {
 
 	private int orderId;

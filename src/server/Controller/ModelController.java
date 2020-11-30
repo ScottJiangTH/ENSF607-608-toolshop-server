@@ -26,10 +26,6 @@ public class ModelController implements Runnable {
 		this.socketOut = socketOut;
 	}
 
-	// TODO: add methods to import from DB and construct specialized item, supplier,
-	// customer objects
-	// TODO: add method to import existing orders from DB, link to case 17
-
 	private void communication() throws IOException {
 		while (true) {
 			// command is in format: "option",option#,arg1,arg2,... DO NOT pass anything

@@ -1,10 +1,5 @@
 package server.Model;
-/**
- * Stores information of each tool
- * @author Yunying Zhang
- * @Since October 10 2020
- *
- */
+
 public abstract class Item {
 	
 	private int itemId;
